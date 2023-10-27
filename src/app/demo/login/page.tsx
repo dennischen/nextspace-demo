@@ -4,7 +4,7 @@
  * @author: Dennis Chen
  */
 
-import BlankTemplate from "@/nextspace/layouts/Blank"
+import BlankTemplate from "@nextspace/layouts/Blank"
 import demoStyles from "@/app/demo/demo.module.scss"
 import loginStyles from "./login.module.scss"
 

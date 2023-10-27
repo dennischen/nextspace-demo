@@ -25,6 +25,9 @@
         "paths": {
             "@/*": [
                 "./src/*"
+            ],
+            "@nextspace/*": [
+                "./nextspace/dist/*"
             ]
         }
     },

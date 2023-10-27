@@ -1,0 +1,3 @@
+[submodule "nextspace"]
+	path = nextspace
+	url = ../nextspace.git

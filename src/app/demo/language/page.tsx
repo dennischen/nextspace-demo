@@ -6,7 +6,7 @@
 
 import { COOKIE_LOCALE } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
-import WorkspaceHolder from "@/nextspace/contexts/workspace"
+import WorkspaceHolder from "@nextspace/contexts/workspace"
 import { useContext } from "react"
 import Cookies from 'universal-cookie'
 

@@ -5,14 +5,14 @@
  * @file-created: 2023-10-23
  * @author: Dennis Chen
  */
-import WorkspaceBoundary from '@/nextspace/WorkspaceBoundary'
-import { WorkspaceConfig } from '@/nextspace/types'
-import I18nextTranslationHolder from '@/nextspace/utils/I18nextTranslationHolder'
+import WorkspaceBoundary from '@nextspace/WorkspaceBoundary'
+import { WorkspaceConfig } from '@nextspace/types'
+import I18nextTranslationHolder from '@nextspace/utils/I18nextTranslationHolder'
 import { useMemo } from 'react'
 import demoStyles from "./demo.module.scss"
 
-import translationLoader from '@/nextspace/components/translationLoader'
-import NProgressIndicator from '@/nextspace/utils/NProgressIndicator'
+import translationLoader from '@nextspace/components/translationLoader'
+import NProgressIndicator from '@nextspace/utils/NProgressIndicator'
 import i18next from 'i18next'
 import Banner from "./Banner"
 import Footer from './Footer'

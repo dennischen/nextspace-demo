@@ -2,7 +2,7 @@
 
 import { useContext } from "react"
 import demoStyles from "./demo.module.scss"
-import WorkspaceHolder from "@/nextspace/contexts/workspace"
+import WorkspaceHolder from "@nextspace/contexts/workspace"
 import Link from "next/link"
 
 export default function Banner() {

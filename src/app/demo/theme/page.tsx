@@ -5,7 +5,7 @@
  */
 import { useContext } from "react"
 import demoStyles from "@/app/demo/demo.module.scss"
-import WorkspaceHolder from "@/nextspace/contexts/workspace"
+import WorkspaceHolder from "@nextspace/contexts/workspace"
 
 
 type PageProps = {
