@@ -1,11 +1,19 @@
 
-This project bases on nextjs app and provides ability to
-* Cookie/header/session based i18n locale (no /en/page, /zh/page in url) and load translation with lazy trunk when reqired
-* More...
+This is a demo application for nextspace(https://github.com/dennischen/nextspace) base on nextjs 
 
 ## Getting Started
 
-Run the development server:
+Compile nextspace submodule
+
+```bash
+cd nextspace
+
+yarn install
+
+yarn build
+```
+
+Run the development demo server:
 
 ```bash
 yarn install
