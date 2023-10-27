@@ -1,0 +1,13 @@
+#nprogress .bar,
+#nprogress .spinner {
+    z-index: 2000;
+}
+
+#nprogress .bar {
+    height: 4px;
+}
+
+// define variable
+:root {
+    --banner-height: 32px;
+}

@@ -1,0 +1,36 @@
+.nextspace-spi {
+    background-color: var(--nextspace-spi-background);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    z-index: var(--nextspace-spin-z-index);
+
+    &.hide {
+        display: none;
+    }
+
+    img {
+        animation: nextspace-spin-1 2s infinite linear;
+    }
+}
+
+@keyframes nextspace-spin-1 {
+    from {transform: rotate(0deg);}
+    to   {transform: rotate(359deg);}
+}
+
+// define variable
+$base-z-index: 1000;
+:root {
+    --nextspace-base-z-index: #{$base-z-index};
+    --nextspace-modal-z-index: #{$base-z-index + 1};
+    --nextspace-modal-background: #e0e0e020;
+    --nextspace-spin-z-index: #{$base-z-index + 2};
+    --nextspace-spi-background: #e0e0e020;
+    --nextspace-font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+        'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+        'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+}
