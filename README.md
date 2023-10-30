@@ -3,6 +3,13 @@ This is a demo application for nextspace(https://github.com/dennischen/nextspace
 
 ## Getting Started
 
+Clone with nextspace submodule
+```bash
+git clone git@github.com:dennischen/nextspace-demo.git --recursive
+
+cd nextspace-demo
+```
+
 Compile nextspace submodule
 
 ```bash
@@ -23,7 +30,7 @@ yarn install
 yarn dev
 ```
 
-Open [http://localhost](http://localhost) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Production
 
@@ -35,5 +42,15 @@ yarn start
 
 # or just
 yarn buildstart
+```
+
+## Docker image
+After build the procution, use docker to build a image and run demo as a container
+
+```bash
+# docker image
+docker build . -t nextspace-demo
+# run container
+docker run -p 3000:3000 -it nextspace-demo
 ```
 
