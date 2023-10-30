@@ -54,3 +54,5 @@ docker build . -t nextspace-demo
 docker run -p 3000:3000 -it nextspace-demo
 ```
 
+## Oneline demo
+Here is the hosted online demo [http://www.colaorange.com:3000/](http://www.colaorange.com:3000/)
