@@ -17,8 +17,8 @@ export default function LanguagePage({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
 
-    const onLanguageChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        i18n.changeLocale(evt.target.value)
+    const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+        workspace.onChangeLocale(evt.target.value)
 
         const cookies = new Cookies(null, { path: '/' })
         cookies.set(COOKIE_LOCALE, evt.target.value)
@@ -28,7 +28,7 @@ export default function LanguagePage({ }: PageProps) {
         {i18n.l('language')}: {i18n.l(i18n.locale)} ({i18n.locale})
         <label>
             {`${i18n.l("action")}/${i18n.l("action.selectLanguage")} : `}
-            <select name="language" defaultValue={i18n.locale} onChange={onLanguageChange}>
+            <select name="language" defaultValue={i18n.locale} onChange={onChangeLanguage}>
                 {workspace.locales.map(locale => <option key={locale} value={locale}>{i18n.l(locale)} ({locale})</option>)}
             </select>
         </label>

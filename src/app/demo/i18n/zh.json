@@ -4,6 +4,12 @@
     "zh": "中文",
     "en": "英文",
     "login": "登入",
+    "lazyLoadable": {
+        "@": "延遲載入",
+        "hint": "設定瀏覽器 (e.g. Chrome, Edge) 網路成Fast or Slow 3G來觀查載入效果",
+        "hint2": "Panel2 直接使用 React.lazy跟Suspense配合來載入頁面(會有載入頁面閃爍的情形)",
+        "hint3": "Panel3 使用lazyWithPreload(不會有載入頁面閃爍的情形)跟withProcessIndicator配合來戴入頁面"
+    },
     "theme": "佈景主題",
     "project": "專案",
     "action": {

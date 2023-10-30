@@ -46,3 +46,14 @@
     gap: 8px;
 }
 
+.hlayout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.vlayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

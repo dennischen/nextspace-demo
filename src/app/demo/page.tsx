@@ -17,7 +17,10 @@ export default function DemoPage({ }: PageProps) {
 
     return <main className={demoStyles.main}>
         <Link href="/demo/language">{i18n.l("language")}</Link>
-        <Link href="/demo/theme">{i18n.l("theme")}</Link>
-        <Link href="/demo/login">{i18n.l("login")}</Link>
+        <Link href="/demo/lazy-loadable">{i18n.l("lazyLoadable")}</Link>
+        
+        
+        {/* <Link href="/demo/theme">{i18n.l("theme")}</Link>
+        <Link href="/demo/login">{i18n.l("login")}</Link> */}
     </main>
 }

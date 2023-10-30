@@ -4,13 +4,17 @@
     "zh": "Chinese",
     "en": "English",
     "login": "Login",
+    "lazyLoadable": {
+        "@": "Lazy Loadable",
+        "hint": "Set browser (e.g. Chrome, Edge) network to Fast or Slow 3G to see the effect",
+        "hint2": "Panel2 is simply loaded by React.lazy witch will show a full page Suspense loading page (Has page flash effect)",
+        "hint3": "Panel3 is loaded by lazyWithPreload (No page flash effect) and withProcessIndicator for indicating loading state"
+    },
     "theme": "Theme",
     "project": "Project",
     "action": {
         "@": "Action",
         "selectLanguage": "Select language"
     },
-
-
     "fallback": "Fallback"
 }
