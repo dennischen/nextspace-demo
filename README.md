@@ -11,6 +11,8 @@ cd nextspace
 yarn install
 
 yarn build
+# or watch for running nextspace in nextjs dev
+yarn build-watch
 ```
 
 Run the development demo server:
