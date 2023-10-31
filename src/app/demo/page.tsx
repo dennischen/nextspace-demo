@@ -7,6 +7,7 @@ import WorkspaceHolder from "@nextspace/contexts/workspace"
 import Link from "next/link"
 import { useContext } from "react"
 import demoStyles from "./demo.module.scss"
+import clsx from "clsx"
 
 type PageProps = {
 }
@@ -15,12 +16,21 @@ export default function DemoPage({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
 
+    const demoLinks: React.ReactNode[] = [
+        <Link href="/demo/language">{i18n.l("language")}</Link>,
+        <Link href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
+        <Link href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
+    ]
+
     return <main className={demoStyles.main}>
-        <Link href="/demo/language">{i18n.l("language")}</Link>
-        <Link href="/demo/lazy-loadable">{i18n.l("lazyLoadable")}</Link>
-        
-        
-        {/* <Link href="/demo/theme">{i18n.l("theme")}</Link>
-        <Link href="/demo/login">{i18n.l("login")}</Link> */}
+        <div className={demoStyles.homegrid}>
+            {demoLinks.map((link, idx) =>
+                <div key={idx} className={clsx(demoStyles.homegriditem)}>
+                    <div className={demoStyles.homecase}>
+                        {link}
+                    </div>
+                </div>
+            )}
+        </div>
     </main>
 }

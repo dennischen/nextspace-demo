@@ -1,20 +1,33 @@
 {
     "home": "Home",
-    "language": "Lanuage",
     "zh": "Chinese",
     "en": "English",
     "login": "Login",
-    "lazyLoadable": {
-        "@": "Lazy Loadable",
+    "language": {
+        "@": "Lanuage",
+        "selectLanguage": "Select language"
+    },
+    "lazyPreloading": {
+        "@": "Lazy preloading",
         "hint": "Set browser (e.g. Chrome, Edge) network to Fast or Slow 3G to see the effect",
         "hint2": "Panel2 is simply loaded by React.lazy witch will show a full page Suspense loading page (Has page flash effect)",
         "hint3": "Panel3 is loaded by lazyWithPreload (No page flash effect) and withProcessIndicator for indicating loading state"
     },
+    "sequentialProcessing": {
+        "@": "Sequential processing",
+        "procNumber": "Process number",
+        "maxTimeout": "Max random timeout (ms)",
+        "hint":"Click '$t(action.run)' to start process simulation by running random timeout processes",
+        "msg": {
+            "start": "Process {{idx}} started at {{time}}",
+            "done": "Process {{idx}} completed at {{time}}"
+        }
+    },
     "theme": "Theme",
     "project": "Project",
     "action": {
-        "@": "Action",
-        "selectLanguage": "Select language"
+        "clear": "Clear",
+        "run": "Run"
     },
     "fallback": "Fallback"
 }

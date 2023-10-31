@@ -16,11 +16,12 @@ import NProgressIndicator from '@nextspace/utils/NProgressIndicator'
 import i18next from 'i18next'
 import Banner from "./Banner"
 import Footer from './Footer'
-import "./global.scss"
 import fallbackTranslation from "./i18n/en.json"
 
 import 'nprogress/nprogress.css'
 import nProgress from 'nprogress'
+
+import "./global.scss"
 
 const fallbackLocale = "en"
 
@@ -51,6 +52,7 @@ export default function WorkspaceLayout({ defaultLocale, children }: WorkspaceLa
     return <WorkspaceBoundary defaultLocale={defaultLocale} translations={translations} config={config} className={demoStyles.layout}>
         <Banner />
         {children}
+        <div className={demoStyles.packing}/>
         <Footer />
     </WorkspaceBoundary >
 }

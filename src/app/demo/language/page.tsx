@@ -13,25 +13,27 @@ import Cookies from 'universal-cookie'
 type PageProps = {
 }
 
-export default function LanguagePage({ }: PageProps) {
+export default function Page({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        workspace.onChangeLocale(evt.target.value)
+        workspace.changeLocale(evt.target.value)
 
         const cookies = new Cookies(null, { path: '/' })
         cookies.set(COOKIE_LOCALE, evt.target.value)
     }
 
     return <main className={demoStyles.main}>
-        {i18n.l('language')}: {i18n.l(i18n.locale)} ({i18n.locale})
-        <label>
-            {`${i18n.l("action")}/${i18n.l("action.selectLanguage")} : `}
-            <select name="language" defaultValue={i18n.locale} onChange={onChangeLanguage}>
-                {workspace.locales.map(locale => <option key={locale} value={locale}>{i18n.l(locale)} ({locale})</option>)}
-            </select>
-        </label>
-        {i18n.l("fallback")}
+        <div className={demoStyles.vlayout} style={{ gap: 8 }}>
+            {i18n.l('language')}: {i18n.l(i18n.locale)} ({i18n.locale})
+            <label>
+                {`${i18n.l("language.selectLanguage")} : `}
+                <select name="language" className={demoStyles.select} defaultValue={i18n.locale} onChange={onChangeLanguage}>
+                    {workspace.locales.map(locale => <option key={locale} value={locale}>{i18n.l(locale)} ({locale})</option>)}
+                </select>
+            </label>
+            {i18n.l("fallback")}
+        </div>
     </main>
 }
