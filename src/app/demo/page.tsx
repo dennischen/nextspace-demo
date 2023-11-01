@@ -16,10 +16,11 @@ export default function DemoPage({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
 
+    let key = 0;
     const demoLinks: React.ReactNode[] = [
-        <Link href="/demo/language">{i18n.l("language")}</Link>,
-        <Link href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
-        <Link href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
+        <Link key={key++} href="/demo/language">{i18n.l("language")}</Link>,
+        <Link key={key++} href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
+        <Link key={key++} href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
     ]
 
     return <main className={demoStyles.main}>
