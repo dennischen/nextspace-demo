@@ -41,7 +41,7 @@ yarn build
 # then
 yarn start
 # or just
-yarn buildstart
+yarn build-start
 ```
 
 ## Docker image

@@ -2,10 +2,10 @@
     "home": "首頁",
     "language": {
         "@": "語言",
-        "selectLanguage": "選擇語言"
+        "selectLanguage": "選擇語言",
+        "zh": "繁體中文",
+        "en": "英文 (English)"
     },
-    "zh": "中文",
-    "en": "英文",
     "login": "登入",
     "lazyPreloading": {
         "@": "延遲載入",

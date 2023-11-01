@@ -7,7 +7,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "buildstart": "next build & next start",
+        "build-start": "next build & next start",
         "lint": "next lint"
     },
     "dependencies": {

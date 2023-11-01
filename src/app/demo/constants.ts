@@ -3,4 +3,4 @@
  * @author: Dennis Chen
  */
 
-export const COOKIE_LOCALE = "NS_LOCALE"
+export const COOKIE_LANGUAGE = "NS_LANGUAGE"

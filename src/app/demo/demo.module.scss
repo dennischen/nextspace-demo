@@ -22,6 +22,11 @@ $primary-color: #4792e650;
     align-items: center;
 
     background-color: $primary-color;
+
+    select {
+        background: transparent;
+    }
+
 }
 .packing {
     flex-grow: 1;

@@ -1,11 +1,11 @@
 {
     "home": "Home",
-    "zh": "Chinese",
-    "en": "English",
     "login": "Login",
     "language": {
         "@": "Lanuage",
-        "selectLanguage": "Select language"
+        "selectLanguage": "Select language",
+        "zh": "Traditional Chinese (繁體中文)",
+        "en": "English"
     },
     "lazyPreloading": {
         "@": "Lazy preloading",
