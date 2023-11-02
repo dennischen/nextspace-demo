@@ -8,16 +8,16 @@ Clone with nextspace submodule
 git clone git@github.com:dennischen/nextspace-demo.git --recursive
 ```
 
-Compile nextspace submodule
+Distribute nextspace submodule
 
 ```bash
 cd nextspace-demo/nextspace
 
 yarn install
 
-yarn build
+yarn dist
 # or watch for running nextspace in nextjs dev
-yarn build-watch
+yarn dist-watch
 ```
 
 Run the development demo server:

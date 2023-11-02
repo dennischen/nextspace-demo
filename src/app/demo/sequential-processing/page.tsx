@@ -71,7 +71,7 @@ export default function Page({ }: PageProps) {
                             type: 'add',
                             log: i18n.l('sequentialProcessing.msg.done', { idx: idx + 1, time: moment().format('HH:mm:ss') })
                         })
-                    }, 1 + (Math.random() * maxTimeout))
+                    }, Math.max(1000, Math.random() * maxTimeout))
                 })
             }
         })

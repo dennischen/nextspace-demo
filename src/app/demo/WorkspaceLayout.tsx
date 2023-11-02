@@ -49,10 +49,12 @@ export default function WorkspaceLayout({ defaultLanguage, children }: Workspace
         } as WorkspaceConfig
     }, [])
 
-    return <WorkspaceBoundary defaultLanguage={defaultLanguage} translations={translations} config={config} className={demoStyles.layout}>
-        <Banner />
-        {children}
-        <div className={demoStyles.packing}/>
-        <Footer />
-    </WorkspaceBoundary >
+    return <div className={demoStyles.layout}>
+        <WorkspaceBoundary defaultLanguage={defaultLanguage} translations={translations} config={config} >
+            <Banner />
+            {children}
+            <div className={demoStyles.packing} />
+            <Footer />
+        </WorkspaceBoundary >
+    </div>
 }
