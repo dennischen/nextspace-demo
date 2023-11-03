@@ -19,7 +19,7 @@ export default function Banner() {
     }
 
     return <div className={demoStyles.banner} >
-        <Link href={"/demo"}>{i18n.l('home')}</Link>
+        <Link id="home" href={"/demo"}>{i18n.l('home')}</Link>
         <div className={demoStyles.packing} />
         <select name="language" className={demoStyles.select} defaultValue={i18n.language} onChange={onChangeLanguage}>
             {workspace.languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}

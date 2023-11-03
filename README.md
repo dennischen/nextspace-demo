@@ -2,17 +2,27 @@
 This is a demo application for nextspace(https://github.com/dennischen/nextspace) base on nextjs 
 
 ## Getting Started
-
 Clone with nextspace submodule
+
 ```bash
 git clone git@github.com:dennischen/nextspace-demo.git --recursive
 ```
 
-Distribute nextspace submodule
+## Directory
+ * /src : The demo source code
+ * /cypress : The auto test code and data
+ * /nextspace : Nextspace submodule reference
 
+## Installation
+ ```bash
+yarn install
+ ```
+
+## Compile nextspace submodule
 ```bash
-cd nextspace-demo/nextspace
+cd nextspace
 
+#installation for submodule
 yarn install
 
 yarn dist
@@ -20,22 +30,28 @@ yarn dist
 yarn dist-watch
 ```
 
-Run the development demo server:
-
+## Run the development demo server:
 ```bash
-cd nextspace-demo
-
-yarn install
-
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Auto test
+Run the auto test by cypress test framework
+
+```bash
+yarn test
+# or
+yarn test:e2e
+
+# or open and run manually
+yarn test:e2e:open
+```
+
 ## Production
 
 ```bash
-cd nextspace-demo
 # build
 yarn build
 # then
@@ -48,7 +64,6 @@ yarn build-start
 After build the procution (by yarn build), use docker to build a image and run demo as a container
 
 ```bash
-cd nextspace-demo
 # docker image
 docker build . -t nextspace-demo
 # run container

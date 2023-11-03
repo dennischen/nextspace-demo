@@ -18,9 +18,9 @@ export default function DemoPage({ }: PageProps) {
 
     let key = 0;
     const demoLinks: React.ReactNode[] = [
-        <Link key={key++} href="/demo/language">{i18n.l("language")}</Link>,
-        <Link key={key++} href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
-        <Link key={key++} href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
+        <Link key={key++} id="language" href="/demo/language">{i18n.l("language")}</Link>,
+        <Link key={key++} id="sequential-processing" href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
+        <Link key={key++} id="lazy-preloading" href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
     ]
 
     return <main className={demoStyles.main}>

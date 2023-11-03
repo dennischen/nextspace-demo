@@ -5,10 +5,15 @@
     "license": "MIT",
     "scripts": {
         "dev": "next dev",
+        "lint": "next lint",
+
+        "test:e2e:open": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+        "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+        "test": "yarn test:e2e",
+
         "build": "next build",
         "start": "next start",
-        "build-start": "next build & next start",
-        "lint": "next lint"
+        "build-start": "next build & next start"
     },
     "dependencies": {
         "next": "13.5.6"
@@ -19,6 +24,7 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "clsx": "^2.0.0",
+        "cypress": "^13.4.0",
         "eslint": "^8",
         "eslint-config-next": "13.5.6",
         "i18next": "^23.6.0",
@@ -27,6 +33,7 @@
         "react": "^18",
         "react-dom": "^18",
         "sass": "^1.69.4",
+        "start-server-and-test": "^2.0.1",
         "typescript": "^5",
         "universal-cookie": "^6.1.1"
     }
