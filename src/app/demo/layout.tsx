@@ -7,9 +7,9 @@
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import WorkspaceLayout from "./WorkspaceLayout"
-import { COOKIE_LOCALE } from './constants'
+import { COOKIE_LANGUAGE as COOKIE_LANGUAGE } from './constants'
 
-const defaultLocale = "en"
+const defaultLanguage = "en"
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
@@ -24,9 +24,9 @@ export type LayoutProps = {
 
 export default function DemoLayout({ children }: LayoutProps) {
     const cookieStore = cookies()
-    let cookieLocale = cookieStore.get(COOKIE_LOCALE)?.value || defaultLocale
+    let cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || defaultLanguage
 
-    return <WorkspaceLayout defaultLocale={cookieLocale}>
+    return <WorkspaceLayout defaultLanguage={cookieLanguage}>
         {children}
     </WorkspaceLayout >
 }

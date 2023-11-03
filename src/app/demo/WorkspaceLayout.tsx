@@ -23,7 +23,7 @@ import nProgress from 'nprogress'
 
 import "./global.scss"
 
-const fallbackLocale = "en"
+const fallbackLanguage = "en"
 
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
@@ -31,28 +31,30 @@ const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTrans
 const translations = [EnTranslationLoader, ZhTranslationLoader]
 
 export type WorkspaceLayoutProps = {
-    defaultLocale: string,
+    defaultLanguage: string,
     children: React.ReactNode
 }
 
-export default function WorkspaceLayout({ defaultLocale, children }: WorkspaceLayoutProps) {
+export default function WorkspaceLayout({ defaultLanguage, children }: WorkspaceLayoutProps) {
 
-    defaultLocale = translations.find((l) => l.locale === defaultLocale)?.locale || translations[0].locale
+    defaultLanguage = translations.find((l) => l.language === defaultLanguage)?.language || translations[0].language
 
     const config = useMemo(() => {
         return {
             translationHolder: new I18nextTranslationHolder(i18next.createInstance(), {
-                fallbackLng: fallbackLocale,
+                fallbackLng: fallbackLanguage,
                 fallbackTranslation: fallbackTranslation
             }),
             progressIndicator: new NProgressIndicator(nProgress)
         } as WorkspaceConfig
     }, [])
 
-    return <WorkspaceBoundary defaultLocale={defaultLocale} translations={translations} config={config} className={demoStyles.layout}>
-        <Banner />
-        {children}
-        <div className={demoStyles.packing}/>
-        <Footer />
-    </WorkspaceBoundary >
+    return <div className={demoStyles.layout}>
+        <WorkspaceBoundary defaultLanguage={defaultLanguage} translations={translations} config={config} >
+            <Banner />
+            {children}
+            <div className={demoStyles.packing} />
+            <Footer />
+        </WorkspaceBoundary >
+    </div>
 }
