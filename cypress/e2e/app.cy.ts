@@ -39,7 +39,7 @@ describe('Navigation', () => {
 
         let node = cy.get('main option').should('have.length', 2).first()
         node.should('have.value', 'en').contains('English').should('have.attr', 'selected')
-        node = cy.get('option').eq(1)
+        node = cy.get('main option').eq(1)
         node.should('have.value', 'zh').contains('Chinese').should('not.have.attr', 'selected')
 
         cy.get('main select').select('zh')
@@ -47,7 +47,7 @@ describe('Navigation', () => {
 
         node = cy.get('main option').should('have.length', 2).first()
         node.should('have.value', 'en').contains('英文').should('not.have.attr', 'selected')
-        node = cy.get('option').eq(1)
+        node = cy.get('main option').eq(1)
         node.should('have.value', 'zh').contains('中文').should('have.attr', 'selected')
 
         cy.get('main select').select('en')
@@ -55,7 +55,7 @@ describe('Navigation', () => {
 
         node = cy.get('main option').should('have.length', 2).first()
         node.should('have.value', 'en').contains('English').should('have.attr', 'selected')
-        node = cy.get('option').eq(1)
+        node = cy.get('main option').eq(1)
         node.should('have.value', 'zh').contains('Chinese').should('not.have.attr', 'selected')
 
         cy.get("#home").click()
@@ -122,18 +122,18 @@ describe('Navigation', () => {
         cy.get("#btn2").click()
         cy.wait(shortWait)
 
-        cy.get("#btn1").should('not.be.visible')
-        cy.get("#btn2").should('not.be.visible')
-        cy.get("#btn3").should('not.be.visible')
+        cy.get("#btn1").should('be.visible')
+        cy.get("#btn2").should('be.visible')
+        cy.get("#btn3").should('be.visible')
 
-        cy.get(".nextspace-modal").should('be.visible')
-        cy.get(".nextspace-modal p").contains('Loading')
+        cy.get("#loading").should('be.visible')
+        cy.get("#loading").contains('Panel Loading')
 
         cy.wait(1000)
         cy.get("#btn1").should('be.visible').should('be.enabled')
         cy.get("#btn2").should('be.visible').should('be.disabled')
         cy.get("#btn3").should('be.visible').should('be.enabled')
-        cy.get(".nextspace-modal").should('not.exist')
+        cy.get("#loading").should('not.exist')
 
         cy.get("#panel1").should('not.exist')
         cy.get("#panel2").should('have.id', 'panel2').contains("Panel2")
@@ -149,7 +149,7 @@ describe('Navigation', () => {
         cy.get("#btn2").should('be.visible')
         cy.get("#btn3").should('be.visible')
 
-        cy.get(".nextspace-modal").should('not.exist')
+        cy.get("#loading").should('not.exist')
         //it is too fast for test this real case to show the indicator
         //just ignore the assert
 

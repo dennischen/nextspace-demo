@@ -7,7 +7,7 @@
 import demoStyles from "@/app/demo/demo.module.scss"
 import lazyWithPreload from "@nextspace/components/lazyWithPreload"
 import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { lazy, useContext, useState } from "react"
+import { Suspense, lazy, useContext, useState } from "react"
 
 type PageProps = {
 }
@@ -51,9 +51,12 @@ export default function Page({ }: PageProps) {
                 <li>{i18n.l('lazyPreloading.hint2')}</li>
                 <li>{i18n.l('lazyPreloading.hint3')}</li>
             </ul>
-            {panel === 'panel1' && <Panel1 />}
-            {panel === 'panel2' && <Panel2 />}
-            {panel === 'panel3' && <Panel3 />}
+            
+            <Suspense fallback={<p id='loading'>Panel Loading</p>}>
+                {panel === 'panel1' && <Panel1 />}
+                {panel === 'panel2' && <Panel2 />}
+                {panel === 'panel3' && <Panel3 />}
+            </Suspense>
         </div>
     </main>
 }
