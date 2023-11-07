@@ -4,3 +4,4 @@
  */
 
 export const COOKIE_LANGUAGE = "NS_LANGUAGE"
+export const COOKIE_THEME = "NS_THEME"

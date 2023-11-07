@@ -1,4 +1,4 @@
-$primary-color: #4792e650;
+
 
 .layout {
     width: 100%;
@@ -21,8 +21,6 @@ $primary-color: #4792e650;
     flex-direction: row;
     align-items: center;
 
-    background-color: $primary-color;
-
     select {
         background: transparent;
     }
@@ -39,8 +37,6 @@ $primary-color: #4792e650;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-
-    background-color: $primary-color;
 }
 
 .main {
@@ -105,15 +101,9 @@ $primary-color: #4792e650;
         align-items: center;
         padding: 24px;
         width: 100%;
-
         &:hover {
-            background-color: $primary-color;
-            border-color: $primary-color;
-            box-shadow: 0 0 11px $primary-color; 
         }
     }
-
-
 }
 
 .select {

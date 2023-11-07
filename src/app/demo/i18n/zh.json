@@ -1,12 +1,18 @@
 {
     "home": "首頁",
+    "login": "登入",    
     "language": {
         "@": "語言",
         "selectLanguage": "選擇語言",
         "zh": "繁體中文",
         "en": "英文 (English)"
     },
-    "login": "登入",
+    "theme": {
+        "@": "佈景主題",
+        "selectTheme": "選擇佈景主題",
+        "lightblue": "天藍",
+        "darkred": "酒紅"
+    },
     "lazyPreloading": {
         "@": "延遲載入",
         "hint": "設定瀏覽器 (e.g. Chrome, Edge) 網路成Fast or Slow 3G來觀查載入效果",
@@ -27,6 +33,5 @@
         "clear": "清除",
         "run": "執行"
     },    
-    "theme": "佈景主題",
     "project": "專案"
 }

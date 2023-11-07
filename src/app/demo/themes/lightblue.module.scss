@@ -1,0 +1,38 @@
+$primary-color: #87ceeb;
+$primary-bg-color: #fefefe;
+$primary-fg-color: #0a0a0a;
+
+
+.banner {
+    color: $primary-fg-color;
+    background-color: $primary-color;
+
+    select {
+        color: $primary-fg-color;
+        border-color: $primary-fg-color;
+        option {
+            color: $primary-fg-color;
+        }
+    }    
+}
+
+.footer {
+    color: $primary-fg-color;
+    background-color: $primary-color;
+}
+
+.layout {
+    color: $primary-fg-color;
+    background-color: $primary-bg-color;
+}
+
+.homecase {
+    a {
+        &:hover {
+            background-color: $primary-color;
+            border-color: $primary-color;
+            box-shadow: 0 0 11px $primary-color; 
+        }
+    }
+}
+
