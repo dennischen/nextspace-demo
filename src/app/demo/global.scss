@@ -7,6 +7,31 @@
     height: 8px;
 }
 
+// style for common element
+
+a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+select {
+    padding: 8px;
+}
+
+input {
+    padding: 8px 4px;
+}
+
+button {
+    padding: 6px 8px;
+    cursor: pointer;
+}
+
+
 // define variable
 :root {
     --banner-height: 48px;

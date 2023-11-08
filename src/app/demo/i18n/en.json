@@ -3,9 +3,15 @@
     "login": "Login",
     "language": {
         "@": "Lanuage",
-        "selectLanguage": "Select language",
+        "selectLanguage": "Select a language",
         "zh": "Traditional Chinese (繁體中文)",
         "en": "English"
+    },
+    "theme": {
+        "@": "Theme",
+        "selectTheme": "Select a theme",
+        "lightblue": "Light Blue",
+        "darkred": "Dark Red"
     },
     "lazyPreloading": {
         "@": "Lazy preloading",
@@ -23,8 +29,6 @@
             "done": "Process {{idx}} completed at {{time}}"
         }
     },
-    "theme": "Theme",
-    "project": "Project",
     "action": {
         "clear": "Clear",
         "run": "Run"

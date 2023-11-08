@@ -29,7 +29,7 @@ export default function Page({ }: PageProps) {
             {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
             <label>
                 {`${i18n.l("language.selectLanguage")} : `}
-                <select name="language" className={demoStyles.select} defaultValue={i18n.language} onChange={onChangeLanguage}>
+                <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
                     {workspace.languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
                 </select>
             </label>

@@ -96,11 +96,11 @@ export default function Page({ }: PageProps) {
             <div className={demoStyles.vlayout} style={{ gap: 8 }}>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <span>{i18n.l('sequentialProcessing.procNumber')}</span>
-                    <input id="procNumber" type="number" className={demoStyles.input} disabled={running} value={procNumber} onChange={onChangeProcNumber}></input>
+                    <input id="procNumber" type="number" disabled={running} value={procNumber} onChange={onChangeProcNumber}></input>
                 </div>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <span>{i18n.l('sequentialProcessing.maxTimeout')}</span>
-                    <input id="maxTimeout" type="number" className={demoStyles.input} disabled={running} value={maxTimeout} onChange={onChangeMaxTimeout}></input>
+                    <input id="maxTimeout" type="number" disabled={running} value={maxTimeout} onChange={onChangeMaxTimeout}></input>
                 </div>
 
             </div>
@@ -108,8 +108,8 @@ export default function Page({ }: PageProps) {
                 <li>{i18n.l('sequentialProcessing.hint')}</li>
             </ul>
             <div className={demoStyles.hlayout} style={{ gap: 8 }}>
-                <button id="clear" className={demoStyles.button} disabled={running} onClick={onClickClearLogs}>{i18n.l('action.clear')}</button>
-                <button id="run" className={demoStyles.button} disabled={running} onClick={onClickRun}>{i18n.l('action.run')}</button>
+                <button id="clear" disabled={running} onClick={onClickClearLogs}>{i18n.l('action.clear')}</button>
+                <button id="run" disabled={running} onClick={onClickRun}>{i18n.l('action.run')}</button>
             </div>
             <div className={demoStyles.vlayout}>
                 {logs.map((log, idx) => <span key={idx}>
