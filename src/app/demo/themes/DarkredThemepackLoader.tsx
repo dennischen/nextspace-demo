@@ -11,6 +11,11 @@ import styles from './darkred.module.scss'
 
 const themepack: DemoThemepack = {
     dark: true,
+    variables: {
+        bgColor: styles.bgColor,
+        fgColor: styles.fgColor,
+        primaryColor: styles.primaryColor
+    },    
     styles: {
         banner: styles.banner,
         footer: styles.footer,

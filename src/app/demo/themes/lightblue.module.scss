@@ -1,29 +1,38 @@
+$bg-color: #fefefe;
+$fg-color: #0a0a0a;
 $primary-color: #87ceeb;
-$primary-bg-color: #fefefe;
-$primary-fg-color: #0a0a0a;
 
+:export {
+    bgColor: $bg-color;
+    fgColor: $fg-color;
+    primaryColor: $primary-color;
+}
 
 .banner {
-    color: $primary-fg-color;
     background-color: $primary-color;
 
     select {
-        color: $primary-fg-color;
-        border-color: $primary-fg-color;
         option {
-            color: $primary-fg-color;
+            color: $fg-color;
+            background-color: $bg-color;
         }
     }    
 }
 
 .footer {
-    color: $primary-fg-color;
+    // color: $primary-fg-color;
     background-color: $primary-color;
 }
 
 .layout {
-    color: $primary-fg-color;
-    background-color: $primary-bg-color;
+    color-scheme: light;
+    color: $fg-color;
+    background-color: $bg-color;
+    
+    main {    
+        button {
+        }
+    }
 }
 
 .homecase {

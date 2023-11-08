@@ -19,22 +19,13 @@
 html,
 body {}
 
-body {
-    color: rgb(var(--foreground-rgb));
-    background: rgb(var(--background-rgb));
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
 @media (prefers-color-scheme: dark) {
     html {
         color-scheme: dark;
     }
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
 }

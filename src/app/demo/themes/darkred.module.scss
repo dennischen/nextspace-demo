@@ -1,29 +1,41 @@
+@use "sass:color";
 
-$primary-color: #470024a0;
-$primary-bg-color: #201010;
-$primary-fg-color: #fefefe;
+$bg-color: #201010;
+$fg-color: #fefefe;
+$primary-color: #470024;
+
+:export {
+    bgColor: $bg-color;
+    fgColor: $fg-color;
+    primaryColor: $primary-color;
+}
+
 
 .banner {
-    color: $primary-fg-color;
     background-color: $primary-color;
 
     select {
-        color: $primary-fg-color;
-        border-color: $primary-fg-color;
         option {
-            color: $primary-bg-color;
+            color: $fg-color;
+            background-color: $bg-color;
         }
     }
 }
 
 .footer {
-    color: $primary-fg-color;
+    // color: $primary-fg-color;
     background-color: $primary-color;
 }
 
 .layout {
-    color: $primary-fg-color;
-    background-color: $primary-bg-color;
+    color-scheme: dark;
+    color: $fg-color;
+    background-color: $bg-color;
+
+    main {
+        button {
+        }
+    }
 }
 
 .homecase {

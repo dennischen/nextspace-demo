@@ -30,11 +30,11 @@ export default function Banner() {
 
     return <div className={clsx(demoStyles.banner, themeStyles.banner)} style={{ gap: 4 }}>
         <Link id="home" href={"/demo"}>{i18n.l('home')}</Link>
-        <div className={demoStyles.packing} />
-        <select name="theme" className={demoStyles.select} defaultValue={theme} onChange={onChangeTheme}>
+        <div className={demoStyles.flexpadding} />
+        <select name="theme" defaultValue={theme} onChange={onChangeTheme}>
             {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
         </select>
-        <select name="language" className={demoStyles.select} defaultValue={i18n.language} onChange={onChangeLanguage}>
+        <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
             {languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
         </select>
     </div>

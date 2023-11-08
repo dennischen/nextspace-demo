@@ -29,17 +29,17 @@ export default function DemoLayout({ children }: LayoutProps) {
     const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || defaultTheme
 
 
-    //to make default theme load before html render, has to load it in server component first. (will render css link in html header)
+    //to make default theme load before html render, has to load it in server component first. (will render css to layout.css)
     //do this will prevent page flash effect (css loaded after html render), 
-    //however this make layout.css contains both theme css
-    //switch theme case by case doesn't help css split
+    //however this make layout.css contains all theme css
+    //use switch theme case by case doesn't help css split (included in build time?)
     switch (cookieTheme) {
         case 'darkred':
-            import("./themes/darkred.module.scss")
+            ()=>import("./themes/darkred.module.scss")
             break;
         case 'lightblue':
         default:
-            import("./themes/lightblue.module.scss")
+            ()=>import("./themes/lightblue.module.scss")
             break;
     }
 

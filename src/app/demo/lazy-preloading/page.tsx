@@ -41,9 +41,9 @@ export default function Page({ }: PageProps) {
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
             {i18n.l('lazyPreloading')}
             <div className={demoStyles.hlayout} style={{ gap: 8 }}>
-                <button id="btn1" className={demoStyles.button} disabled={panel === 'panel1'} onClick={() => onChangePanel('panel1')}>Panel1</button>
-                <button id="btn2" className={demoStyles.button} disabled={panel === 'panel2'} onClick={() => onChangePanel('panel2')}>Panel2</button>
-                <button id="btn3" className={demoStyles.button} disabled={panel === 'panel3'} onClick={() => onChangePanel('panel3')}>Panel3 (Progress and no flash)</button>
+                <button id="btn1" disabled={panel === 'panel1'} onClick={() => onChangePanel('panel1')}>Panel1</button>
+                <button id="btn2" disabled={panel === 'panel2'} onClick={() => onChangePanel('panel2')}>Panel2</button>
+                <button id="btn3" disabled={panel === 'panel3'} onClick={() => onChangePanel('panel3')}>Panel3 (Progress and no flash)</button>
             </div>
 
             <ul>

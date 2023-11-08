@@ -10,7 +10,11 @@ import { DemoThemepack } from "@/app/demo/types"
 import styles from './lightblue.module.scss'
 
 const themepack: DemoThemepack = {
-    dark: true,
+    variables: {
+        bgColor: styles.bgColor,
+        fgColor: styles.fgColor,
+        primaryColor: styles.primaryColor
+    },
     styles: {
         banner: styles.banner,
         footer: styles.footer,

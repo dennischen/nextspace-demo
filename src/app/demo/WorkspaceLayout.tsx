@@ -68,7 +68,7 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
         <Layout>
             <Banner />
             {children}
-            <div className={demoStyles.packing} />
+            <div className={demoStyles.flexpadding} />
             <Footer />
         </Layout>
     </WorkspaceBoundary >
@@ -77,6 +77,6 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
 // a internal component to using theme in WorkspaceBoundary
 function Layout({ children }: { children: React.ReactNode }) {
     const workspace = useContext(WorkspaceHolder)
-    const { styles: themeStyles } = workspace.themepack as DemoThemepack
-    return <div className={clsx(demoStyles.layout, themeStyles.layout)}>{children}</div>
+    const { dark, styles: themeStyles } = workspace.themepack as DemoThemepack
+    return <div className={clsx(demoStyles.layout, themeStyles.layout)} style={{ colorScheme: dark ? 'dark' : 'light' }}>{children}</div>
 }
