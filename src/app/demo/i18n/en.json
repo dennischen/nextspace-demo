@@ -22,16 +22,22 @@
     "sequentialProcessing": {
         "@": "Sequential processing",
         "procNumber": "Process number",
+        "errNumber": "Process error number",
         "maxTimeout": "Max random timeout (ms)",
         "hint":"Click '$t(action.run)' to start process simulation by running random timeout processes",
+        "hint2":"When process number >= error number, it will throw a error",
         "msg": {
-            "start": "Process {{idx}} started at {{time}}",
-            "done": "Process {{idx}} completed at {{time}}"
+            "start": "Process {{idx}} started at {{time}}, timeout: {{timeout}}",
+            "done": "Process {{idx}} completed at {{time}}",
+            "canceled": "The processing has been canceled",
+            "allDone": "All processes are completed",
+            "err": "Error {{err}}"
         }
     },
     "action": {
         "clear": "Clear",
-        "run": "Run"
+        "run": "Run",
+        "cancel": "Cancel"
     },
     "fallback": "Fallback"
 }

@@ -22,16 +22,22 @@
     "sequentialProcessing": {
         "@": "循序處理及進度指示",
         "procNumber": "程序數目",
+        "errNumber": "程序錯誤號碼",
         "maxTimeout": "最大亂數時間(ms)",
         "hint":"點擊'$t(action.run)'來啟動多程序的模擬, 每一程序會等後一個亂數時間後結束",
+        "hint2":"當程序號碼 >= 錯誤號碼時, 會丟出一個錯誤",
         "msg": {
-            "start": "程序 {{idx}} 在{{time}}時啟動",
-            "done": "程序 {{idx}} 在{{time}}時完成"
+            "start": "程序 {{idx}} 在{{time}}時啟動, 等待: {{timeout}}",
+            "done": "程序 {{idx}} 在{{time}}時完成",
+            "canceled": "程式處理已被中斷",
+            "allDone": "所有程序處理已及成",
+            "err": "錯誤 {{err}}"
         }
     },
     "action": {
         "clear": "清除",
-        "run": "執行"
+        "run": "執行",
+        "cancel": "取消"
     },    
     "project": "專案"
 }
