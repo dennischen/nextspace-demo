@@ -29,7 +29,7 @@
         "msg": {
             "start": "Process {{idx}} started at {{time}}, timeout: {{timeout}}",
             "done": "Process {{idx}} completed at {{time}}",
-            "canceled": "The processing has been canceled",
+            "aborted": "The processing has been aborted",
             "allDone": "All processes are completed",
             "err": "Error {{err}}"
         }
@@ -37,7 +37,8 @@
     "action": {
         "clear": "Clear",
         "run": "Run",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "abort": "Abort"
     },
     "fallback": "Fallback"
 }

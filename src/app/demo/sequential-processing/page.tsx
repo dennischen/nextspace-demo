@@ -32,12 +32,12 @@ function logsReducer(logs: string[], operation: LogsOperation): string[] {
 
 
 type ProcessingState = {
-    state: 'stopped' | 'running' | 'canceling'
+    state: 'stopped' | 'running' | 'aborting'
     promise?: SequentialPromise
 }
 
 type ProcessingStateOperation = {
-    type: 'run' | 'cancel' | 'reset'
+    type: 'run' | 'abort' | 'reset'
     promise?: SequentialPromise
 }
 
@@ -50,10 +50,10 @@ function processingStateReducer(state: ProcessingState, operation: ProcessingSta
                 promise: operation.promise
 
             }
-        case 'cancel':
+        case 'abort':
             return {
                 ...state,
-                state: 'canceling',
+                state: 'aborting',
 
             }
         case 'reset':
@@ -77,7 +77,7 @@ export default function Page({ }: PageProps) {
     const [logs, handleLogs] = useReducer(logsReducer, [])
 
     const running = processingState.state === 'running'
-    const canceling = processingState.state === 'canceling'
+    const aborting = processingState.state === 'aborting'
     const stopped = processingState.state === 'stopped'
 
     const onChangeProcNumber = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
@@ -138,10 +138,10 @@ export default function Page({ }: PageProps) {
 
         const sequentialPromise = workspace.withProcessIndicator(...processes)
         sequentialPromise.then(() => {
-            if (sequentialPromise.canceled()) {
+            if (sequentialPromise.aborted()) {
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.canceled')
+                    log: i18n.l('sequentialProcessing.msg.aborted')
                 })
             } else {
                 handleLogs({
@@ -163,10 +163,10 @@ export default function Page({ }: PageProps) {
     }, [workspace, i18n, procNumber, errNumber, maxTimeout])
 
 
-    //always use last processingState for canceling
+    //always use last processingState for aborting
     const onClickCancel = (evt: MouseEvent) => {
-        processingState.promise?.cancel()
-        handleProcessingState({ type: 'cancel' })
+        processingState.promise?.abort()
+        handleProcessingState({ type: 'abort' })
     }
 
     return <main className={demoStyles.main}>
@@ -194,7 +194,7 @@ export default function Page({ }: PageProps) {
             <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                 <button id="clear" disabled={!stopped} onClick={onClickClearLogs}>{i18n.l('action.clear')}</button>
                 <button id="run" disabled={!stopped} onClick={onClickRun}>{i18n.l('action.run')}</button>
-                <button id="stop" disabled={!running} onClick={onClickCancel}>{i18n.l('action.cancel')}</button>
+                <button id="abort" disabled={!running} onClick={onClickCancel}>{i18n.l('action.abort')}</button>
             </div>
             <div className={demoStyles.vlayout}>
                 {processingState.state}
