@@ -27,10 +27,10 @@
         "hint":"點擊'$t(action.run)'來啟動多程序的模擬, 每一程序會等後一個亂數時間後結束",
         "hint2":"當程序號碼 >= 錯誤號碼時, 會丟出一個錯誤",
         "msg": {
-            "start": "程序 {{idx}} 在{{time}}時啟動, 等待: {{timeout}}",
-            "done": "程序 {{idx}} 在{{time}}時完成",
-            "aborted": "程式處理已被中止",
-            "allDone": "所有程序處理已及成",
+            "start": "程序 {{idx}} 在 {{time}} 時啟動, 等待: {{timeout}}, 前一個值 {{previous}}",
+            "done": "程序 {{idx}} 在 {{time}} 時完成",
+            "aborted": "程式處理已在步驟{{step}}被中止, 值 {{value}}",
+            "allDone": "所有程序處理已完成, 值 {{value}}",
             "err": "錯誤 {{err}}"
         }
     },

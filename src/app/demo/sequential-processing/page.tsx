@@ -6,10 +6,10 @@
 
 import demoStyles from "@/app/demo/demo.module.scss"
 import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { Process } from "@nextspace/types"
-import { ChangeEvent, MouseEvent, useCallback, useContext, useReducer, useState } from "react"
+import { AbortablePromise, Process } from "@nextspace/types"
+import { ChangeEvent, MouseEvent, useCallback, useContext, useEffect, useReducer, useState } from "react"
 import moment from 'moment'
-import { SequentialPromise } from "@nextspace/utils/process"
+
 
 type PageProps = {
 }
@@ -33,12 +33,12 @@ function logsReducer(logs: string[], operation: LogsOperation): string[] {
 
 type ProcessingState = {
     state: 'stopped' | 'running' | 'aborting'
-    promise?: SequentialPromise
+    promise?: AbortablePromise
 }
 
 type ProcessingStateOperation = {
     type: 'run' | 'abort' | 'reset'
-    promise?: SequentialPromise
+    promise?: AbortablePromise
 }
 
 function processingStateReducer(state: ProcessingState, operation: ProcessingStateOperation): ProcessingState {
@@ -110,25 +110,25 @@ export default function Page({ }: PageProps) {
 
     const onClickRun = useCallback((evt: MouseEvent) => {
         const processes: Process[] = [...Array(procNumber)].map((_, idx) => {
-            return () => {
+            return (previous: number = 0) => {
                 const timeout = Math.max(1000, Math.trunc(Math.random() * maxTimeout))
 
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.start', { idx: idx + 1, time: moment().format('HH:mm:ss'), timeout })
+                    log: i18n.l('sequentialProcessing.msg.start', { idx: idx + 1, time: moment().format('HH:mm:ss'), timeout, previous })
                 })
-                return new Promise<void>((resolve, reject) => {
+                return new Promise<number>((resolve, reject) => {
 
                     setTimeout(() => {
                         if (idx >= errNumber - 1) {
                             reject(`a fake error at process ${idx + 1}`)
-                            return
+                        } else {
+                            resolve(previous + 1)
+                            handleLogs({
+                                type: 'add',
+                                log: i18n.l('sequentialProcessing.msg.done', { idx: idx + 1, time: moment().format('HH:mm:ss') })
+                            })
                         }
-                        resolve()
-                        handleLogs({
-                            type: 'add',
-                            log: i18n.l('sequentialProcessing.msg.done', { idx: idx + 1, time: moment().format('HH:mm:ss') })
-                        })
                     }, timeout)
                 })
             }
@@ -136,38 +136,44 @@ export default function Page({ }: PageProps) {
 
 
 
-        const sequentialPromise = workspace.withProcessIndicator(...processes)
-        sequentialPromise.then(() => {
+        const sequentialPromise = workspace.withProcessIndicator(processes)
+        sequentialPromise.then((value) => {
             if (sequentialPromise.aborted()) {
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.aborted')
+                    log: i18n.l('sequentialProcessing.msg.aborted', { value, step: sequentialPromise.step() + 1 })
                 })
             } else {
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.allDone')
+                    log: i18n.l('sequentialProcessing.msg.allDone', { value })
                 })
             }
             handleProcessingState({ type: 'reset' })
         }).catch((err) => {
-
             handleLogs({
                 type: 'add',
                 log: i18n.l('sequentialProcessing.msg.err', { err })
             })
-
             handleProcessingState({ type: 'reset' })
         })
         handleProcessingState({ type: 'run', promise: sequentialPromise })
-    }, [workspace, i18n, procNumber, errNumber, maxTimeout])
+    }, [workspace, i18n, procNumber, errNumber, maxTimeout, processingState?.promise])
 
 
     //always use last processingState for aborting
-    const onClickCancel = (evt: MouseEvent) => {
+    const onClickCancel = useCallback((evt: MouseEvent) => {
         processingState.promise?.abort()
         handleProcessingState({ type: 'abort' })
-    }
+    }, [processingState?.promise])
+
+    //abort also when page exit
+    useEffect(() => {
+        //return cleaner in useEffect to clean
+        return () => {
+            processingState?.promise?.abort()
+        }
+    }, [processingState?.promise])
 
     return <main className={demoStyles.main}>
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
