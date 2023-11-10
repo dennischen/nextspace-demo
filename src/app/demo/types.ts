@@ -1,5 +1,10 @@
 import { Themepack } from "@nextspace/types"
 
+/*
+ * @file-created: 2023-10-23
+ * @author: Dennis Chen
+ */
+
 export type DemoStyles = {
     banner: string
     footer: string
