@@ -4,6 +4,7 @@
  * @author: Dennis Chen
  */
 
+import Docarea from "@/app/demo/components/Docarea"
 import { COOKIE_LANGUAGE } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
 import WorkspaceHolder from "@nextspace/contexts/workspace"
@@ -25,6 +26,7 @@ export default function Page({ }: PageProps) {
     }
 
     return <main className={demoStyles.main}>
+        <Docarea className={demoStyles.docarea} toggleLabel='Readme' content='Hello' ></Docarea>
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
             {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
             <label>
