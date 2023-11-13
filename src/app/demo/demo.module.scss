@@ -1,9 +1,11 @@
-
+$banner-height: 56px;
+$banner-font-size: 18px;
+$spacing: 8px;
 
 .layout {
     width: 100%;
-    height: 100vh;
-    max-width:100%;
+    min-height: 100vh;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,23 +13,26 @@
 
 .banner {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    padding: 8px;
-    font-size: 16px;
+    top: 0;
+    left: 0;
+    padding: $spacing;
+    font-size: $banner-font-size;
     width: 100%;
-    height: var(--banner-height);
+    height: $banner-height;
     display: flex;
     flex-direction: row;
     align-items: center;
 
     select {
-        background: transparent;
+        font-size: calc($banner-font-size - 2px);
+        border-radius: 3px;
+        max-width: 200px;
     }
 
 }
+
 .footer {
-    padding: 8px;
+    padding: $spacing;
     font-size: 14px;
     width: 100%;
     display: flex;
@@ -38,8 +43,8 @@
 
 .main {
     position: relative;
-    margin-top: var(--banner-height);
-    padding-top: 8px;
+    margin-top: $banner-height;
+    padding-top: $spacing;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -48,6 +53,8 @@
 
 .flexpadding {
     flex-grow: 1;
+    min-height: $spacing;
+    min-width: $spacing;
 }
 
 .hlayout {
@@ -67,14 +74,14 @@
     display: flex;
     flex-flow: wrap;
     width: 100%;
-    padding: 8px 16px;
-    gap: 16px;
+    padding: $spacing $spacing*2;
+    gap: $spacing*2;
 }
 
 .homegriditem {
     flex-grow: 0;
-    flex-basis: calc(20% - 8px);
-    max-width: calc(20% - 8px);
+    flex-basis: calc(20% - $spacing);
+    max-width: calc(20% - $spacing);
 
     display: flex;
     flex-direction: column;
@@ -83,8 +90,8 @@
 
 @media (max-width: 1200px) {
     .homegriditem {
-        flex-basis: calc(50% - 8px);
-        max-width: calc(50% - 8px);
+        flex-basis: calc(50% - $spacing);
+        max-width: calc(50% - $spacing);
     }
 }
 
@@ -97,12 +104,14 @@
 
 .homecase {
     width: 100%;
+
     a {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 24px;
+        padding: $spacing*3;
         width: 100%;
+
         &:hover {
             text-decoration: none;
         }

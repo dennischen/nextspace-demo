@@ -1,6 +1,7 @@
 {
     "home": "首頁",
-    "login": "登入",    
+    "back": "返回",
+    "login": "登入",
     "language": {
         "@": "語言",
         "selectLanguage": "選擇語言",

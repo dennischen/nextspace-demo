@@ -8,8 +8,10 @@ import Cookies from "universal-cookie"
 import { COOKIE_LANGUAGE, COOKIE_THEME } from "./constants"
 import { DemoThemepack } from "./types"
 import clsx from "clsx"
+import { usePathname } from "next/navigation"
 
 export default function Banner() {
+    const pathname = usePathname()
     const workspace = useContext(WorkspaceHolder)
     const { i18n, theme, languages, themes } = workspace
     const { styles: themeStyles } = workspace.themepack as DemoThemepack
@@ -30,12 +32,14 @@ export default function Banner() {
 
     return <div className={clsx(demoStyles.banner, themeStyles.banner)} style={{ gap: 4 }}>
         <Link id="home" href={"/demo"}>{i18n.l('home')}</Link>
-        <div className={demoStyles.flexpadding} />
-        <select name="theme" defaultValue={theme} onChange={onChangeTheme}>
-            {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
-        </select>
-        <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-            {languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
-        </select>
+        {pathname === '/demo' && <>
+            <div className={demoStyles.flexpadding} />
+            <select name="theme" defaultValue={theme} onChange={onChangeTheme}>
+                {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
+            </select>
+            <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
+                {languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
+            </select>
+        </>}
     </div>
 }
