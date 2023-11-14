@@ -28,6 +28,10 @@ $primary-color: #87ceeb;
 }
 
 .layout {
+    --theme-fg-color: #{$fg-color};
+    --theme-bg-color: #{$bg-color};
+    --theme-primary-color: #{$primary-color};
+
     color: $fg-color;
     background-color: $bg-color;
     :focus-visible{

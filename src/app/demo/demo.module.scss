@@ -1,6 +1,8 @@
 $banner-height: 56px;
 $banner-font-size: 18px;
+$footer-font-size: 14px;
 $spacing: 8px;
+$radius: 3px;
 
 .layout {
     width: 100%;
@@ -25,7 +27,7 @@ $spacing: 8px;
 
     select {
         font-size: calc($banner-font-size - 2px);
-        border-radius: 3px;
+        border-radius: $radius;
         max-width: 200px;
     }
 
@@ -33,7 +35,7 @@ $spacing: 8px;
 
 .footer {
     padding: $spacing;
-    font-size: 14px;
+    font-size: $footer-font-size;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -88,14 +90,14 @@ $spacing: 8px;
     align-items: center;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
     .homegriditem {
         flex-basis: calc(50% - $spacing);
         max-width: calc(50% - $spacing);
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 640px) {
     .homegriditem {
         flex-basis: 100%;
         max-width: 1000%;
@@ -111,6 +113,7 @@ $spacing: 8px;
         align-items: center;
         padding: $spacing*3;
         width: 100%;
+        border-radius: $radius;
 
         &:hover {
             text-decoration: none;
@@ -122,4 +125,15 @@ $spacing: 8px;
     width: 100%;
     display: flex;
     justify-content: center;
+    
+    :global ._markdown {
+        pre {
+            margin: 8px;
+            border-left: 4px solid var(--theme-primary-color);
+            padding: 8px;
+
+            code {}
+        }
+    }
+
 }

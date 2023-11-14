@@ -1,0 +1,28 @@
+.root {
+    position: relative;
+}
+
+.toggle {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    border-radius: 50%;
+    border-width: 0;
+    padding: 8px;
+    height: 40px;
+    width: 40px;
+
+    &:hover {
+        color: var(--theme-primary-color);
+    }
+
+    svg {
+        height: 24px;
+        width: 24px;
+    }
+
+}
+
+.markdown {
+    padding: 8px;
+}

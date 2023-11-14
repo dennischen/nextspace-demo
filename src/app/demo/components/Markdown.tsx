@@ -1,3 +1,9 @@
+'use client'
+/*
+ * @file-created: 2023-11-14
+ * @author: Dennis Chen
+ */
+import clsx from "clsx"
 import { useEffect, useState } from "react"
 
 import { remark } from 'remark'
@@ -27,6 +33,6 @@ export default function Markdown({ content, styles, className }: MarkdownProps) 
         }
     })
 
-    return <div className={className} style={styles} dangerouslySetInnerHTML={{ __html: html }}>
+    return <div className={clsx('_markdown', className)} style={styles} dangerouslySetInnerHTML={{ __html: html }}>
     </div >
 }

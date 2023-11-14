@@ -28,8 +28,13 @@ $primary-color: #470024;
 }
 
 .layout {
+    --theme-fg-color: #{$fg-color};
+    --theme-bg-color: #{$bg-color};
+    --theme-primary-color: #{$primary-color};
+
     color: $fg-color;
     background-color: $bg-color;
+
     :focus-visible{
         outline: 2px solid color.adjust($primary-color, $lightness: 15%);
     }    

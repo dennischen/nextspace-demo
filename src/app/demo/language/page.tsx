@@ -11,12 +11,15 @@ import WorkspaceHolder from "@nextspace/contexts/workspace"
 import { useContext } from "react"
 import Cookies from 'universal-cookie'
 
+import content from './README.md?as_txt'
+
 type PageProps = {
 }
 
 export default function Page({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
+    
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         workspace.changeLanguage(evt.target.value)
@@ -26,7 +29,7 @@ export default function Page({ }: PageProps) {
     }
 
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} toggleLabel='Readme' content='Hello' ></Docarea>
+        <Docarea className={demoStyles.docarea} content={content} ></Docarea>
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
             {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
             <label>
