@@ -6,10 +6,10 @@
 
 import demoStyles from "@/app/demo/demo.module.scss"
 import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { Process } from "@nextspace/types"
-import { ChangeEvent, MouseEvent, useCallback, useContext, useReducer, useState } from "react"
+import { AbortablePromise, Process } from "@nextspace/types"
+import { ChangeEvent, MouseEvent, useCallback, useContext, useEffect, useReducer, useState } from "react"
 import moment from 'moment'
-import { SequentialPromise } from "@nextspace/utils/process"
+
 
 type PageProps = {
 }
@@ -32,13 +32,13 @@ function logsReducer(logs: string[], operation: LogsOperation): string[] {
 
 
 type ProcessingState = {
-    state: 'stopped' | 'running' | 'canceling'
-    promise?: SequentialPromise
+    state: 'stopped' | 'running' | 'aborting'
+    promise?: AbortablePromise
 }
 
 type ProcessingStateOperation = {
-    type: 'run' | 'cancel' | 'reset'
-    promise?: SequentialPromise
+    type: 'run' | 'abort' | 'reset'
+    promise?: AbortablePromise
 }
 
 function processingStateReducer(state: ProcessingState, operation: ProcessingStateOperation): ProcessingState {
@@ -50,10 +50,10 @@ function processingStateReducer(state: ProcessingState, operation: ProcessingSta
                 promise: operation.promise
 
             }
-        case 'cancel':
+        case 'abort':
             return {
                 ...state,
-                state: 'canceling',
+                state: 'aborting',
 
             }
         case 'reset':
@@ -77,7 +77,7 @@ export default function Page({ }: PageProps) {
     const [logs, handleLogs] = useReducer(logsReducer, [])
 
     const running = processingState.state === 'running'
-    const canceling = processingState.state === 'canceling'
+    const aborting = processingState.state === 'aborting'
     const stopped = processingState.state === 'stopped'
 
     const onChangeProcNumber = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
@@ -110,25 +110,25 @@ export default function Page({ }: PageProps) {
 
     const onClickRun = useCallback((evt: MouseEvent) => {
         const processes: Process[] = [...Array(procNumber)].map((_, idx) => {
-            return () => {
+            return (previous: number = 0) => {
                 const timeout = Math.max(1000, Math.trunc(Math.random() * maxTimeout))
 
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.start', { idx: idx + 1, time: moment().format('HH:mm:ss'), timeout })
+                    log: i18n.l('sequentialProcessing.msg.start', { idx: idx + 1, time: moment().format('HH:mm:ss'), timeout, previous })
                 })
-                return new Promise<void>((resolve, reject) => {
+                return new Promise<number>((resolve, reject) => {
 
                     setTimeout(() => {
                         if (idx >= errNumber - 1) {
                             reject(`a fake error at process ${idx + 1}`)
-                            return
+                        } else {
+                            resolve(previous + 1)
+                            handleLogs({
+                                type: 'add',
+                                log: i18n.l('sequentialProcessing.msg.done', { idx: idx + 1, time: moment().format('HH:mm:ss') })
+                            })
                         }
-                        resolve()
-                        handleLogs({
-                            type: 'add',
-                            log: i18n.l('sequentialProcessing.msg.done', { idx: idx + 1, time: moment().format('HH:mm:ss') })
-                        })
                     }, timeout)
                 })
             }
@@ -136,38 +136,44 @@ export default function Page({ }: PageProps) {
 
 
 
-        const sequentialPromise = workspace.withProcessIndicator(...processes)
-        sequentialPromise.then(() => {
-            if (sequentialPromise.canceled()) {
+        const sequentialPromise = workspace.withProcessIndicator(processes)
+        sequentialPromise.then((value) => {
+            if (sequentialPromise.aborted()) {
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.canceled')
+                    log: i18n.l('sequentialProcessing.msg.aborted', { value, step: sequentialPromise.step() + 1 })
                 })
             } else {
                 handleLogs({
                     type: 'add',
-                    log: i18n.l('sequentialProcessing.msg.allDone')
+                    log: i18n.l('sequentialProcessing.msg.allDone', { value })
                 })
             }
             handleProcessingState({ type: 'reset' })
         }).catch((err) => {
-
             handleLogs({
                 type: 'add',
                 log: i18n.l('sequentialProcessing.msg.err', { err })
             })
-
             handleProcessingState({ type: 'reset' })
         })
         handleProcessingState({ type: 'run', promise: sequentialPromise })
-    }, [workspace, i18n, procNumber, errNumber, maxTimeout])
+    }, [workspace, i18n, procNumber, errNumber, maxTimeout, processingState?.promise])
 
 
-    //always use last processingState for canceling
-    const onClickCancel = (evt: MouseEvent) => {
-        processingState.promise?.cancel()
-        handleProcessingState({ type: 'cancel' })
-    }
+    //always use last processingState for aborting
+    const onClickCancel = useCallback((evt: MouseEvent) => {
+        processingState.promise?.abort()
+        handleProcessingState({ type: 'abort' })
+    }, [processingState?.promise])
+
+    //abort also when page exit
+    useEffect(() => {
+        //return cleaner in useEffect to clean
+        return () => {
+            processingState?.promise?.abort()
+        }
+    }, [processingState?.promise])
 
     return <main className={demoStyles.main}>
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
@@ -194,7 +200,7 @@ export default function Page({ }: PageProps) {
             <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                 <button id="clear" disabled={!stopped} onClick={onClickClearLogs}>{i18n.l('action.clear')}</button>
                 <button id="run" disabled={!stopped} onClick={onClickRun}>{i18n.l('action.run')}</button>
-                <button id="stop" disabled={!running} onClick={onClickCancel}>{i18n.l('action.cancel')}</button>
+                <button id="abort" disabled={!running} onClick={onClickCancel}>{i18n.l('action.abort')}</button>
             </div>
             <div className={demoStyles.vlayout}>
                 {processingState.state}

@@ -27,17 +27,18 @@
         "hint":"Click '$t(action.run)' to start process simulation by running random timeout processes",
         "hint2":"When process number >= error number, it will throw a error",
         "msg": {
-            "start": "Process {{idx}} started at {{time}}, timeout: {{timeout}}",
+            "start": "Process {{idx}} started at {{time}}, timeout: {{timeout}}, previous value {{previous}}",
             "done": "Process {{idx}} completed at {{time}}",
-            "canceled": "The processing has been canceled",
-            "allDone": "All processes are completed",
+            "aborted": "The processing has been aborted at step {{step}}, value {{value}}",
+            "allDone": "All processes are completed, value {{value}}",
             "err": "Error {{err}}"
         }
     },
     "action": {
         "clear": "Clear",
         "run": "Run",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "abort": "Abort"
     },
     "fallback": "Fallback"
 }
