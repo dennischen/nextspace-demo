@@ -15,6 +15,7 @@ export type DemoVariables = {
     fgColor: string
     bgColor: string
     primaryColor: string
+    shadowColor: string
 }
 
 export type DemoThemepack = {

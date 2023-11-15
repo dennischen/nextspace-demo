@@ -7,6 +7,6 @@ import TranslationRegister from "@nextspace/components/TranslationRegister"
 import { TranslationLoaderProps } from "@nextspace/components/translationLoader"
 import translation from "./en.json"
 
-export default function TranslationLoader({ language, children }: TranslationLoaderProps) {
+export default function EnTranslationLoader({ language, children }: TranslationLoaderProps) {
     return <TranslationRegister language={language} translation={translation} >{children}</TranslationRegister>
 }

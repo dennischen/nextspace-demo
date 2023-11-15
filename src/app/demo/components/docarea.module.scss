@@ -1,5 +1,22 @@
+
 .root {
     position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px
+}
+
+.grid-item{
+    flex-basis: calc(50% - 8px);
+    max-width: calc(50% - 8px);
+}
+
+@media (max-width: 1280px) {
+    .grid-item {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
 }
 
 .toggle {
@@ -20,9 +37,21 @@
         height: 24px;
         width: 24px;
     }
+}
 
+.toggle-show {
+    opacity: 0.1;
+    &:hover{
+        opacity: unset;
+    }
 }
 
 .markdown {
-    padding: 8px;
+    
+    > * {
+        margin: -4px 0px 0px 0px;
+        padding: 16px;
+        box-shadow: var(--theme-shadow-color) 0px 3px 8px;
+        border-radius: 5px;
+    }
 }

@@ -3,11 +3,13 @@
 $bg-color: #201010;
 $fg-color: #fefefe;
 $primary-color: #470024;
+$shadow-color: rgba(255, 255, 255, 0.35);
 
 :export {
     bgColor: $bg-color;
     fgColor: $fg-color;
     primaryColor: $primary-color;
+    shadowColor: $shadow-color;
 }
 
 .banner {
@@ -31,6 +33,7 @@ $primary-color: #470024;
     --theme-fg-color: #{$fg-color};
     --theme-bg-color: #{$bg-color};
     --theme-primary-color: #{$primary-color};
+    --theme-shadow-color: #{$shadow-color};
 
     color: $fg-color;
     background-color: $bg-color;

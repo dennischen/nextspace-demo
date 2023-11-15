@@ -14,7 +14,8 @@ const themepack: DemoThemepack = {
     variables: {
         bgColor: styles.bgColor,
         fgColor: styles.fgColor,
-        primaryColor: styles.primaryColor
+        primaryColor: styles.primaryColor,
+        shadowColor: styles.shadowColor
     },
     styles: {
         banner: styles.banner,

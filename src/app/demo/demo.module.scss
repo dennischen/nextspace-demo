@@ -100,7 +100,7 @@ $radius: 3px;
 @media (max-width: 640px) {
     .homegriditem {
         flex-basis: 100%;
-        max-width: 1000%;
+        max-width: 100%;
     }
 }
 
@@ -123,17 +123,4 @@ $radius: 3px;
 
 .docarea {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    
-    :global ._markdown {
-        pre {
-            margin: 8px;
-            border-left: 4px solid var(--theme-primary-color);
-            padding: 8px;
-
-            code {}
-        }
-    }
-
 }

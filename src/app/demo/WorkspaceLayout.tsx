@@ -16,9 +16,6 @@ import i18next from 'i18next'
 import Banner from "./Banner"
 import Footer from './Footer'
 
-//the default translation
-import fallbackTranslation from "./i18n/en.json"
-
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -28,15 +25,16 @@ import clsx from 'clsx'
 import "./global.scss"
 import { DemoThemepack } from './types'
 
+//the default translation
+import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
+const translations = [EnTranslationLoader, ZhTranslationLoader]
 
 const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/LightblueThemepackLoader'))
 const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/DarkredThemepackLoader'))
-
-const translations = [EnTranslationLoader, ZhTranslationLoader]
 const themepacks = [LightblueThemepackLoader, DarkredThemepackLoader]
 
 export type WorkspaceLayoutProps = {

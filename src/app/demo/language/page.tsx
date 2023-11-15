@@ -11,7 +11,7 @@ import WorkspaceHolder from "@nextspace/contexts/workspace"
 import { useContext } from "react"
 import Cookies from 'universal-cookie'
 
-import content from './README.md?as_txt'
+import readme from './README.md?as_txt'
 
 type PageProps = {
 }
@@ -19,7 +19,6 @@ type PageProps = {
 export default function Page({ }: PageProps) {
     const workspace = useContext(WorkspaceHolder)
     const { i18n } = workspace
-    
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         workspace.changeLanguage(evt.target.value)
@@ -29,16 +28,18 @@ export default function Page({ }: PageProps) {
     }
 
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} content={content} ></Docarea>
-        <div className={demoStyles.vlayout} style={{ gap: 8 }}>
-            {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
-            <label>
-                {`${i18n.l("language.selectLanguage")} : `}
-                <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-                    {workspace.languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
-                </select>
-            </label>
-            {i18n.l("fallback")}
-        </div>
+        <Docarea className={demoStyles.docarea} markdown={readme} >
+            <div className={demoStyles.vlayout} style={{ gap: 8 }}>
+                {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
+                <label>
+                    {`${i18n.l("language.selectLanguage")} : `}
+                    <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
+                        {workspace.languages.map(language =>
+                            <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
+                    </select>
+                </label>
+                {i18n.l("fallback")}
+            </div>
+        </Docarea>
     </main>
 }

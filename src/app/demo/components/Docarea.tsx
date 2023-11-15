@@ -15,13 +15,14 @@ import book from "@/app/demo/assets/book.svg?as_txt"
 import InnerHTML from "./InnerHTML"
 
 export type DocareaProps = {
-    content?: string
+    children?: React.ReactNode
+    markdown?: string
     className?: string
     styles?: React.CSSProperties
     defaultShow?: boolean
 }
 
-export default function Docarea({ content, className, styles, defaultShow = false }: DocareaProps) {
+export default function Docarea({ children, markdown, className, styles, defaultShow = false }: DocareaProps) {
 
     const [show, setShow] = useState(defaultShow)
 
@@ -30,11 +31,14 @@ export default function Docarea({ content, className, styles, defaultShow = fals
     }
 
 
-    return <div className={clsx("_darkarea", compStyles.root, className)} style={styles}>
+    return <div className={clsx("_docarea", compStyles.root, className)} style={styles}>
         <button
-            className={compStyles.toggle}
+            className={clsx(compStyles.toggle, show && compStyles['toggle-show'])}
             onClick={onToggle}
         ><InnerHTML innerHtml={show ? bookOpen : book}></InnerHTML></button>
-        {show && <Markdown content={content} className={compStyles.markdown} />}
+        <div className={compStyles['grid-item']}>
+            {children}
+        </div>
+        {show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}><Markdown content={markdown}/></div>}
     </div>
 }

@@ -4,10 +4,20 @@
  * @author: Dennis Chen
  */
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
 import { remark } from 'remark'
-import remarkHtml from 'remark-html'
+import remarkRehype from 'remark-rehype'
+
+import Prism from "prismjs"
+import 'prismjs/components/prism-jsx'
+import 'prismjs/components/prism-tsx'
+import 'prismjs/themes/prism.css'
+
+import compStyles from './markdown.module.scss'
 
 export type MarkdownProps = {
     content?: string
@@ -16,7 +26,14 @@ export type MarkdownProps = {
 }
 
 async function remarkContent(source: string) {
-    const processedContent = await remark().use(remarkHtml).process(source)
+
+    const processedContent = await remark()
+        // .use(remarkHtml) = .use(remarkRehype).use(rehypeSanitize).use(rehypeStringify).
+        .use(remarkRehype)
+        .use(rehypeSanitize)
+        .use(rehypeExternalLinks, { target: '_blank', rel: ['nofollow'] })
+        .use(rehypeStringify)
+        .process(source)
     const contentHtml = processedContent.toString()
     return contentHtml
 }
@@ -24,6 +41,7 @@ async function remarkContent(source: string) {
 export default function Markdown({ content, styles, className }: MarkdownProps) {
 
     const [html, setHtml] = useState('')
+    const ref = useRef(null)
 
     useEffect(() => {
         if (content && !html) {
@@ -32,7 +50,10 @@ export default function Markdown({ content, styles, className }: MarkdownProps) 
             })
         }
     })
+    useEffect(() => {
+        Prism.highlightAllUnder(ref.current as any)
+    }, [html])
 
-    return <div className={clsx('_markdown', className)} style={styles} dangerouslySetInnerHTML={{ __html: html }}>
+    return <div ref={ref} className={clsx('_markdown', compStyles.root, className)} style={styles} dangerouslySetInnerHTML={{ __html: html }}>
     </div >
 }
