@@ -6,10 +6,10 @@
 
 import { COOKIE_THEME } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
+import { DemoThemepack } from "@/app/demo/types"
 import WorkspaceHolder from "@nextspace/contexts/workspace"
 import { useContext } from "react"
 import Cookies from 'universal-cookie'
-import { DemoThemepack } from "../types"
 
 type PageProps = {
 }

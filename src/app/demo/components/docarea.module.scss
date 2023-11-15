@@ -1,0 +1,57 @@
+
+.root {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px
+}
+
+.grid-item{
+    flex-basis: calc(50% - 8px);
+    max-width: calc(50% - 8px);
+}
+
+@media (max-width: 1280px) {
+    .grid-item {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+}
+
+.toggle {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    border-radius: 50%;
+    border-width: 0;
+    padding: 8px;
+    height: 40px;
+    width: 40px;
+
+    &:hover {
+        color: var(--theme-primary-color);
+    }
+
+    svg {
+        height: 24px;
+        width: 24px;
+    }
+}
+
+.toggle-show {
+    opacity: 0.1;
+    &:hover{
+        opacity: unset;
+    }
+}
+
+.markdown {
+    
+    > * {
+        margin: -4px 0px 0px 0px;
+        padding: 16px;
+        box-shadow: var(--theme-shadow-color) 0px 3px 8px;
+        border-radius: 5px;
+    }
+}

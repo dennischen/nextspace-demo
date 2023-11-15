@@ -1,13 +1,15 @@
 'use client'
+
 /*
  * @file-created: 2023-10-23
  * @author: Dennis Chen
  */
+
 import WorkspaceHolder from "@nextspace/contexts/workspace"
+import clsx from "clsx"
 import Link from "next/link"
 import { useContext } from "react"
 import demoStyles from "./demo.module.scss"
-import clsx from "clsx"
 import { DemoThemepack } from "./types"
 
 type PageProps = {

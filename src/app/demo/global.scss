@@ -8,7 +8,6 @@
 }
 
 // style for common element
-
 a {
     color: inherit;
     text-decoration: none;
@@ -20,6 +19,7 @@ a {
 
 select {
     padding: 8px;
+    cursor: pointer;
 }
 
 input {
@@ -34,5 +34,4 @@ button {
 
 // define variable
 :root {
-    --banner-height: 48px;
 }

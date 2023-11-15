@@ -1,6 +1,9 @@
+@use 'sass:color';
+
 $bg-color: #fefefe;
 $fg-color: #0a0a0a;
 $primary-color: #87ceeb;
+$shadow-color: rgba(0, 0, 0, 0.35);
 
 :export {
     bgColor: $bg-color;
@@ -10,8 +13,9 @@ $primary-color: #87ceeb;
 
 .banner {
     background-color: $primary-color;
-
     select {
+        background-color: color.adjust($primary-color, $lightness: -5%);
+        border-color: color.adjust($primary-color, $lightness: -10%);
         option {
             color: $fg-color;
             background-color: $bg-color;
@@ -25,10 +29,16 @@ $primary-color: #87ceeb;
 }
 
 .layout {
-    color-scheme: light;
+    --theme-fg-color: #{$fg-color};
+    --theme-bg-color: #{$bg-color};
+    --theme-primary-color: #{$primary-color};
+    --theme-shadow-color: #{$shadow-color};
+
     color: $fg-color;
     background-color: $bg-color;
-    
+    :focus-visible{
+        outline: 2px solid color.adjust($primary-color, $lightness: -15%);
+    }
     main {    
         button {
         }
@@ -37,7 +47,9 @@ $primary-color: #87ceeb;
 
 .homecase {
     a {
-        &:hover {
+        background-color: color.adjust($bg-color, $lightness: -5%);
+        border-color: color.adjust($bg-color, $lightness: -5%);
+        &:hover, &:focus {
             background-color: $primary-color;
             border-color: $primary-color;
             box-shadow: 0 0 11px $primary-color; 

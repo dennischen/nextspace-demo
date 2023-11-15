@@ -16,7 +16,8 @@ const defaultTheme = "lightblue"
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-    title: 'Nextspace Demo'
+    title: 'Nextspace Demo',
+    viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 }
 
 export type LayoutProps = {

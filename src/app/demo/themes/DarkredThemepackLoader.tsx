@@ -11,10 +11,12 @@ import styles from './darkred.module.scss'
 
 const themepack: DemoThemepack = {
     dark: true,
+    colorScheme: 'dark',
     variables: {
         bgColor: styles.bgColor,
         fgColor: styles.fgColor,
-        primaryColor: styles.primaryColor
+        primaryColor: styles.primaryColor,
+        shadowColor: styles.shadowColor
     },    
     styles: {
         banner: styles.banner,

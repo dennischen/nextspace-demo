@@ -1,7 +1,6 @@
 'use client'
-//
-/* 'use client' to prevent build i18n resource into laout.js
-
+//'use client' to prevent build i18n resource into laout.js
+/*
  * @file-created: 2023-10-23
  * @author: Dennis Chen
  */
@@ -17,9 +16,6 @@ import i18next from 'i18next'
 import Banner from "./Banner"
 import Footer from './Footer'
 
-//the default translation
-import fallbackTranslation from "./i18n/en.json"
-
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -29,15 +25,16 @@ import clsx from 'clsx'
 import "./global.scss"
 import { DemoThemepack } from './types'
 
+//the default translation
+import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
+const translations = [EnTranslationLoader, ZhTranslationLoader]
 
 const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/LightblueThemepackLoader'))
 const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/DarkredThemepackLoader'))
-
-const translations = [EnTranslationLoader, ZhTranslationLoader]
 const themepacks = [LightblueThemepackLoader, DarkredThemepackLoader]
 
 export type WorkspaceLayoutProps = {
@@ -77,6 +74,6 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
 // a internal component to using theme in WorkspaceBoundary
 function Layout({ children }: { children: React.ReactNode }) {
     const workspace = useContext(WorkspaceHolder)
-    const { dark, styles: themeStyles } = workspace.themepack as DemoThemepack
-    return <div className={clsx(demoStyles.layout, themeStyles.layout)} style={{ colorScheme: dark ? 'dark' : 'light' }}>{children}</div>
+    const { styles: themeStyles } = workspace.themepack as DemoThemepack
+    return <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
 }
