@@ -3,14 +3,13 @@
 By using `workspace.i18n` utility, Server/Client loads the i18n translation lable resource only when reuqired.
 The different from Next.Js is Server/Client can load translation not by the route path segment. i.e. keep same url between users who use different languages.
 
-# Gneneral Usage
+# General Usage
 
 ## Get label in page
 [Source](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/language/page.tsx)
-Get workspace and i18n by useContext
+Get i18n by `useI18n()`
 ```tsx
-const workspace = useContext(WorkspaceHolder)
-const { i18n } = workspace
+const i18n = useI18n()
 ```
 
 Use `i18n.l(key)` to get label by key, `1i8n.language` is the current language
@@ -23,8 +22,10 @@ Use `i18n.l(key)` to get label by key, `1i8n.language` is the current language
 ```
 
 ## Provide preference setting for a user
-Set current language by `workspace.changeLanguage(language)`. `workspace.languages` are supported languages.
+Get workspace by `useWorkspace()`, set current language by `workspace.changeLanguage(language)`. `workspace.languages` are supported languages.
 ```tsx
+const workspace = useWorkspace()
+
 const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
     workspace.changeLanguage(evt.target.value)
 

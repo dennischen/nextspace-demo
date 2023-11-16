@@ -7,7 +7,7 @@
 import WorkspaceBoundary from '@nextspace/WorkspaceBoundary'
 import { WorkspaceConfig } from '@nextspace/types'
 import I18nextTranslationHolder from '@nextspace/utils/I18nextTranslationHolder'
-import { useContext, useMemo } from 'react'
+import { useMemo } from 'react'
 import demoStyles from "./demo.module.scss"
 
 import translationLoader from '@nextspace/components/translationLoader'
@@ -20,12 +20,12 @@ import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 import themepackLoader from '@nextspace/components/themepackLoader'
-import WorkspaceHolder from '@nextspace/contexts/workspace'
 import clsx from 'clsx'
 import "./global.scss"
 import { DemoThemepack } from './types'
 
 //the default translation
+import { useThemepack, useWorkspace } from '@nextspace'
 import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
@@ -73,7 +73,6 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
 
 // a internal component to using theme in WorkspaceBoundary
 function Layout({ children }: { children: React.ReactNode }) {
-    const workspace = useContext(WorkspaceHolder)
-    const { styles: themeStyles } = workspace.themepack as DemoThemepack
+    const { styles: themeStyles } = useThemepack() as DemoThemepack
     return <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
 }

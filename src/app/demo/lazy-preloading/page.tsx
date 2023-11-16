@@ -5,9 +5,9 @@
  */
 
 import demoStyles from "@/app/demo/demo.module.scss"
+import { useI18n, useWorkspace } from "@nextspace"
 import lazyWithPreload from "@nextspace/components/lazyWithPreload"
-import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { Suspense, lazy, useContext, useState } from "react"
+import { Suspense, lazy, useState } from "react"
 
 type PageProps = {
 }
@@ -17,8 +17,8 @@ const Panel2 = lazy(() => import('./Panel2'))
 const Panel3 = lazyWithPreload(() => import('./Panel3'))
 
 export default function Page({ }: PageProps) {
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n } = workspace
+    const workspace = useWorkspace()
+    const i18n = useI18n()
 
     const [panel, setPanel] = useState('panel1')
 
@@ -33,8 +33,6 @@ export default function Page({ }: PageProps) {
                     setPanel(panel)
                 })
         }
-
-
     }
 
     return <main className={demoStyles.main}>

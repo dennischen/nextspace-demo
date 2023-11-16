@@ -5,10 +5,9 @@
  * @author: Dennis Chen
  */
 
-import WorkspaceHolder from "@nextspace/contexts/workspace"
+import { useI18n, useThemepack, useWorkspace } from "@nextspace"
 import clsx from "clsx"
 import Link from "next/link"
-import { useContext } from "react"
 import demoStyles from "./demo.module.scss"
 import { DemoThemepack } from "./types"
 
@@ -16,9 +15,8 @@ type PageProps = {
 }
 
 export default function DemoPage({ }: PageProps) {
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n } = workspace
-    const { styles: themeStyles } = workspace.themepack as DemoThemepack
+    const i18n = useI18n();
+    const { styles: themeStyles } = useThemepack() as DemoThemepack
 
     let key = 0
     const demoLinks: React.ReactNode[] = [

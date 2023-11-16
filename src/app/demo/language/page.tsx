@@ -7,18 +7,17 @@
 import Docarea from "@/app/demo/components/Docarea"
 import { COOKIE_LANGUAGE } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
-import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { useContext } from "react"
 import Cookies from 'universal-cookie'
 
+import { useI18n, useWorkspace } from "@nextspace"
 import readme from './README.md?as_txt'
 
 type PageProps = {
 }
 
 export default function Page({ }: PageProps) {
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n } = workspace
+    const workspace = useWorkspace()
+    const i18n = useI18n()
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         workspace.changeLanguage(evt.target.value)

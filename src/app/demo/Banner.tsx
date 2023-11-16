@@ -3,21 +3,23 @@
  * @file-created: 2023-11-14
  * @author: Dennis Chen
  */
-import { useContext } from "react"
-import demoStyles from "./demo.module.scss"
-import WorkspaceHolder from "@nextspace/contexts/workspace"
+import { useI18n, useThemepack, useWorkspace, } from "@nextspace"
+import clsx from "clsx"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import Cookies from "universal-cookie"
 import { COOKIE_LANGUAGE, COOKIE_THEME } from "./constants"
+import demoStyles from "./demo.module.scss"
 import { DemoThemepack } from "./types"
-import clsx from "clsx"
-import { usePathname } from "next/navigation"
+
 
 export default function Banner() {
+
     const pathname = usePathname()
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n, theme, languages, themes } = workspace
-    const { styles: themeStyles } = workspace.themepack as DemoThemepack
+    const workspace = useWorkspace()
+    const i18n = useI18n()
+    const { styles: themeStyles } = useThemepack() as DemoThemepack
+    const { theme, languages, themes } = workspace
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         workspace.changeLanguage(evt.target.value)

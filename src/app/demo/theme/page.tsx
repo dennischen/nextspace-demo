@@ -7,17 +7,17 @@
 import { COOKIE_THEME } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
 import { DemoThemepack } from "@/app/demo/types"
-import WorkspaceHolder from "@nextspace/contexts/workspace"
-import { useContext } from "react"
+import { useI18n, useThemepack, useWorkspace } from "@nextspace"
 import Cookies from 'universal-cookie'
 
 type PageProps = {
 }
 
 export default function Page({ }: PageProps) {
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n, theme } = workspace
-    const themepack = workspace.themepack as DemoThemepack
+    const workspace = useWorkspace()
+    const i18n = useI18n()
+    const themepack = useThemepack() as DemoThemepack
+    const { theme, themes } = workspace
 
     const onChangeTheme = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         workspace.changeTheme(evt.target.value)
@@ -32,7 +32,7 @@ export default function Page({ }: PageProps) {
             <label>
                 {`${i18n.l("theme.selectTheme")} : `}
                 <select name="theme" defaultValue={theme} onChange={onChangeTheme}>
-                    {workspace.themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
+                    {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
                 </select>
             </label>
             <div className={demoStyles.hlayout}>

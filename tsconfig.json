@@ -26,6 +26,9 @@
             "@/*": [
                 "./src/*"
             ],
+            "@nextspace": [
+                "./nextspace/dist"
+            ],
             "@nextspace/*": [
                 "./nextspace/dist/*"
             ]

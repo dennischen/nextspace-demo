@@ -5,10 +5,10 @@
  */
 
 import demoStyles from "@/app/demo/demo.module.scss"
-import WorkspaceHolder from "@nextspace/contexts/workspace"
+import { useI18n, useWorkspace } from "@nextspace"
 import { AbortablePromise, Process } from "@nextspace/types"
-import { ChangeEvent, MouseEvent, useCallback, useContext, useEffect, useReducer, useState } from "react"
 import moment from 'moment'
+import { ChangeEvent, MouseEvent, useCallback, useEffect, useReducer, useState } from "react"
 
 
 type PageProps = {
@@ -67,8 +67,8 @@ function processingStateReducer(state: ProcessingState, operation: ProcessingSta
 
 
 export default function Page({ }: PageProps) {
-    const workspace = useContext(WorkspaceHolder)
-    const { i18n } = workspace
+    const workspace = useWorkspace()
+    const i18n = useI18n()
 
     const [procNumber, setProcNumber] = useState(5)
     const [errNumber, setErrNumber] = useState(6)
