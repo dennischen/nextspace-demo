@@ -7,20 +7,19 @@
 import { COOKIE_THEME } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
 import { DemoThemepack } from "@/app/demo/types"
-import { useI18n, useThemepack, useWorkspace } from "@nextspace"
+import { useI18n, useTheme } from "@nextspace"
 import Cookies from 'universal-cookie'
 
 type PageProps = {
 }
 
 export default function Page({ }: PageProps) {
-    const workspace = useWorkspace()
     const i18n = useI18n()
-    const themepack = useThemepack() as DemoThemepack
-    const { theme, themes } = workspace
+    const theme = useTheme()
+    const themepack = theme.themepack as DemoThemepack
 
     const onChangeTheme = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        workspace.changeTheme(evt.target.value)
+        theme.changeTheme(evt.target.value)
 
         const cookies = new Cookies(null, { path: '/' })
         cookies.set(COOKIE_THEME, evt.target.value)
@@ -28,11 +27,11 @@ export default function Page({ }: PageProps) {
 
     return <main className={demoStyles.main}>
         <div className={demoStyles.vlayout} style={{ gap: 8 }}>
-            {i18n.l('theme')}: {i18n.l(`theme.${theme}`)} ({theme})
+            {i18n.l('theme')}: {i18n.l(`theme.${theme.code}`)} ({theme.code})
             <label>
                 {`${i18n.l("theme.selectTheme")} : `}
-                <select name="theme" defaultValue={theme} onChange={onChangeTheme}>
-                    {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
+                <select name="theme" defaultValue={theme.code} onChange={onChangeTheme}>
+                    {theme.codes.map(code => <option key={code} value={code}>{i18n.l(`theme.${code}`)}</option>)}
                 </select>
             </label>
             <div className={demoStyles.hlayout}>

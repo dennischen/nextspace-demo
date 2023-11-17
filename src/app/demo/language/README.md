@@ -14,11 +14,13 @@ const i18n = useI18n()
 
 Use `i18n.l(key)` to get label by key, `1i8n.language` is the current language
 ```tsx
-{i18n.l('key1')}
-// with subkey
-{i18n.l('key2.sub-key')}
+i18n.l('key1')
+// by subkey (when using i18next)
+i18n.l('key2.sub-key')
+// with args (when using i18next)
+i18n.l('key3', {unit:'x'})
 // or in component
-<span>{i18n.l('key3')}</span>
+<span>{i18n.l('key4')}</span>
 ```
 
 ## Provide preference setting for a user
@@ -47,7 +49,7 @@ Use `translationLoader` in Layout module to load a translation by loader compone
 ```tsx
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
-const translations = [EnTranslationLoader, ZhTranslationLoader]
+const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 ```
 
 
@@ -55,7 +57,7 @@ Use `WorkspaceBoundary` in Layout component, set translationHolder to config by 
 ```tsx
 export default function WorkspaceLayout({ defaultLanguage, children }: WorkspaceLayoutProps) {
 
-    defaultLanguage = translations.find((l) => l.language === defaultLanguage)?.language || translations[0].language
+    defaultLanguage = translationLoaders.find((l) => l.language === defaultLanguage)?.language || translationLoaders[0].language
 
     const config = useMemo(() => {
         return {
@@ -64,7 +66,7 @@ export default function WorkspaceLayout({ defaultLanguage, children }: Workspace
     }, [])    
 
     return <WorkspaceBoundary
-        defaultLanguage={defaultLanguage} translations={translations}
+        defaultLanguage={defaultLanguage} translationLoaders={translationLoaders}
         config={config}>
         ...
         {children}

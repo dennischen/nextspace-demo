@@ -1,6 +1,5 @@
 'use client'
-//'use client' to prevent build i18n resource into laout.js
-/*
+/* a layout client component to prevent build loader resource into laout.js
  * @file-created: 2023-10-23
  * @author: Dennis Chen
  */
@@ -24,18 +23,19 @@ import clsx from 'clsx'
 import "./global.scss"
 import { DemoThemepack } from './types'
 
+import { useTheme } from '@nextspace'
+
 //the default translation
-import { useThemepack, useWorkspace } from '@nextspace'
 import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
-const translations = [EnTranslationLoader, ZhTranslationLoader]
+const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 
 const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/LightblueThemepackLoader'))
 const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/DarkredThemepackLoader'))
-const themepacks = [LightblueThemepackLoader, DarkredThemepackLoader]
+const themepackLoaders = [LightblueThemepackLoader, DarkredThemepackLoader]
 
 export type WorkspaceLayoutProps = {
     defaultLanguage?: string,
@@ -45,8 +45,8 @@ export type WorkspaceLayoutProps = {
 
 export default function WorkspaceLayout({ defaultLanguage, defaultTheme, children }: WorkspaceLayoutProps) {
 
-    defaultLanguage = translations.find((l) => l.language === defaultLanguage)?.language || translations[0].language
-    defaultTheme = themepacks.find((t) => t.theme === defaultTheme)?.theme || themepacks[0].theme
+    defaultLanguage = translationLoaders.find((l) => l.language === defaultLanguage)?.language || translationLoaders[0].language
+    defaultTheme = themepackLoaders.find((t) => t.code === defaultTheme)?.code || themepackLoaders[0].code
 
     const config = useMemo(() => {
         return {
@@ -59,8 +59,8 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
     }, [])
 
     return <WorkspaceBoundary
-        defaultLanguage={defaultLanguage} translations={translations}
-        defaultTheme={defaultTheme} themepacks={themepacks}
+        defaultLanguage={defaultLanguage} translationLoaders={translationLoaders}
+        defaultTheme={defaultTheme} themepackLoaders={themepackLoaders}
         config={config} >
         <Layout>
             <Banner />
@@ -73,6 +73,6 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
 
 // a internal component to using theme in WorkspaceBoundary
 function Layout({ children }: { children: React.ReactNode }) {
-    const { styles: themeStyles } = useThemepack() as DemoThemepack
+    const { styles: themeStyles } = useTheme().themepack as DemoThemepack
     return <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
 }

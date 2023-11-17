@@ -5,7 +5,7 @@
  * @author: Dennis Chen
  */
 
-import { useI18n, useThemepack, useWorkspace } from "@nextspace"
+import { useI18n, useTheme } from "@nextspace"
 import clsx from "clsx"
 import Link from "next/link"
 import demoStyles from "./demo.module.scss"
@@ -16,7 +16,7 @@ type PageProps = {
 
 export default function DemoPage({ }: PageProps) {
     const i18n = useI18n();
-    const { styles: themeStyles } = useThemepack() as DemoThemepack
+    const { styles: themeStyles } = useTheme().themepack as DemoThemepack
 
     let key = 0
     const demoLinks: React.ReactNode[] = [

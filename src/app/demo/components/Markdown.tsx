@@ -44,14 +44,14 @@ export default function Markdown({ content, styles, className }: MarkdownProps) 
     const ref = useRef(null)
 
     useEffect(() => {
-        if (content && !html) {
+        if (content) {
             remarkContent(content).then((html) => {
                 setHtml(html)
             })
         }
-    })
+    }, [content])
     useEffect(() => {
-        Prism.highlightAllUnder(ref.current as any)
+        html && Prism.highlightAllUnder(ref.current as any)
     }, [html])
 
     return <div ref={ref} className={clsx('_markdown', compStyles.root, className)} style={styles} dangerouslySetInnerHTML={{ __html: html }}>
