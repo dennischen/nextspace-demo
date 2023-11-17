@@ -16,11 +16,10 @@ type PageProps = {
 }
 
 export default function Page({ }: PageProps) {
-    const workspace = useWorkspace()
     const i18n = useI18n()
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        workspace.changeLanguage(evt.target.value)
+        i18n.changeLanguage(evt.target.value)
 
         const cookies = new Cookies(null, { path: '/' })
         cookies.set(COOKIE_LANGUAGE, evt.target.value)
@@ -33,7 +32,7 @@ export default function Page({ }: PageProps) {
                 <label>
                     {`${i18n.l("language.selectLanguage")} : `}
                     <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-                        {workspace.languages.map(language =>
+                        {i18n.languages.map(language =>
                             <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
                     </select>
                 </label>

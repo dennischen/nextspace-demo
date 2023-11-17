@@ -22,19 +22,18 @@ Use `i18n.l(key)` to get label by key, `1i8n.language` is the current language
 ```
 
 ## Provide preference setting for a user
-Get workspace by `useWorkspace()`, set current language by `workspace.changeLanguage(language)`. `workspace.languages` are supported languages.
+Set current language by `i18n.changeLanguage(language)`. `i18n.languages` are supported languages.
 ```tsx
-const workspace = useWorkspace()
 
 const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-    workspace.changeLanguage(evt.target.value)
+    i18n.changeLanguage(evt.target.value)
 
     const cookies = new Cookies(null, { path: '/' })
     cookies.set(COOKIE_LANGUAGE, evt.target.value)
 }
 
 <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-    {workspace.languages.map(language => 
+    {i18n.languages.map(language => 
         <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
 </select>
 ```

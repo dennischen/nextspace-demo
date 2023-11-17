@@ -19,10 +19,10 @@ export default function Banner() {
     const workspace = useWorkspace()
     const i18n = useI18n()
     const { styles: themeStyles } = useThemepack() as DemoThemepack
-    const { theme, languages, themes } = workspace
+    const { theme, themes } = workspace
 
     const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        workspace.changeLanguage(evt.target.value)
+        i18n.changeLanguage(evt.target.value)
 
         const cookies = new Cookies(null, { path: '/' })
         cookies.set(COOKIE_LANGUAGE, evt.target.value)
@@ -43,7 +43,7 @@ export default function Banner() {
                 {themes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
             </select>
             <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-                {languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
+                {i18n.languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
             </select>
         </>}
     </div>
