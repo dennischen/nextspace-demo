@@ -45,10 +45,10 @@ const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
 [Source](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/WorkspaceLayout.tsx)
 
 
-Use `translationLoader` in Layout module to load a translation by loader components.
+Use `translationLoader` in Layout module to load a translation by register components.
 ```tsx
-const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
-const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
+const EnTranslationLoader = translationLoader("en", () => import('./i18n/enTranslationRegister'))
+const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslationRegister'))
 const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 ```
 
@@ -75,25 +75,19 @@ export default function WorkspaceLayout({ defaultLanguage, children }: Workspace
 }
 ```
 
-## Define translation json in loader
-Wrap translatioin json by loader component
+## Define translation json in register
+Use `translatioinRegister` in register to provide a loader component wrap
 ```tsx
-import TranslationRegister from "@nextspace/components/TranslationRegister"
-import { TranslationLoaderProps } from "@nextspace/components/translationLoader"
+import translationRegister from "@nextspace/components/translationRegister"
 import translation from "./en.json"
 
-export default function EnTranslationLoader({ language, children }: TranslationLoaderProps) {
-    return <TranslationRegister language={language} translation={translation} >{children}</TranslationRegister>
-}
+export default translationRegister(translation)
 ```
 ```tsx
-import TranslationRegister from "@nextspace/components/TranslationRegister"
-import { TranslationLoaderProps } from "@nextspace/components/translationLoader"
+import translationRegister from "@nextspace/components/translationRegister"
 import translation from "./zh.json"
 
-export default function ZhTranslationLoader({ language, children }: TranslationLoaderProps) {
-    return <TranslationRegister language={language} translation={translation} >{children}</TranslationRegister>
-}
+export default translationRegister(translation)
 ```
 
 ## Use Layout component in server layout.tsx

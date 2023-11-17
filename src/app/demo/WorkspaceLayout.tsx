@@ -29,12 +29,12 @@ import { useTheme } from '@nextspace'
 import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
-const EnTranslationLoader = translationLoader("en", () => import('./i18n/EnTranslationLoader'))
-const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/ZhTranslatioLoader'))
+const EnTranslationLoader = translationLoader("en", () => import('./i18n/enTranslationRegister'))
+const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslatioRegister'))
 const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 
-const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/LightblueThemepackLoader'))
-const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/DarkredThemepackLoader'))
+const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/lightblueThemepackRegister'))
+const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/darkredThemepackRegister'))
 const themepackLoaders = [LightblueThemepackLoader, DarkredThemepackLoader]
 
 export type WorkspaceLayoutProps = {

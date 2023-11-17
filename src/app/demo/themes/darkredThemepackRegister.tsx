@@ -3,20 +3,20 @@
  * @file-created: 2023-11-06
  * @author: Dennis Chen
  */
-import ThemepackRegister from "@nextspace/components/ThemepackRegister"
-import { ThemepackLoaderProps } from "@nextspace/components/themepackLoader"
+import { themepackRegister } from "@nextspace/components/ThemepackRegister"
 
 import { DemoThemepack } from "@/app/demo/types"
-import styles from './lightblue.module.scss'
+import styles from './darkred.module.scss'
 
 const themepack: DemoThemepack = {
-    colorScheme: 'light',
+    dark: true,
+    colorScheme: 'dark',
     variables: {
         bgColor: styles.bgColor,
         fgColor: styles.fgColor,
         primaryColor: styles.primaryColor,
         shadowColor: styles.shadowColor
-    },
+    },    
     styles: {
         banner: styles.banner,
         footer: styles.footer,
@@ -25,6 +25,4 @@ const themepack: DemoThemepack = {
     }
 }
 
-export default function ThemepackLoader({ code, children }: ThemepackLoaderProps) {
-    return <ThemepackRegister code={code} themepack={themepack} >{children}</ThemepackRegister>
-}
+export default themepackRegister(themepack)
