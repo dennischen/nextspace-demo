@@ -3,9 +3,9 @@
  * @file-created: 2023-11-14
  * @author: Dennis Chen
  */
-import { useI18n, useTheme, useWorkspace, } from "@nextspace"
+import { useI18n, useTheme } from "@nextspace"
+import Link from "@nextspace/components/Link"
 import clsx from "clsx"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Cookies from "universal-cookie"
 import { COOKIE_LANGUAGE, COOKIE_THEME } from "./constants"
