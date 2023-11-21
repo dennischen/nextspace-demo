@@ -4,8 +4,8 @@
  * @author: Dennis Chen
  */
 import { useI18n, useTheme } from "@nextspace"
+import Link from "@nextspace/components/Link"
 import clsx from "clsx"
-import Link from "next/link"
 import demoStyles from "./demo.module.scss"
 import { DemoThemepack } from "./types"
 
