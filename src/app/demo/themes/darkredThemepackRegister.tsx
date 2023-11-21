@@ -3,7 +3,7 @@
  * @file-created: 2023-11-06
  * @author: Dennis Chen
  */
-import { themepackRegister } from "@nextspace/components/ThemepackRegister"
+import { themepackRegister } from "@nextspace/components/themepackRegister"
 
 import { DemoThemepack } from "@/app/demo/types"
 import styles from './darkred.module.scss'
