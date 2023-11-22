@@ -7,10 +7,7 @@
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import WorkspaceLayout from "./WorkspaceLayout"
-import { COOKIE_LANGUAGE, COOKIE_THEME } from './constants'
-
-const defaultLanguage = "en"
-const defaultTheme = "lightblue"
+import { COOKIE_LANGUAGE, COOKIE_THEME, DEFAULT_LANGUAGE, DEFAULT_THEME } from './constants'
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
@@ -26,8 +23,8 @@ export type LayoutProps = {
 
 export default function DemoLayout({ children }: LayoutProps) {
     const cookieStore = cookies()
-    const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || defaultLanguage
-    const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || defaultTheme
+    const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || DEFAULT_LANGUAGE
+    const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || DEFAULT_THEME
 
 
     //to make default theme load before html render, has to load it in server component first. (will render css to layout.css)
