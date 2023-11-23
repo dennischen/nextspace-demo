@@ -20,12 +20,11 @@ describe('Theme', () => {
     it('should navigate to theme page', () => {
         cy.visit('http://localhost:3000/')
 
+        cy.wait(shortWait)
         cy.get('a[id*="theme"]').click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo/theme")).to.be.true;
-        })
+        cy.url().should('match', /\/demo\/theme$/)
 
         cy.get('main #bgColor').contains('#fefefe')
         cy.get('main #fgColor').contains('#0a0a0a')
@@ -65,9 +64,7 @@ describe('Theme', () => {
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
     })
 })
 

@@ -31,9 +31,7 @@ describe('Slow Route', () => {
 
         expect((t2 - t1) < 500)
 
-        cy.url().then(href => {
-            expect(href.endsWith("/demo"), href).to.be.true
-        })
+        cy.url().should('match', /\/demo$/)
         //there is a progess
 
         //the default slow-route wait is 3000
@@ -42,17 +40,13 @@ describe('Slow Route', () => {
         //check timeoput before href for waiting page ready in cy
         cy.get("#timeout").contains("3000 ms")
 
-        cy.url().then(href => {
-            expect(href.endsWith("/demo/slow-route"), href).to.be.true
-        })
+        cy.url().should('match', /\/demo\/slow-route$/)
 
         cy.wait(shortWait)
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href => {
-            expect(href.endsWith("/demo"), href).to.be.true
-        })
+        cy.url().should('match', /\/demo$/)
 
         cy.wait(shortWait)
         t1 = Date.now()
@@ -62,17 +56,13 @@ describe('Slow Route', () => {
 
         expect((t2 - t1) < 500)
 
-        cy.url().then(href => {
-            expect(href.endsWith("/demo/slow-route"), href).to.be.true
-        })
+        cy.url().should('match', /\/demo\/slow-route$/)
 
         cy.wait(shortWait)
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href => {
-            expect(href.endsWith("/demo"), href).to.be.true
-        })
+        cy.url().should('match', /\/demo$/)
 
     })
 })

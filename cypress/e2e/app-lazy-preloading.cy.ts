@@ -21,12 +21,11 @@ describe('Lazy Preloading', () => {
     it('should navigate to lazy-preloading', () => {
         cy.visit('http://localhost:3000/')
 
+        cy.wait(shortWait)
         cy.get('a[id*="lazy-preloading"]').click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo/lazy-preloading")).to.be.true;
-        })
+        cy.url().should('match', /\/demo\/lazy-preloading$/)
 
         cy.get("#panel1").should('have.id', 'panel1').contains("Panel1")
         cy.get("#panel2").should('not.exist')
@@ -84,9 +83,7 @@ describe('Lazy Preloading', () => {
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
 
     })
 

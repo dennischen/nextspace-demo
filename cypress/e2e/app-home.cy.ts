@@ -21,16 +21,12 @@ describe('Home', () => {
         // Start from the index page
         cy.visit('http://localhost:3000/')
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
 
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
 
     })
 })

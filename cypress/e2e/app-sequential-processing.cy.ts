@@ -20,12 +20,11 @@ describe('Sequential Processing', () => {
     it('should navigate to sequential-processing', () => {
         cy.visit('http://localhost:3000/')
 
+        cy.wait(shortWait)
         cy.get('a[id*="sequential-processing"]').click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/sequential-processing")).to.be.true;
-        })
+        cy.url().should('match', /\/demo\/sequential-processing$/)
 
         cy.get("#procNumber").type('{selectall}3')
         cy.get("#maxTimeout").type('{selectall}1000')
@@ -52,9 +51,7 @@ describe('Sequential Processing', () => {
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
 
     })
 })

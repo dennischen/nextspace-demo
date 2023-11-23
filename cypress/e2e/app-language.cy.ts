@@ -20,12 +20,11 @@ describe('Language', () => {
     it('should navigate to language page', () => {
         cy.visit('http://localhost:3000/')
 
+        cy.wait(shortWait)
         cy.get('a[id*="language"]').click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo/language")).to.be.true;
-        })
+        cy.url().should('match', /\/demo\/language$/)
 
         let node = cy.get('main option').should('have.length', 2).first()
         node.should('have.value', 'en').contains('English').should('have.attr', 'selected')
@@ -51,9 +50,7 @@ describe('Language', () => {
         cy.get("#home").click()
         cy.wait(shortWait)
 
-        cy.url().then(href=>{
-            expect(href.endsWith("/demo")).to.be.true;
-        })
+        cy.url().should('match', /\/demo$/)
 
     })
 })
