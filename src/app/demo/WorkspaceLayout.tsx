@@ -4,9 +4,10 @@
  * @author: Dennis Chen
  */
 import WorkspaceBoundary from '@nextspace/WorkspaceBoundary'
+import Modal from '@nextspace/components/Modal'
 import { WorkspaceConfig } from '@nextspace/types'
 import I18nextTranslationHolder from '@nextspace/utils/I18nextTranslationHolder'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import demoStyles from "./demo.module.scss"
 
 import translationLoader from '@nextspace/components/translationLoader'
@@ -23,7 +24,7 @@ import clsx from 'clsx'
 import "./global.scss"
 import { DemoThemepack } from './types'
 
-import { useTheme } from '@nextspace'
+import { useI18n, useTheme } from '@nextspace'
 
 //the default translation
 import fallbackTranslation from "./i18n/en.json"
@@ -69,10 +70,15 @@ export default function WorkspaceLayout({ defaultLanguage, defaultTheme, childre
             <Footer />
         </Layout>
     </WorkspaceBoundary >
+
 }
 
-// a internal component to using theme in WorkspaceBoundary
+// a internal component to using theme and modal fallback in WorkspaceBoundary
 function Layout({ children }: { children: React.ReactNode }) {
     const { styles: themeStyles } = useTheme().themepack as DemoThemepack
-    return <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
+    const i18n = useI18n()
+    return <Suspense fallback={<Modal>{i18n.l("loading")}...</Modal>}>
+        <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
+    </Suspense >
+
 }

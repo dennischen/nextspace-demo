@@ -35,11 +35,17 @@
             "err": "Error {{err}}"
         }
     },
+    "slowRoute": {
+        "@": "Slow route",
+        "hint": "This page was showed after a intentional timeout, you saw a routing progress bar if you navigate to this page by the link in home page",
+        "hint2": "If you navigate to this page directly (e.g. by url directly, or clicking browser reload), you will see a blank loading page first, then see the content"
+    },
     "action": {
         "clear": "Clear",
         "run": "Run",
         "cancel": "Cancel",
         "abort": "Abort"
     },
+    "loading": "Loading",
     "fallback": "Fallback"
 }

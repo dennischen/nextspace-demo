@@ -158,7 +158,7 @@ export default function Page({ }: PageProps) {
             handleProcessingState({ type: 'reset' })
         })
         handleProcessingState({ type: 'run', promise: sequentialPromise })
-    }, [workspace, i18n, procNumber, errNumber, maxTimeout, processingState?.promise])
+    }, [workspace, i18n, procNumber, errNumber, maxTimeout])
 
 
     //always use last processingState for aborting
