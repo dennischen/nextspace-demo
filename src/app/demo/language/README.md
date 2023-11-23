@@ -48,7 +48,7 @@ const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
 Use `translationLoader` in Layout module to load a translation by register components.
 ```tsx
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/enTranslationRegister'))
-const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslationRegister'))
+const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslatioRegister'))
 const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 ```
 
@@ -80,13 +80,13 @@ Use `translatioinRegister` in register to provide a loader component wrap
 ```tsx
 import translationRegister from "@nextspace/components/translationRegister"
 import translation from "./en.json"
-
+export { translation }
 export default translationRegister(translation)
 ```
 ```tsx
 import translationRegister from "@nextspace/components/translationRegister"
 import translation from "./zh.json"
-
+export { translation }
 export default translationRegister(translation)
 ```
 

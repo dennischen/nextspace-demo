@@ -37,8 +37,8 @@
     },
     "slowRoute": {
         "@": "Slow route",
-        "hint": "This page will be shown after a intentional timeout and you will see a routing progress bar if you navigate to this page by routing link at first time",
-        "hint2": "navigate to this page directly (e.g. by clicking reload), you will see a blank loading page first, then this page content"
+        "hint": "This page was showed after a intentional timeout, you saw a routing progress bar if you navigate to this page by the link in home page",
+        "hint2": "If you navigate to this page directly (e.g. by url directly, or clicking browser reload), you will see a blank loading page first, then see the content"
     },
     "action": {
         "clear": "Clear",

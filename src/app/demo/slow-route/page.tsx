@@ -13,7 +13,6 @@ export const dynamic = 'force-dynamic'
 
 export default async function ServerPage({ searchParams }: { searchParams?: { [key: string]: string | undefined } }) {
 
-
     const cookieStore = cookies()
     const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || DEFAULT_LANGUAGE
 
