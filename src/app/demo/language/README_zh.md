@@ -1,19 +1,19 @@
-# Client Component I18n Support
+# Client Component 多語系功能支援
 
-In the current official documentation of Next.js (App Router), the user's language is determined based on the segments in the route path (e.g., /{lang}/post/{post_id}). The language loading is then determined through async/wait layout/page. While this approach is friendly and reasonable for Server Pages/Components and SEO on content platforms, it becomes less convenient for applications/expert systems with multilingual support based on user preferences (e.g., stored in cookies or headers). This is particularly true for the aspect of supporting multiple languages in client pages/components.
+在nextjs(App Router)目前的[官方文件](https://nextjs.org/docs/app/building-your-application/routing/internationalization)中, 使用route path中的段落來決定目前使用者的語言, (e.g. /{lang}/post/{post_id}), 再經由async/wait layout/page來決定載入的語系.
+這對於純內容平台的Server Page/Component及SEO是友善合理的, 但在由使用者的喜好決定的多語系的應用/專家系統, (e.g. 在cookie或header), 就變成不是那麼的方便使用了, 尤其是在Client Page/Component使用多國語系這一方面的支援.
 
-The purpose of the `I18n` feature is to address how to make it more convenient for Client/Server Components to use `I18n` for multilingual support in a consistent manner and to allow the language to be loaded when needed. (The usage of I18n in Server Components is explained differently and is outlined in [TODO]().)
+`I18n`這個功能, 其目的是在解決, 如何在讓Client/Server Component能更方便的使用相同用法的`I18n`的多語系功能, 並且讓該語系能在需要時被載入.(Server Component使用I18n的功能方式不同，在[TODO]()展示中說明) 
 
+## 取得多國語系字串
+[[page.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/language/page.tsx)]
 
-
-## Obtaining Multilingual Strings
-[Source](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/language/page.tsx)
-Use `useI18n()` to obtain `I18n`.
+使用`useI18n()`取得`I18n`
 ```tsx
 const i18n = useI18n()
 ```
 
-Utilize `i18n.l(key)` to retrieve the string corresponding to the given key.
+使用`i18n.l(key)`來取得對應key的字串.
 ```tsx
 i18n.l('key1')
 // by subkey (when using i18next)
@@ -24,8 +24,8 @@ i18n.l('key3', {unit:'x'})
 <span>{i18n.l('key4')}</span>
 ```
 
-## Providing User Language Preferences
-Use `i18n.changeLanguage(language)` to set the current language. `i18n.languages` represents the available languages, and `i18n.language`` indicates the current language.
+## 提供使用者設定喜好語系
+使用`i18n.changeLanguage(language)`來設定目前的語系, `i18n.languages`是可使用的語系, `1i8n.language`是目前的語系
 ```tsx
 const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(evt.target.value)
@@ -41,21 +41,20 @@ const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
 ```
 ---
 
-# Configuration
-Your application must provide multilingual support through the configuration of language files (JSON).
+## 設定
+你的應用程式必需經由設定一些語系文件(Json)來提供多國語系
 
-## Define TranslationLoader and WorkspaceBoundary in Layout
+### 在Layout中定義TranslationLoader跟WorkspaceBoundary
 [[DemoLayout.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/DemoLayout.tsx)]
 
-
-In the Layout module, use `translationLoader(language, loader-module)` to provide dynamically loaded multilingual content. This approach allows each translation to be encapsulated in separate files.
+在Layout模組中, 使用`translationLoader(language, loader-module)`來提供動態載入的多語系內容, 這種方式建立方式能讓該語系內容被分別封裝在獨立的檔案中
 ```tsx
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/enTranslationRegister'))
 const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslatioRegister'))
 const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 ```
 
-In the Layout Component, use `WorkspaceBoundary` and configure `translationHolder`, specifying the implementation as `I18nextTranslationHolder` (you can also make no configuration, but the default TranslationHolder provides a simple key-value map for multilingual content).
+在Layout Component中, 使用`WorkspaceBoundary`及設定`translationHolder`並指定`I18nextTranslationHolder`實作.(你也可以不作任何設定, 但預設的TranslationHolder只能提供簡易的key-value map的多語系內容)
 ```tsx
 export default function DemoLayout({ defaultLanguage, children }: DemoLayoutProps) {
 
@@ -77,8 +76,8 @@ export default function DemoLayout({ defaultLanguage, children }: DemoLayoutProp
 }
 ```
 
-## Define Language Modules
-In the language modules, use export default `translationRegister(translation)` to export the translation.
+### 定義語系模組
+在語系模組使用`export default translatioinRegister(translation)`來匯出語系內容
 
 [[enTranslationRegister.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/i18n/enTranslationRegister.tsx)]
 ```tsx
@@ -87,7 +86,6 @@ import translation from "./en.json"
 export { translation }
 export default translationRegister(translation)
 ```
-
 [[zhTranslationRegister.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/i18n/zhTranslationRegister.tsx)]
 ```tsx
 import translationRegister from "@nextspace/components/translationRegister"
@@ -96,8 +94,8 @@ export { translation }
 export default translationRegister(translation)
 ```
 
-## Use Layout Component
-In [layout.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/layout.tsx), use the Layout component.
+### 使用Layout Component
+在[layout.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/layout.tsx)使用Layout.
 ```tsx
 const defaultLanguage = "en"
 

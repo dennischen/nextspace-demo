@@ -38,13 +38,13 @@ const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./th
 const DarkredThemepackLoader = themepackLoader("darkred", () => import('./themes/darkredThemepackRegister'))
 const themepackLoaders = [LightblueThemepackLoader, DarkredThemepackLoader]
 
-export type WorkspaceLayoutProps = {
+export type DemoLayoutProps = {
     defaultLanguage?: string,
     defaultTheme?: string,
     children: React.ReactNode
 }
 
-export default function WorkspaceLayout({ defaultLanguage, defaultTheme, children }: WorkspaceLayoutProps) {
+export default function DemoLayout({ defaultLanguage, defaultTheme, children }: DemoLayoutProps) {
 
     defaultLanguage = translationLoaders.find((l) => l.language === defaultLanguage)?.language || translationLoaders[0].language
     defaultTheme = themepackLoaders.find((t) => t.code === defaultTheme)?.code || themepackLoaders[0].code

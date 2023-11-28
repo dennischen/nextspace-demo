@@ -6,8 +6,12 @@
 
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import WorkspaceLayout from "./WorkspaceLayout"
+import DemoLayout from "./DemoLayout"
 import { COOKIE_LANGUAGE, COOKIE_THEME, DEFAULT_LANGUAGE, DEFAULT_THEME } from './constants'
+
+//prevent blank flash
+import "./themes/darkred.module.scss"
+import "./themes/lightblue.module.scss"
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
@@ -21,7 +25,7 @@ export type LayoutProps = {
     children: React.ReactNode
 }
 
-export default function DemoLayout({ children }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
     const cookieStore = cookies()
     const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || DEFAULT_LANGUAGE
     const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || DEFAULT_THEME
@@ -31,17 +35,17 @@ export default function DemoLayout({ children }: LayoutProps) {
     //do this will prevent page flash effect (css loaded after html render), 
     //however this make layout.css contains all theme css
     //use switch theme case by case doesn't help css split (included in build time?)
-    switch (cookieTheme) {
-        case 'darkred':
-            ()=>import("./themes/darkred.module.scss")
-            break;
-        case 'lightblue':
-        default:
-            ()=>import("./themes/lightblue.module.scss")
-            break;
-    }
+    // switch (cookieTheme) {
+    //     case 'darkred':
+    //         ()=>import("./themes/darkred.module.scss")
+    //         break;
+    //     case 'lightblue':
+    //     default:
+    //         ()=>import("./themes/lightblue.module.scss")
+    //         break;
+    // }
 
-    return <WorkspaceLayout defaultLanguage={cookieLanguage} defaultTheme={cookieTheme}>
+    return <DemoLayout defaultLanguage={cookieLanguage} defaultTheme={cookieTheme}>
         {children}
-    </WorkspaceLayout >
+    </DemoLayout >
 }

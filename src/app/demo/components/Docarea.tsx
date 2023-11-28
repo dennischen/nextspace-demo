@@ -4,7 +4,7 @@
  * @author: Dennis Chen
  */
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import clsx from "clsx"
 import Markdown from "./Markdown"
@@ -13,22 +13,40 @@ import compStyles from './docarea.module.scss'
 import bookOpen from "@/app/demo/assets/book-open.svg?as_txt"
 import book from "@/app/demo/assets/book.svg?as_txt"
 import InnerHTML from "./InnerHTML"
+import { useI18n } from "@nextspace"
 
 export type DocareaProps = {
     children?: React.ReactNode
-    markdown?: string
+    contentMarkdown?: string
+    contentSrc?: string
     className?: string
     styles?: React.CSSProperties
     defaultShow?: boolean
 }
 
-export default function Docarea({ children, markdown, className, styles, defaultShow = false }: DocareaProps) {
+export default function Docarea({ children, contentMarkdown, contentSrc, className, styles, defaultShow = false }: DocareaProps) {
+
+
+    const i18n = useI18n()
 
     const [show, setShow] = useState(defaultShow)
+
+    const [markdown, setMarkdown] = useState(contentMarkdown)
 
     const onToggle = () => {
         setShow(!show)
     }
+
+    useEffect(() => {
+        if (!markdown && show && contentSrc) {
+            fetch(contentSrc).then((res) => {
+                res.ok && res.text().then((markdown) => {
+                    setMarkdown(markdown)
+                })
+            })
+
+        }
+    }, [markdown, show, contentSrc])
 
 
     return <div className={clsx("_docarea", compStyles.root, className)} style={styles}>
@@ -39,6 +57,10 @@ export default function Docarea({ children, markdown, className, styles, default
         <div className={compStyles['grid-item']}>
             {children}
         </div>
-        {show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}><Markdown content={markdown}/></div>}
+        {show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}>
+            {(!markdown && contentSrc) ? <div className={compStyles.loading}>{i18n.l('loading')}...</div> :
+                <Markdown content={markdown} />
+            }
+        </div>}
     </div>
 }

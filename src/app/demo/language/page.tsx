@@ -9,8 +9,10 @@ import { COOKIE_LANGUAGE } from "@/app/demo/constants"
 import demoStyles from "@/app/demo/demo.module.scss"
 import Cookies from 'universal-cookie'
 
-import { useI18n, useWorkspace } from "@nextspace"
-import readme from './README.md?as_txt'
+import { useI18n } from "@nextspace"
+
+import readme_default from './README.md?as_uri'
+import readme_zh from './README_zh.md?as_uri'
 
 type PageProps = {
 }
@@ -25,8 +27,15 @@ export default function Page({ }: PageProps) {
         cookies.set(COOKIE_LANGUAGE, evt.target.value)
     }
 
+
+    let readmeUri = readme_default;
+    switch(i18n.language){
+        case 'zh': 
+            readmeUri = readme_zh
+    }
+
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} markdown={readme} >
+        <Docarea className={demoStyles.docarea} contentSrc={readmeUri}>
             <div className={demoStyles.vlayout} style={{ gap: 8 }}>
                 {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
                 <label>
