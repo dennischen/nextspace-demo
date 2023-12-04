@@ -1,22 +1,26 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES2015",
+        "module": "esnext", //nextjs need this
+        "moduleResolution": "Node10",
+        "esModuleInterop": true,
+        "noImplicitAny": true,
         "lib": [
             "dom",
             "dom.iterable",
             "esnext"
         ],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "noEmit": true,
-        "esModuleInterop": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
         "jsx": "preserve",
+        "skipLibCheck": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "declaration": true,
+        "sourceMap": false,
+        "noEmit": true,
         "incremental": true,
+        "isolatedModules": true,
+        "forceConsistentCasingInFileNames": true,
         "plugins": [
             {
                 "name": "next"
