@@ -6,11 +6,8 @@
 import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 
-import rehypeExternalLinks from 'rehype-external-links'
-import rehypeSanitize from 'rehype-sanitize'
-import rehypeStringify from 'rehype-stringify'
-import { remark } from 'remark'
-import remarkRehype from 'remark-rehype'
+import { Marked, Renderer, Token, Tokenizer } from 'marked'
+
 
 import Prism from "prismjs"
 import 'prismjs/components/prism-jsx'
@@ -27,14 +24,28 @@ export type MarkdownProps = {
 
 async function remarkContent(source: string) {
 
-    const processedContent = await remark()
-        // .use(remarkHtml) = .use(remarkRehype).use(rehypeSanitize).use(rehypeStringify).
-        .use(remarkRehype)
-        .use(rehypeSanitize)
-        .use(rehypeExternalLinks, { target: '_blank', rel: ['nofollow'] })
-        .use(rehypeStringify)
-        .process(source)
-    const contentHtml = processedContent.toString()
+    const marked = new Marked()
+    const tokenizer: Partial<Tokenizer> = {
+        // link(src: string) {
+        //     return undefined
+        // }
+    }
+    const walkTokens = async (token: Token) => {
+        // switch (token.type) {
+        //     case 'link':
+        //         break
+        // }
+    }
+    const defaultRenderer = new Renderer()
+    const renderer: Partial<Renderer> = {
+        link(href: string, title: string | null | undefined, text: string) {
+           const a = defaultRenderer.link(href, title, text) ;
+           return a.replace("<a ","<a target='_blank' ");
+        }
+    }
+
+    marked.use({ /*tokenizer, */ walkTokens, renderer, async: true })
+    const contentHtml = await marked.parse(source)
     return contentHtml
 }
 

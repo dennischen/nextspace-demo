@@ -6,7 +6,7 @@
 `I18n`這個功能, 其目的是在解決, 如何在讓Client/Server Component能更方便的使用相同用法的`I18n`的多語系功能, 並且讓該語系能在需要時被載入.(Server Component使用I18n的功能方式不同，在[TODO]()展示中說明) 
 
 ## 取得多國語系字串
-[[page.tsx](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/language/page.tsx)]
+[[Source](https://github.com/dennischen/nextspace-demo/blob/master/src/app/demo/language/page.tsx)]
 
 使用`useI18n()`取得`I18n`
 ```tsx
