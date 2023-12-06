@@ -39,6 +39,12 @@ const nextConfig = {
             type: 'asset/resource'
         })
 
+        //web asm for tiktoken
+        config.experiments = {
+            asyncWebAssembly: true,
+            layers: true,
+        }
+
         return config
     },
 }

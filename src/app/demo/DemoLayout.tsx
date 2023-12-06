@@ -41,10 +41,11 @@ const themepackLoaders = [LightblueThemepackLoader, DarkredThemepackLoader]
 export type DemoLayoutProps = {
     defaultLanguage?: string,
     defaultTheme?: string,
+    envVariables?: { [key: string]: string | undefined}
     children: React.ReactNode
 }
 
-export default function DemoLayout({ defaultLanguage, defaultTheme, children }: DemoLayoutProps) {
+export default function DemoLayout({ defaultLanguage, defaultTheme, envVariables, children }: DemoLayoutProps) {
 
     defaultLanguage = translationLoaders.find((l) => l.language === defaultLanguage)?.language || translationLoaders[0].language
     defaultTheme = themepackLoaders.find((t) => t.code === defaultTheme)?.code || themepackLoaders[0].code
@@ -62,7 +63,7 @@ export default function DemoLayout({ defaultLanguage, defaultTheme, children }: 
     return <WorkspaceBoundary
         defaultLanguage={defaultLanguage} translationLoaders={translationLoaders}
         defaultTheme={defaultTheme} themepackLoaders={themepackLoaders}
-        config={config} >
+        envVariables={envVariables} config={config} >
         <Layout>
             <Banner />
             {children}

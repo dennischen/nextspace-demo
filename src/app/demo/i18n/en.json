@@ -40,6 +40,21 @@
         "hint": "This page was showed after a intentional timeout, you saw a routing progress bar if you navigate to this page by the link in home page",
         "hint2": "If you navigate to this page directly (e.g. by url directly, or clicking browser reload), you will see a blank loading page first, then see the content"
     },
+    "openai":{
+        "@": "OpenAI",
+        "apikey": "API Key",
+        "markdown": "Markdown",
+        "preview": "Preview",
+        "calculateToken": "Calculate token",
+        "tokenNum": "Token number",
+        "translate": "Translate",
+        "viewkey": "View API key",
+        "msg": {
+            "tokenCalculation": "It cloud contains {{tokenNum}} tokens in the markdown",
+            "calculationAborted": "The calculation has been aborted",
+            "err": "Error {{err}}"
+        }
+    },
     "action": {
         "clear": "Clear",
         "run": "Run",
