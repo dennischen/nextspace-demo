@@ -2,9 +2,9 @@ import type { AbortablePromise, Process, Workspace } from "@nextspace"
 import { sequential } from '@nextspace/utils/process'
 import { Marked, Token, Tokens } from "marked"
 import OpenAI, { ClientOptions } from "openai"
-import { ChatCompletionMessageParam } from "openai/resources"
+import { ChatCompletionMessageParam, ChatCompletionRole } from "openai/resources"
 
-const transTypes = new Set(['heading', 'paragraph', 'list', 'table'])
+const targetTokenTypes = new Set(['heading', 'paragraph', 'list', 'table'])
 
 const renderRaw = (output: string[], raw: string, blockdepth: number) => {
     if (blockdepth > 0) {
@@ -20,7 +20,7 @@ const renderRaw = (output: string[], raw: string, blockdepth: number) => {
 }
 const renderMarkdown = (tokens: Token[], output: string[] = [], blockdepth: number = 0) => {
     tokens && tokens.forEach((token: Token) => {
-        if (transTypes.has(token.type)) {
+        if (targetTokenTypes.has(token.type)) {
             renderRaw(output, token.raw, blockdepth)
         } else {
             if ((token as any).tokens) {
@@ -41,13 +41,13 @@ const renderMarkdown = (tokens: Token[], output: string[] = [], blockdepth: numb
     return output
 }
 
-const extractTransTokens = (tokens: Token[], transNodesMap: Map<string, Token[]> = new Map()) => {
+const extractTargetTokens = (tokens: Token[], targetNodesMap: Map<string, Token[]> = new Map()) => {
     tokens && tokens.forEach((token: Token) => {
-        if (transTypes.has(token.type)) {
-            if (transNodesMap.has(token.raw)) {
-                transNodesMap.get(token.raw)?.push(token)
+        if (targetTokenTypes.has(token.type)) {
+            if (targetNodesMap.has(token.raw)) {
+                targetNodesMap.get(token.raw)?.push(token)
             } else {
-                transNodesMap.set(token.raw, [token])
+                targetNodesMap.set(token.raw, [token])
             }
             //we will translate it by it's raw
             delete (token as any).tokens
@@ -55,36 +55,11 @@ const extractTransTokens = (tokens: Token[], transNodesMap: Map<string, Token[]>
             delete (token as any).items
         } else {
             if ((token as any).tokens) {
-                extractTransTokens((token as any).tokens, transNodesMap)
+                extractTargetTokens((token as any).tokens, targetNodesMap)
             }
         }
     })
-    return transNodesMap
-}
-
-async function sendAndResponse(openai: OpenAI, gptModel: string, message: string, messages: ChatCompletionMessageParam[]) {
-    const requestMessage: ChatCompletionMessageParam = {
-        role: 'user',
-        content: message,
-    }
-    messages.push(requestMessage)
-    const completion = await openai.chat.completions.create({
-        model: gptModel,
-        messages: messages,
-    })
-    const responseMessage = completion.choices?.[0]?.message
-    if (responseMessage) {
-        messages.push({
-            role: responseMessage.role,
-            content: responseMessage.content,
-        })
-        return {
-            prompt_tokens: completion.usage?.prompt_tokens,
-            completion_tokens: completion.usage?.completion_tokens,
-            total_tokens: completion.usage?.total_tokens,
-            content: responseMessage.content
-        }
-    }
+    return targetNodesMap
 }
 
 
@@ -94,12 +69,21 @@ export type TranslationReport = {
     completionTokens?: number[]
 }
 
+export const DEFAULT_INSTURCTION = `You are an multilingual assistant helping me translate text into \${targetLanguage}.\n`
+    + `You must strictly follow the rules below:\n`
+    + `* Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n`
+    + `* Never change the contents of code blocks even if they appear to have a bug.\n`
+    + `* Always preserve the original line breaks. Do not add or remove blank lines.\n`
+    + `* Never touch HTML-like tags such as <Notes>.\n`
+    + `* Never touch the permalink such as {/*examples*/} at the end of each heading`
+
 
 export default function translateMarkdown(content: string, clientOptions: ClientOptions,
     options?: {
         srcLanguage?: string,
         targetLanguage?: string,
         instruction?: string
+        conversation?: boolean,
         gptModel?: string,
         log?: (text: string) => void
         report?: (report: TranslationReport) => void
@@ -108,9 +92,9 @@ export default function translateMarkdown(content: string, clientOptions: Client
 ): AbortablePromise<TranslationReport> {
 
     const {
-        srcLanguage = 'English',
         targetLanguage = '繁體中文',
         gptModel = 'gpt-3.5-turbo',
+        conversation = false,
         log = (text: string) => {
             console.log(text)
         },
@@ -118,68 +102,87 @@ export default function translateMarkdown(content: string, clientOptions: Client
         workspace
     } = options ?? {}
     // thanks https://github.com/smikitky/chatgpt-md-translator/blob/main/prompt-example.md
-    let instruction = options?.instruction ?? `You are an multilingual assistant helping me translate text into ${targetLanguage}.\n`
-        + `You must strictly follow the rules below:\n`
-        + `* Never change the Markdown markup structure. Don't add or remove links. Do not change any URL.\n`
-        + `* Never change the contents of code blocks even if they appear to have a bug.\n`
-        + `* Always preserve the original line breaks. Do not add or remove blank lines.\n`
-        + `* Never touch HTML-like tags such as <Notes>.\n`
-        + `* Never touch the permalink such as {/*examples*/} at the end of each heading\n`
-        + 'Say OK when your are ready.'
+    let instruction = options?.instruction || DEFAULT_INSTURCTION
 
-    let script = `(\`${instruction.replaceAll('\n', '\\n').replaceAll('\`', '\\`')}\`)`
-    instruction = eval(script)
+    try {
+        let script = `(\`${instruction.replaceAll('\n', '\\n').replaceAll('\`', '\\`')}\`)`
+        instruction = eval(script)
+    } catch (err) {
+        //for error handling consistant, re throw error in aysnc
+        return sequential([async () => {
+            throw err
+        }])
+    }
 
     //process
     const marked = new Marked()
     const rootTokensList = marked.lexer(content)
-    const transTokenMap = extractTransTokens(rootTokensList)
-    const transTokens = Array.from(transTokenMap.entries())
+    const targetTokenMap = extractTargetTokens(rootTokensList)
+    const targetTokens = Array.from(targetTokenMap.entries())
 
-    log(`Start ${transTokens.length} translation by OpenAI Chat Completions API`)
+    log(`Start ${targetTokens.length} translations by OpenAI Chat Completions API`)
+    log(`Instrucation: ${instruction}`)
 
     const openai = new OpenAI(clientOptions)
 
     const promptTokens: number[] = []
     const completionTokens: number[] = []
 
-    const messages: ChatCompletionMessageParam[] = []
+    const rootMessages: ChatCompletionMessageParam[] = []
 
     const processes: Process[] = []
 
-
-    processes.push(async () => {
-        const instructionResponse = await sendAndResponse(openai, gptModel, instruction, messages)
-        log(`0.${instruction} >> ${instructionResponse?.content}`)
-        promptTokens.push(instructionResponse?.prompt_tokens || 0)
-        completionTokens.push(instructionResponse?.completion_tokens || 0)
-        return {
-            content: '',
-            promptTokens: [],
-            completionTokens: [],
-        }
+    rootMessages.push({
+        role: 'system',
+        content: instruction
     })
-    for (var i = 0; i < transTokens.length; i++) {
-        const idx = i
-        const text = transTokens[i][0]
-        const tokens = transTokens[i][1]
-        processes.push(async () => {
-            const response = await sendAndResponse(openai, gptModel, text, messages)
-            log(`${idx + 1}.${text} >> ${response?.content}`)
-            promptTokens.push(response?.prompt_tokens || 0)
-            completionTokens.push(response?.completion_tokens || 0)
 
-            tokens.forEach((node) => {
-                let content = response?.content || text
-                //gpt is not so smart as you want, it usually don't follow instruction precisely
-                content = content + (content.endsWith('\n') ? '' : '\n');
-                (node as Token).raw = content
+    for (var i = 0; i < targetTokens.length; i++) {
+        const idx = i
+        const text = targetTokens[i][0]
+        const tokens = targetTokens[i][1]
+        processes.push(async () => {
+
+            const localMessages = [...rootMessages]
+
+            localMessages.push({
+                role: 'user',
+                content: text
             })
 
-            const transMarkdown = renderMarkdown(rootTokensList).join('')
+            const completion = await openai.chat.completions.create({
+                model: gptModel,
+                messages: localMessages,
+            })
+            const completionMessage = completion.choices?.[0]?.message
+
+
+            if (conversation) {
+                localMessages.push({
+                    role: 'assistant',
+                    content: completionMessage?.content || ''
+                })
+                rootMessages.splice(0)
+                rootMessages.push(...localMessages)
+            }
+
+            const content = completionMessage?.content || text
+
+            log(`${idx + 1}.${text} >> ${content}`)
+            promptTokens.push(completion?.usage?.prompt_tokens || 0)
+            completionTokens.push(completion?.usage?.completion_tokens || 0)
+
+            tokens.forEach((node) => {
+                let raw = content
+                //gpt is not so smart as you want, it usually don't follow instruction precisely
+                raw = raw + (raw.endsWith('\n') ? '' : '\n');
+                (node as Token).raw = raw
+            })
+
+            const translatedMarkdown = renderMarkdown(rootTokensList).join('')
 
             const result = {
-                content: transMarkdown,
+                content: translatedMarkdown,
                 promptTokens: [...promptTokens],
                 completionTokens: [...completionTokens],
             }
@@ -191,9 +194,9 @@ export default function translateMarkdown(content: string, clientOptions: Client
     }
 
     processes.push(async () => {
-        const transMarkdown = renderMarkdown(rootTokensList).join('')
+        const translatedMarkdown = renderMarkdown(rootTokensList).join('')
         const result = {
-            content: transMarkdown,
+            content: translatedMarkdown,
             promptTokens: [...promptTokens],
             completionTokens: [...completionTokens],
         }

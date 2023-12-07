@@ -42,15 +42,22 @@
     },
     "openai":{
         "@": "OpenAI",
+        "title": "Multilingual Markdown Translation by OpenAI",
         "apikey": "API Key",
         "markdown": "Markdown",
-        "preview": "Preview",
+        "gptModel": "Gpt model",
+        "targetLanguage": "Target language",
+        "previewHtml": "Preview HTML",
         "calculateToken": "Calculate token",
         "tokenNum": "Token number",
         "translate": "Translate",
         "viewkey": "View API key",
-        "transMarkdown": "Translated markdown",
-        "transTokenNum": "Translation token number",
+        "translatedMarkdown": "Translated markdown",
+        "translatedTokenNum": "Token cost",
+        "conversation": "Conversation",
+        "option": "Option",
+        "customInstruction": "Custom instruction",
+        "renderedHtml": "Rendered Html",
         "msg": {
             "tokenCalculation": "It cloud contains {{tokenNum}} tokens in the markdown",
             "calculationAborted": "The calculation has been aborted",
@@ -59,11 +66,17 @@
             "translationAborted": "The translation has been aborted"
         }
     },
+    "state":{
+        "running": "Running",
+        "aborting": "Aborting",
+        "stopped": "Stopped"
+    },
     "action": {
         "clear": "Clear",
         "run": "Run",
         "cancel": "Cancel",
-        "abort": "Abort"
+        "abort": "Abort",
+        "default": "Default"
     },
     "loading": "Loading",
     "fallback": "Fallback"

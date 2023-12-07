@@ -3,7 +3,7 @@
  * @file-created: 2023-10-31
  * @author: Dennis Chen
  */
-
+import Docarea from "@/app/demo/components/Docarea"
 import demoStyles from "@/app/demo/demo.module.scss"
 import { useI18n, useTheme, useWorkspace } from "@nextspace"
 import { AbortablePromise } from "@nextspace/types"
@@ -13,8 +13,14 @@ import { ClientOptions } from 'openai'
 import { ChangeEvent, MouseEvent, useCallback, useDeferredValue, useEffect, useReducer, useState } from "react"
 
 import { DemoThemepack, TiktokenCalculation } from "@/app/demo/types"
-import standard from './standard.md?as_txt'
-import translateMarkdown from "./translateMarkdown"
+import options from './options.json'
+import sample from './sample.md?as_txt'
+import translateMarkdown, { DEFAULT_INSTURCTION } from "./translateMarkdown"
+
+import readme_default from './README.md?as_uri'
+import readme_zh from './README_zh.md?as_uri'
+
+const CUSTOM_VALUE = '--'
 
 type PageProps = {
 }
@@ -76,67 +82,96 @@ export default function Page({ }: PageProps) {
     const publicApiKey = workspace.envVariables.DEMO_PUBLIC_OPENAI_API_KEY || ''
 
     const [apikey, setApikey] = useState(publicApiKey)
-    const [instruction, setInstruction] = useState('')
+    const [instruction, setInstruction] = useState(DEFAULT_INSTURCTION)
     const [viewkey, setViewkey] = useState(false)
-    const [markdown, setMarkdown] = useState(standard)
-    const [preview, setPreview] = useState(false)
+    const [markdown, setMarkdown] = useState(sample)
+    const [optPreview, setOptPreview] = useState(false)
+    const [optConversation, setOptConversation] = useState(true)
+    const [optInstruction, setOptInstruction] = useState(false)
+    const [optGptModel, setOptGptModel] = useState(options.default.gptModel)
+    const [optTargetLanguage, setOptTargetLanguage] = useState(options.default.targetLanguage)
+
+
     const [renderedHtml, setRenderedHtml] = useState('')
-    const [transMarkdown, setTransMarkdown] = useState('')
-    const [transRenderedHtml, setTransRenderedHtml] = useState('')
+    const [translatedMarkdown, setTranslatedMarkdown] = useState('')
+    const [translateddHtml, setTranslatedHtml] = useState('')
     const [tokentNum, setTokenNum] = useState(0)
     const [transTokentNum, setTransTokenNum] = useState(0)
 
     const deferredApikey = useDeferredValue(apikey)
     const deferredInstruction = useDeferredValue(instruction)
+    const deferredOptPreview = useDeferredValue(optPreview)
+
     const deferredMarkdown = useDeferredValue(markdown)
-    const deferredPreview = useDeferredValue(preview)
-    const deferredTransMarkdown = useDeferredValue(transMarkdown)
+    const deferredTranslatedMarkdown = useDeferredValue(translatedMarkdown)
 
-    const onChangeApikey = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+    const onChangeApikey = (evt: ChangeEvent<HTMLInputElement>) => {
         setApikey(evt.target.value)
-    }, [])
-    const onChangeInstruction = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+    }
+    const onClickDefaultInstruction = (evt: MouseEvent) => {
+        setInstruction(DEFAULT_INSTURCTION)
+    }
+    const onChangeInstruction = (evt: ChangeEvent<HTMLTextAreaElement>) => {
         setInstruction(evt.target.value)
-    }, [])
-    const onChangeViewkey = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+    }
+    const onChangeViewkey = (evt: ChangeEvent<HTMLInputElement>) => {
         setViewkey(evt.target.checked)
-    }, [])
+    }
+    const onChangeOptGptModel = (evt: ChangeEvent<HTMLSelectElement>) => {
+        setOptGptModel(evt.target.value)
+    }
+    const onChangeOptTargetLanguage = (evt: ChangeEvent<HTMLSelectElement>) => {
+        if (evt.target.value === CUSTOM_VALUE) {
+            setOptInstruction(true)
+        } else {
+            setOptTargetLanguage(evt.target.value)
+        }
+    }
 
-    const onChangePreview = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setPreview(evt.target.checked)
+    const onChangeOptPreview = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setOptPreview(evt.target.checked)
     }, [])
-    const onChangeMarkdown = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => {
+    const onChangeOptConversation = (evt: ChangeEvent<HTMLInputElement>) => {
+        setOptConversation(evt.target.checked)
+    }
+    const onChangeOptInstruction = (evt: ChangeEvent<HTMLInputElement>) => {
+        setOptInstruction(evt.target.checked)
+    }
+
+    const onChangeMarkdown = (evt: ChangeEvent<HTMLTextAreaElement>) => {
         setMarkdown(evt.target.value)
-    }, [])
-    const onChangeTransMarkdown = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => {
-        setTransMarkdown(evt.target.value)
-    }, [])
+    }
+    const onChangeTransMarkdown = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+        setTranslatedMarkdown(evt.target.value)
+    }
 
 
     const [processingState, handleProcessingState] = useReducer(processingStateReducer, { state: 'stopped' })
-    const resetProcessing = useCallback(() => {
+    const resetProcessingState = () => {
         handleProcessingState({ type: 'reset' })
-    }, [])
-    const runProcessing = useCallback((promise: AbortablePromise) => {
+    }
+    const setRunProcessingState = (promise: AbortablePromise) => {
         handleProcessingState({ type: 'run', promise })
-    }, [])
-
+    }
+    const setAbortProcessingState = () => {
+        handleProcessingState({ type: 'abort' })
+    }
 
     const [logs, handleLogs] = useReducer(logsReducer, [])
-    const addLog = useCallback((log: string) => {
+    const addLog = (log: string) => {
         handleLogs({ type: 'add', log })
-    }, [])
-    const clearLogs = useCallback(() => {
+    }
+    const clearLogs = () => {
         handleLogs({ type: 'clear' })
-    }, [])
+    }
 
     const running = processingState.state === 'running'
     const aborting = processingState.state === 'aborting'
     const stopped = processingState.state === 'stopped'
 
-    const onClickClear = useCallback((evt: MouseEvent) => {
+    const onClickClear = (evt: MouseEvent) => {
         clearLogs()
-    }, [])
+    }
 
     const onClickCalculate = useCallback((evt: MouseEvent) => {
         const calculationPromise = workspace.withProcessIndicator(() => {
@@ -158,13 +193,13 @@ export default function Page({ }: PageProps) {
             } else {
                 addLog(i18n.l('openai.msg.err', { err: res.statusText }))
             }
-            resetProcessing()
+            resetProcessingState()
         }).catch((err) => {
             addLog(i18n.l('openai.msg.err', { err }))
-            resetProcessing()
+            resetProcessingState()
         })
 
-        runProcessing(calculationPromise)
+        setRunProcessingState(calculationPromise)
     }, [workspace, i18n, deferredMarkdown])
 
     const onClickTranslate = useCallback((evt: MouseEvent) => {
@@ -174,20 +209,23 @@ export default function Page({ }: PageProps) {
         }
 
         const translationPromise = translateMarkdown(deferredMarkdown, clientOptions, {
-            instruction: deferredInstruction || undefined,
+            instruction: optInstruction ? deferredInstruction : undefined,
+            conversation: optConversation,
+            targetLanguage: optTargetLanguage || undefined,
+            gptModel: optGptModel || optGptModel,
             workspace,
             log: addLog,
             report: (report) => {
-                setTransMarkdown(report.content || '')
+                setTranslatedMarkdown(report.content || '')
             }
         })
+
         translationPromise.then((report) => {
             if (translationPromise.aborted()) {
                 addLog(i18n.l('openai.msg.translationAborted'))
-                setTransMarkdown(report.content || '')
             } else {
                 addLog(i18n.l('openai.msg.translationDown'))
-                setTransMarkdown(report.content || '')
+                setTranslatedMarkdown(report.content || '')
             }
 
             const promptTokens = report.promptTokens || []
@@ -207,25 +245,26 @@ export default function Page({ }: PageProps) {
 
             setTransTokenNum(promptTotal + completionTotal)
 
-            resetProcessing()
+            resetProcessingState()
         }).catch((err) => {
             console.error(err)
             addLog(i18n.l('openai.msg.err', { err }))
-            resetProcessing()
+            resetProcessingState()
         })
-        runProcessing(translationPromise)
-    }, [workspace, i18n, deferredMarkdown, deferredApikey, deferredInstruction])
+        setRunProcessingState(translationPromise)
+        setTranslatedMarkdown('')
+    }, [workspace, i18n, deferredMarkdown, deferredApikey, optGptModel, optTargetLanguage, optConversation, optInstruction, deferredInstruction])
 
 
     //always use last processingState for aborting
-    const onClickCancel = useCallback((evt: MouseEvent) => {
+    const onClickAbort = useCallback((evt: MouseEvent) => {
         processingState.promise?.abort()
-        handleProcessingState({ type: 'abort' })
+        setAbortProcessingState()
     }, [processingState?.promise])
 
 
     useEffect(() => {
-        if (deferredMarkdown && deferredPreview) {
+        if (deferredMarkdown && deferredOptPreview) {
             (async function _() {
                 const marked = new Marked({ async: true })
                 const html = await marked.parse(deferredMarkdown)
@@ -235,19 +274,19 @@ export default function Page({ }: PageProps) {
             setRenderedHtml('')
         }
 
-    }, [deferredMarkdown, deferredPreview])
+    }, [deferredMarkdown, deferredOptPreview])
     useEffect(() => {
-        if (deferredTransMarkdown && deferredPreview) {
+        if (deferredTranslatedMarkdown && deferredOptPreview) {
             (async function _() {
                 const marked = new Marked({ async: true })
-                const html = await marked.parse(deferredTransMarkdown)
-                setTransRenderedHtml(html)
+                const html = await marked.parse(deferredTranslatedMarkdown)
+                setTranslatedHtml(html)
             })()
         } else {
-            setTransRenderedHtml('')
+            setTranslatedHtml('')
         }
 
-    }, [deferredTransMarkdown, deferredPreview])
+    }, [deferredTranslatedMarkdown, deferredOptPreview])
 
     //abort also when page exit
     useEffect(() => {
@@ -257,68 +296,117 @@ export default function Page({ }: PageProps) {
         }
     }, [processingState?.promise])
 
-    return <main className={demoStyles.main}>
-        <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8 }}>
-            {i18n.l('openai')}
-            <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8, padding: '0px 8px' }}>
-                <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
-                    <div className={demoStyles.hlayout}>
-                        {i18n.l('openai.apikey')}
-                        (<label className={demoStyles.hlayout}>
-                            {i18n.l('openai.viewkey')}
-                            <input type="checkbox" checked={viewkey} onChange={onChangeViewkey} />
-                        </label>)
-                    </div>
-                    <input id="apikey" type={viewkey ? 'text' : 'password'} className={demoStyles.fullwidth} disabled={!stopped} value={apikey} onChange={onChangeApikey}></input>
-                </div>
-                <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
-                    <div className={demoStyles.hlayout}>
-                        {i18n.l('openai.instruction')}
-                    </div>
-                    <input id="instruction" className={demoStyles.fullwidth} disabled={!stopped} value={instruction} onChange={onChangeInstruction}></input>
-                </div>
-                <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
-                    <div className={demoStyles.hlayout}>
-                        {i18n.l('openai.markdown')}
-                        {(tokentNum) ? `(${i18n.l('openai.tokenNum')}:${tokentNum})` : ''}
-                        (<label className={demoStyles.hlayout}>
-                            {i18n.l('openai.preview')}
-                            <input type="checkbox" checked={preview} onChange={onChangePreview} />
-                        </label>)
-                    </div>
-                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 8, alignItems: 'start' }}>
-                        <textarea id="markdown" className={demoStyles.flex} style={{ height: 400, padding: 4 }} disabled={!stopped} value={markdown} onChange={onChangeMarkdown}></textarea>
-                        {preview && <div className={demoStyles.flex} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', height: 400, overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} ></div>}
-                    </div>
-                    <div className={demoStyles.hlayout}>
-                        {i18n.l('openai.transMarkdown')}
-                        {(transTokentNum) ? `(${i18n.l('openai.transTokenNum')}:${transTokentNum})` : ''}
-                    </div>
-                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 8, alignItems: 'start' }}>
-                        <textarea id="transMarkdown" className={demoStyles.flex} style={{ height: 400, padding: 4 }} disabled={!stopped} value={transMarkdown} onChange={onChangeTransMarkdown}></textarea>
-                        {preview && <div className={demoStyles.flex} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', height: 400, overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: transRenderedHtml }} ></div>}
-                    </div>
-                </div>
-            </div>
-            <ul>
-                <li>{i18n.l('openai.hint')}</li>
-                <li>{i18n.l('openai.hint2')}</li>
-            </ul>
-            <div className={demoStyles.hlayout} style={{ gap: 8 }}>
-                <button id="clear" disabled={!stopped} onClick={onClickClear}>{i18n.l('action.clear')}</button>
-                <button id="calculate" disabled={!stopped} onClick={onClickCalculate}>{i18n.l('openai.calculateToken')}</button>
-                <button id="translate" disabled={!stopped} onClick={onClickTranslate}>{i18n.l('openai.translate')}</button>
-                <button id="abort" disabled={!running} onClick={onClickCancel}>{i18n.l('action.abort')}</button>
-            </div>
-            <div className={demoStyles.vlayout}>
-                {processingState.state}
-            </div>
-            <div className={demoStyles.vlayout}>
-                {[...logs].reverse().map((log, idx) => <span key={idx}>
-                    {log}
-                </span>)}
-            </div>
-        </div>
 
+    let readmeUri = readme_default
+    switch (i18n.language) {
+        case 'zh':
+            readmeUri = readme_zh
+    }
+
+    return <main className={demoStyles.main}>
+        <Docarea className={demoStyles.docarea} contentSrc={readmeUri}>
+            <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8 }}>
+                {i18n.l('openai.title')} ({i18n.l(`state.${processingState.state}`)})
+                <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8, padding: '0px 8px' }}>
+                    <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
+                        <div className={demoStyles.hlayout}>
+                            {i18n.l('openai.apikey')}:
+                            (<label className={demoStyles.hlayout}>
+                                {i18n.l('openai.viewkey')}
+                                <input type="checkbox" checked={viewkey} onChange={onChangeViewkey} />
+                            </label>)
+                        </div>
+                        <input id="apikey" type={viewkey ? 'text' : 'password'} className={demoStyles.fullwidth} disabled={!stopped} value={apikey} onChange={onChangeApikey}></input>
+                    </div>
+                    <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
+                        <div className={demoStyles.hlayout} style={{ gap: 8, flexFlow: 'wrap' }}>
+                            <label className={demoStyles.hlayout}>
+                                {i18n.l('openai.gptModel')}:
+                                &nbsp;
+                                <select disabled={!stopped} value={optGptModel} onChange={onChangeOptGptModel}>
+                                    {options.gptModels.map((m) => {
+                                        return <option key={m} value={m}>{m}</option>
+                                    })}
+                                </select>
+                            </label>
+                            <label className={demoStyles.hlayout}>
+                                {i18n.l('openai.targetLanguage')}:
+                                &nbsp;
+                                <select disabled={!stopped} value={optTargetLanguage} onChange={onChangeOptTargetLanguage}>
+                                    {options.targetLanguages.map((lang) => {
+                                        return <option key={lang.en} value={lang.en}>{`${lang.native} ( ${lang.en} )`}</option>
+                                    })}
+                                    <option value={CUSTOM_VALUE}>-- {i18n.l('openai.customInstruction')} --</option>
+                                </select>
+                            </label>
+                            <label className={demoStyles.hlayout}>
+                                <input disabled={!stopped} type="checkbox" checked={optConversation} onChange={onChangeOptConversation} />
+                                &nbsp;
+                                {i18n.l('openai.conversation')}
+                            </label>
+                            <label className={demoStyles.hlayout}>
+                                <input disabled={!stopped} type="checkbox" checked={optInstruction} onChange={onChangeOptInstruction} />
+                                &nbsp;
+                                {i18n.l('openai.customInstruction')}
+                            </label>
+                        </div>
+                    </div>
+                    {optInstruction && <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
+                        <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)}>
+                            {i18n.l('openai.customInstruction')}:
+                            <div className={demoStyles.flex}/>
+                            {instruction !== DEFAULT_INSTURCTION  && <button onClick={onClickDefaultInstruction} style={{padding: "1px 2px", fontSize: 'small'}}>{i18n.l('action.default')}</button>}
+                        </div>
+                        <textarea id="instruction" className={demoStyles.fullwidth} disabled={!stopped} value={instruction} style={{ padding: 4, height: 150 }} onChange={onChangeInstruction}></textarea>
+                    </div>}
+                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
+                        <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                            <div className={demoStyles.hlayout}>
+                                {i18n.l('openai.markdown')}:
+                                {(tokentNum) ? `(${i18n.l('openai.tokenNum')}:${tokentNum})` : ''}
+                                (<label className={demoStyles.hlayout}>
+                                    <input type="checkbox" checked={optPreview} onChange={onChangeOptPreview} />
+                                    &nbsp;
+                                    {i18n.l('openai.previewHtml')}
+                                </label>)
+                            </div>
+                            <textarea id="markdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={markdown} onChange={onChangeMarkdown}></textarea>
+                        </div>
+                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                            <div className={demoStyles.hlayout}>
+                                {i18n.l('openai.renderedHtml')}:
+                            </div>
+                            <div className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} ></div>
+                        </div>}
+                    </div>
+                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
+                        <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                            <div className={demoStyles.hlayout}>
+                                {i18n.l('openai.translatedMarkdown')}:
+                                {(transTokentNum) ? `(${i18n.l('openai.translatedTokenNum')}:${transTokentNum})` : ''}
+                            </div>
+                            <textarea id="translatedMarkdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={translatedMarkdown} onChange={onChangeTransMarkdown}></textarea>
+                        </div>
+                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                            <div className={demoStyles.hlayout}>
+                                {i18n.l('openai.renderedHtml')}:
+                            </div>
+                            <div className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: translateddHtml }} ></div>
+                        </div>}
+                    </div>
+                </div>
+                <div className={demoStyles.hlayout} style={{ gap: 8 }}>
+                    <button id="clear" disabled={!stopped} onClick={onClickClear}>{i18n.l('action.clear')}</button>
+                    <button id="calculate" disabled={!stopped} onClick={onClickCalculate}>{i18n.l('openai.calculateToken')}</button>
+                    <button id="translate" disabled={!stopped} onClick={onClickTranslate}>{i18n.l('openai.translate')}</button>
+                    <button id="abort" disabled={!running} onClick={onClickAbort}>{i18n.l('action.abort')}</button>
+                </div>
+                <div className={demoStyles.vlayout} style={{ color: themepack.dark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.4)' }}>
+                    {[...logs].reverse().map((log, idx) => <span key={idx}>
+                        {log}
+                    </span>)}
+                </div>
+            </div>
+        </Docarea>
     </main>
 }

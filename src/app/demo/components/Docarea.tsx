@@ -54,7 +54,7 @@ export default function Docarea({ children, contentMarkdown, contentSrc, classNa
             className={clsx(compStyles.toggle, show && compStyles['toggle-show'])}
             onClick={onToggle}
         ><InnerHTML innerHtml={show ? bookOpen : book}></InnerHTML></button>
-        <div className={compStyles['grid-item']}>
+        <div className={clsx(show ? compStyles['grid-item'] : compStyles['grid-item-single'])}>
             {children}
         </div>
         {show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}>
