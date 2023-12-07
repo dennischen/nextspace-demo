@@ -80,10 +80,14 @@ export default function Page({ }: PageProps) {
     const [markdown, setMarkdown] = useState(standard)
     const [preview, setPreview] = useState(false)
     const [renderedHtml, setRenderedHtml] = useState('')
+    const [transMarkdown, setTransMarkdown] = useState('')
+    const [transRenderedHtml, setTransRenderedHtml] = useState('')
+
     const [tokentNum, setTokenNum] = useState(0)
     const deferredApikey = useDeferredValue(apikey)
     const deferredMarkdown = useDeferredValue(markdown)
     const deferredPreview = useDeferredValue(preview)
+    const deferredTransMarkdown = useDeferredValue(transMarkdown)
     const deferredViewkey = useDeferredValue(viewkey)
 
     const onChangeApikey = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +102,9 @@ export default function Page({ }: PageProps) {
     }, [])
     const onChangeMarkdown = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => {
         setMarkdown(evt.target.value)
+    }, [])
+    const onChangeTransMarkdown = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => {
+        setTransMarkdown(evt.target.value)
     }, [])
 
 
@@ -155,107 +162,146 @@ export default function Page({ }: PageProps) {
 
     const onClickTranslate = useCallback((evt: MouseEvent) => {
 
+        const transTypes = new Set(['heading', 'paragraph', 'list', 'table'])
+        const transNodeMap = new Map<string, Token[]>()
 
-        const translationMap = new Map<string, Token[]>()
-        const walkTokens = (tokens: TokensList) => {
+        const tranTokens = (tokens: Token[]) => {
             tokens && tokens.forEach((token: Token) => {
-                if (token.type === 'text') {
-                    if (translationMap.has(token.text)) {
-                        translationMap.get(token.text)?.push(token)
+                if (transTypes.has(token.type)) {
+                    if (transNodeMap.has(token.raw)) {
+                        transNodeMap.get(token.raw)?.push(token)
                     } else {
-                        translationMap.set(token.text, [token])
+                        transNodeMap.set(token.raw, [token])
+                    }
+                    //we will translate it by it's raw
+                    delete (token as any).tokens
+                    //list has items
+                    delete (token as any).items
+                } else {
+                    if ((token as any).tokens) {
+                        tranTokens((token as any).tokens)
                     }
                 }
-                if ((token as any).tokens) {
-                    walkTokens((token as any).tokens)
-                } else if ((token as any).items) {
-                    (token as any).items.forEach((item: any) => {
-                        if (item.tokens) {
-                            walkTokens(item.tokens)
+            })
+        }
+        const renderRaw = (output: string[], raw: string, blockdepth: number) => {
+            if (blockdepth > 0) {
+                const arr: string[] = []
+                for (var i = 0; i < blockdepth; i++) {
+                    arr.push('>')
+                }
+                arr.push(' ')
+                const h = arr.join('')
+                raw = h + raw.replaceAll('\n', '\n' + h)
+            }
+            output.push(raw)
+        }
+        const renderMarkdown = (tokens: Token[], output: string[], blockdepth: number = 0) => {
+            tokens && tokens.forEach((token: Token) => {
+                if (transTypes.has(token.type)) {
+                    renderRaw(output, token.raw, blockdepth)
+                } else {
+                    if ((token as any).tokens) {
+                        if (token.type === 'blockquote') {
+                            (token as Tokens.Blockquote).tokens.forEach((token)=>{
+                                renderMarkdown([token], output, blockdepth + 1)
+                                output.push('\n')
+                            })
+                        } else {
+                            renderMarkdown((token as any).tokens, output, blockdepth)
                         }
-                    })
+                        output.push('\n')
+                    } else {
+                        renderRaw(output, token.raw, blockdepth)
+                    }
                 }
             })
         }
+
+        //process
         const marked = new Marked()
-        const tokensList = marked.lexer(deferredMarkdown)
-        walkTokens(tokensList)
-        const translationArray = Array.from(translationMap.entries())
+        const rootTokensList = marked.lexer(deferredMarkdown)
+        tranTokens(rootTokensList)
+        const output: string[] = []
+        renderMarkdown(rootTokensList, output)
+        setTransMarkdown(output.join(''))
 
-        const clientOptions: ClientOptions = {
-            apiKey: apikey,
-            dangerouslyAllowBrowser: true
-        }
-        const openai = new OpenAI(clientOptions)
+        // const textArray = Array.from(textMap.entries())
 
-        const srcLanguage = 'English'
-        const targetLanguage = 'Traditional Chinese'
-        const IDK = `!!IDONTKNOW!!`
-        const instruction = `You are an assistant helping me translate text from ${srcLanguage} into ${targetLanguage}.\n`
-            + `You must strictly follow the rules below:\n`
-            + `Don't add any extra words except the translation.\n`
-            + `Rerutn "${IDK}" directly if you find it is too short or if you can't understandard it.\n`
-        const gptModel = 'gpt-3.5-turbo'
+        // const clientOptions: ClientOptions = {
+        //     apiKey: apikey,
+        //     dangerouslyAllowBrowser: true
+        // }
+        // const openai = new OpenAI(clientOptions)
 
-        async function sendAndResponse(message: string, messages: ChatCompletionMessageParam[]) {
-            const requestMessage: ChatCompletionMessageParam = {
-                role: 'user',
-                content: message,
-            }
-            messages.push(requestMessage)
-            const completion = await openai.chat.completions.create({
-                model: gptModel,
-                messages: messages,
-            })
-            const responseMessage = completion.choices?.[0]?.message
-            if (responseMessage) {
-                messages.push({
-                    role: responseMessage.role,
-                    content: responseMessage.content,
-                })
-                return {
-                    prompt_tokens: completion.usage?.prompt_tokens,
-                    completion_tokens: completion.usage?.completion_tokens,
-                    total_tokens: completion.usage?.total_tokens,
-                    content: responseMessage.content
-                }
-            }
-        }
+        // const srcLanguage = 'English'
+        // const targetLanguage = 'Traditional Chinese'
+        // const IDK = `!!IDONTKNOW!!`
+        // const instruction = `You are an assistant helping me translate text from ${srcLanguage} into ${targetLanguage}.\n`
+        //     + `You must strictly follow the rules below:\n`
+        //     + `Don't add any extra words except the translation.\n`
+        //     + `Rerutn "${IDK}" directly if you find it is too short or if you can't understandard it.\n`
+        // const gptModel = 'gpt-3.5-turbo'
 
-        (async function _() {
+        // async function sendAndResponse(message: string, messages: ChatCompletionMessageParam[]) {
+        //     const requestMessage: ChatCompletionMessageParam = {
+        //         role: 'user',
+        //         content: message,
+        //     }
+        //     messages.push(requestMessage)
+        //     const completion = await openai.chat.completions.create({
+        //         model: gptModel,
+        //         messages: messages,
+        //     })
+        //     const responseMessage = completion.choices?.[0]?.message
+        //     if (responseMessage) {
+        //         messages.push({
+        //             role: responseMessage.role,
+        //             content: responseMessage.content,
+        //         })
+        //         return {
+        //             prompt_tokens: completion.usage?.prompt_tokens,
+        //             completion_tokens: completion.usage?.completion_tokens,
+        //             total_tokens: completion.usage?.total_tokens,
+        //             content: responseMessage.content
+        //         }
+        //     }
+        // }
 
-            const messages: ChatCompletionMessageParam[] = []
-            const response = await sendAndResponse(instruction, messages)
-            handleLogs({
-                type: 'add',
-                log: `${instruction} >> ${response?.content}`
-            })
+        // (async function _() {
 
-            for (var i = 0; i < translationArray.length; i++) {
-                const text = translationArray[i][0]
-                const tokens = translationArray[i][1]
-                const response = await sendAndResponse(`"${translationArray[i][0]}"`, messages)
-                handleLogs({
-                    type: 'add',
-                    log: `${text} >> ${response?.content}`
-                })
-                tokens.forEach((node) => {
-                    const content = response?.content;
-                    (node as Tokens.Text).text = (content && content !== IDK) ? content : text
-                })
-            }
+        //     const messages: ChatCompletionMessageParam[] = []
+        //     const response = await sendAndResponse(instruction, messages)
+        //     handleLogs({
+        //         type: 'add',
+        //         log: `${instruction} >> ${response?.content}`
+        //     })
 
-            console.log(">>>>>tokens", tokensList)
-            const html = marked.parser(tokensList)
-            console.log(">>>>>html", html)
+        //     for (var i = 0; i < textArray.length; i++) {
+        //         const text = textArray[i][0]
+        //         const tokens = textArray[i][1]
+        //         const response = await sendAndResponse(`"${textArray[i][0]}"`, messages)
+        //         handleLogs({
+        //             type: 'add',
+        //             log: `${text} >> ${response?.content}`
+        //         })
+        //         tokens.forEach((node) => {
+        //             const content = response?.content;
+        //             (node as Tokens.Text).text = (content && content !== IDK) ? content : text
+        //         })
+        //     }
 
-            // const html2 = marked.parse(deferredMarkdown)
-            // console.log(">>>>>html2", html2)
+        //     console.log(">>>>>tokens", tokensList)
+        //     const html = marked.parser(tokensList)
+        //     console.log(">>>>>html", html)
+
+        //     // const html2 = marked.parse(deferredMarkdown)
+        //     // console.log(">>>>>html2", html2)
 
 
-            // const html = await marked.parse(deferredMarkdown)
-            setRenderedHtml(html)
-        })()
+        //     // const html = await marked.parse(deferredMarkdown)
+        //     setRenderedHtml(html)
+        // })()
 
     }, [workspace, i18n, deferredMarkdown, deferredApikey])
 
@@ -277,7 +323,20 @@ export default function Page({ }: PageProps) {
         } else {
             setRenderedHtml('')
         }
+
     }, [deferredMarkdown, deferredPreview])
+    useEffect(() => {
+        if (deferredTransMarkdown && deferredPreview) {
+            (async function _() {
+                const marked = new Marked({ async: true })
+                const html = await marked.parse(deferredTransMarkdown)
+                setTransRenderedHtml(html)
+            })()
+        } else {
+            setTransRenderedHtml('')
+        }
+
+    }, [deferredTransMarkdown, deferredPreview])
 
     //abort also when page exit
     useEffect(() => {
@@ -313,6 +372,13 @@ export default function Page({ }: PageProps) {
                     <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 8, alignItems: 'start' }}>
                         <textarea id="markdown" className={demoStyles.flex} style={{ height: 400, padding: 4 }} disabled={!stopped} value={markdown} onChange={onChangeMarkdown}></textarea>
                         {deferredPreview && <div className={demoStyles.flex} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', height: 400, overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} ></div>}
+                    </div>
+                    <div className={demoStyles.hlayout}>
+                        {i18n.l('openai.transMarkdown')}
+                    </div>
+                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 8, alignItems: 'start' }}>
+                        <textarea id="transMarkdown" className={demoStyles.flex} style={{ height: 400, padding: 4 }} disabled={!stopped} value={transMarkdown} onChange={onChangeTransMarkdown}></textarea>
+                        {deferredPreview && <div className={demoStyles.flex} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', height: 400, overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: transRenderedHtml }} ></div>}
                     </div>
                 </div>
             </div>

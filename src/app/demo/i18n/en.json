@@ -49,6 +49,7 @@
         "tokenNum": "Token number",
         "translate": "Translate",
         "viewkey": "View API key",
+        "transMarkdown": "Translated markdown",
         "msg": {
             "tokenCalculation": "It cloud contains {{tokenNum}} tokens in the markdown",
             "calculationAborted": "The calculation has been aborted",
