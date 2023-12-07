@@ -50,10 +50,13 @@
         "translate": "Translate",
         "viewkey": "View API key",
         "transMarkdown": "Translated markdown",
+        "transTokenNum": "Translation token number",
         "msg": {
             "tokenCalculation": "It cloud contains {{tokenNum}} tokens in the markdown",
             "calculationAborted": "The calculation has been aborted",
-            "err": "Error {{err}}"
+            "err": "Error {{err}}",
+            "translationDown": "The translation has done",
+            "translationAborted": "The translation has been aborted"
         }
     },
     "action": {
