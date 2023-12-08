@@ -45,7 +45,16 @@ export default function Layout({ children }: LayoutProps) {
     //         break;
     // }
 
-    return <DemoLayout defaultLanguage={cookieLanguage} defaultTheme={cookieTheme}>
+    const envVariables: {
+        [key: string]: string | undefined
+    } = {}
+    for (var p in process.env) {
+        if (p.startsWith('DEMO_PUBLIC_')) {
+            envVariables[p] = process.env[p]
+        }
+    }
+
+    return <DemoLayout defaultLanguage={cookieLanguage} defaultTheme={cookieTheme} envVariables={envVariables}>
         {children}
     </DemoLayout >
 }

@@ -22,3 +22,11 @@ export type DemoThemepack = {
     readonly variables: DemoVariables
     readonly styles: DemoStyles
 } & Themepack
+
+
+export type TiktokenCalculation = {
+    readonly content?: string
+    readonly charNum: number
+    readonly tokenNum: number,
+    readonly token?: number[]
+}

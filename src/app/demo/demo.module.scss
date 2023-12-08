@@ -70,6 +70,15 @@ $radius: 3px;
     flex-direction: column;
     align-items: center;
 }
+.fullwidth {
+    width: 100%;
+}
+.flex {
+    flex: 1;
+}
+.flexgrow {
+    flex-grow: 1;
+}
 
 .homegrid {
     box-sizing: border-box;
