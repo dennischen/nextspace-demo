@@ -31,7 +31,7 @@ import fallbackTranslation from "./i18n/en.json"
 const fallbackLanguage = "en"
 
 const EnTranslationLoader = translationLoader("en", () => import('./i18n/enTranslationRegister'))
-const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslatioRegister'))
+const ZhTranslationLoader = translationLoader("zh", () => import('./i18n/zhTranslationRegister'))
 const translationLoaders = [EnTranslationLoader, ZhTranslationLoader]
 
 const LightblueThemepackLoader = themepackLoader("lightblue", () => import('./themes/lightblueThemepackRegister'))

@@ -1,5 +1,7 @@
 
 /*
+ * https://nextjs.org/docs/app/building-your-application/routing/internationalization
+ * nextjs officially use async server page and async dictionaries to provider server i18n
  * @file-created: 2023-11-22
  * @author: Dennis Chen
  */
@@ -10,12 +12,6 @@ import I18nextServerI18n from '@nextspace/utils/I18nextServerI18n'
 import i18next from 'i18next'
 import 'server-only'
 
-/*
- * https://nextjs.org/docs/app/building-your-application/routing/internationalization
- * nextjs officially use async server page and async dictionaries to provider server i18n
- * @file-created: 2023-11-03
- * @author: Dennis Chen
- */
 // const translations = {
 //     en: () => import('./en.json').then((module) => module.default),
 //     zh: () => import('./zh.json').then((module) => module.default),

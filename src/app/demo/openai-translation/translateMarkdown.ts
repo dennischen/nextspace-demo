@@ -1,8 +1,14 @@
+/*
+ * @file-created: 2023-12-08
+ * @author: Dennis Chen
+ */
+
 import type { AbortablePromise, Process, Workspace } from "@nextspace"
 import { sequential } from '@nextspace/utils/process'
 import { Marked, Token, Tokens } from "marked"
 import OpenAI, { ClientOptions } from "openai"
 import { ChatCompletionMessageParam, ChatCompletionRole } from "openai/resources"
+
 
 const targetTokenTypes = new Set(['heading', 'paragraph', 'list', 'table'])
 

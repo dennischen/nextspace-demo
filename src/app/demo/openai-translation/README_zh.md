@@ -5,7 +5,7 @@
 本程式展示使用Abrotable Sequential Process(Nextspace Utiltiy)來呼叫OpenAI的Chat.Completion API來翻譯文件(在這個展示網站中的多語文件也主要是靠OpenAI作第一次翻譯，再經由人員校稿)。
 
 使用現在的ChatGPT使用介面來進行翻譯已經可以作到小幅的翻譯，但要進行大量批次的翻譯會有不少問題，例如:
- * 文本太長會被截段，要手動截段。
+ * 文本太長會被截斷，要手動截斷。
  * 翻譯完的文本要一段一段手動匯出。
  * Markdown結果格式會被使用介面轉換成HTML，要手動匯出很難。
 
@@ -30,5 +30,5 @@
 
 ## 免責說明
 
- * 程式原始碼可在[OpenAI Translation](https://github.com/dennischen/nextspace-demo/tree/master/src/app/demo/openai-translation)，處理邏輯也很簡單，主要是整合我的翻譯需求及補足ChatGPT系統中的不足。
- * 翻譯的結果質量仍是依靠OpenAI的Chat.Completion API的結果，各種翻譯錯誤仍需靠人類來校正，本程式不負擔任何責任喲。
+ * 程式原始碼可在[OpenAI Translation](https://github.com/dennischen/nextspace-demo/tree/master/src/app/demo/openai-translation)中取得，處理邏輯也很簡單，主要是整合我的翻譯需求及補足ChatGPT系統中的不足。
+ * 翻譯的質量仍是依靠OpenAI的Chat.Completion API的結果，各種翻譯錯誤仍需靠人類來校正，本程式不負擔任何責任喲。

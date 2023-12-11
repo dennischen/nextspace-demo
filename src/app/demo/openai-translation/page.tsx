@@ -1,6 +1,6 @@
 'use client'
 /*
- * @file-created: 2023-10-31
+ * @file-created: 2023-12-08
  * @author: Dennis Chen
  */
 import Docarea from "@/app/demo/components/Docarea"
@@ -171,6 +171,7 @@ export default function Page({ }: PageProps) {
     const stopped = processingState.state === 'stopped'
 
     const onClickClear = (evt: MouseEvent) => {
+        setTranslatedMarkdown('')
         clearLogs()
     }
 
