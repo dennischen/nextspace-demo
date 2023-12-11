@@ -40,12 +40,12 @@
         "hint": "This page was showed after a intentional timeout, you saw a routing progress bar if you navigate to this page by the link in home page",
         "hint2": "If you navigate to this page directly (e.g. by url directly, or clicking browser reload), you will see a blank loading page first, then see the content"
     },
-    "openai":{
-        "@": "OpenAI",
+    "openaiTranslation":{
+        "@": "OpenAI Translation",
         "title": "Multilingual Markdown Translation by OpenAI",
         "apikey": "API Key",
         "markdown": "Markdown",
-        "gptModel": "Gpt model",
+        "gptModel": "GPT Model",
         "targetLanguage": "Target language",
         "previewHtml": "Preview HTML",
         "calculateToken": "Calculate token",

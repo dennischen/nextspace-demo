@@ -80,6 +80,7 @@ export default function Page({ }: PageProps) {
     const themepack = useTheme().themepack as DemoThemepack
 
     const publicApiKey = workspace.envVariables.DEMO_PUBLIC_OPENAI_API_KEY || ''
+    const enableCalculatToekn = workspace.envVariables.DEMO_PUBLIC_ENABLE_CALCULATE_TOKEN === 'true' ? true: false
 
     const [apikey, setApikey] = useState(publicApiKey)
     const [instruction, setInstruction] = useState(DEFAULT_INSTURCTION)
@@ -185,17 +186,17 @@ export default function Page({ }: PageProps) {
         })
         calculationPromise.then(async (res) => {
             if (calculationPromise.aborted()) {
-                addLog(i18n.l('openai.msg.calculationAborted'))
+                addLog(i18n.l('openaiTranslation.msg.calculationAborted'))
             } else if (res.status === 200) {
                 const calculation = (await res.json()) as TiktokenCalculation
                 setTokenNum(calculation.tokenNum)
-                addLog(i18n.l('openai.msg.tokenCalculation', { tokenNum: calculation.tokenNum, charNum: calculation.charNum }))
+                addLog(i18n.l('openaiTranslation.msg.tokenCalculation', { tokenNum: calculation.tokenNum, charNum: calculation.charNum }))
             } else {
-                addLog(i18n.l('openai.msg.err', { err: res.statusText }))
+                addLog(i18n.l('openaiTranslation.msg.err', { err: res.statusText }))
             }
             resetProcessingState()
         }).catch((err) => {
-            addLog(i18n.l('openai.msg.err', { err }))
+            addLog(i18n.l('openaiTranslation.msg.err', { err }))
             resetProcessingState()
         })
 
@@ -222,9 +223,9 @@ export default function Page({ }: PageProps) {
 
         translationPromise.then((report) => {
             if (translationPromise.aborted()) {
-                addLog(i18n.l('openai.msg.translationAborted'))
+                addLog(i18n.l('openaiTranslation.msg.translationAborted'))
             } else {
-                addLog(i18n.l('openai.msg.translationDown'))
+                addLog(i18n.l('openaiTranslation.msg.translationDown'))
                 setTranslatedMarkdown(report.content || '')
             }
 
@@ -248,7 +249,7 @@ export default function Page({ }: PageProps) {
             resetProcessingState()
         }).catch((err) => {
             console.error(err)
-            addLog(i18n.l('openai.msg.err', { err }))
+            addLog(i18n.l('openaiTranslation.msg.err', { err }))
             resetProcessingState()
         })
         setRunProcessingState(translationPromise)
@@ -304,15 +305,15 @@ export default function Page({ }: PageProps) {
     }
 
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} contentSrc={readmeUri}>
+        <Docarea className={demoStyles.docarea} contentSrc={readmeUri} defaultShow={true} position="start">
             <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8 }}>
-                {i18n.l('openai.title')} ({i18n.l(`state.${processingState.state}`)})
+                {i18n.l('openaiTranslation.title')} ({i18n.l(`state.${processingState.state}`)})
                 <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 8, padding: '0px 8px' }}>
                     <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
                         <div className={demoStyles.hlayout}>
-                            {i18n.l('openai.apikey')}:
+                            {i18n.l('openaiTranslation.apikey')}:
                             (<label className={demoStyles.hlayout}>
-                                {i18n.l('openai.viewkey')}
+                                {i18n.l('openaiTranslation.viewkey')}
                                 <input type="checkbox" checked={viewkey} onChange={onChangeViewkey} />
                             </label>)
                         </div>
@@ -321,7 +322,7 @@ export default function Page({ }: PageProps) {
                     <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
                         <div className={demoStyles.hlayout} style={{ gap: 8, flexFlow: 'wrap' }}>
                             <label className={demoStyles.hlayout}>
-                                {i18n.l('openai.gptModel')}:
+                                {i18n.l('openaiTranslation.gptModel')}:
                                 &nbsp;
                                 <select disabled={!stopped} value={optGptModel} onChange={onChangeOptGptModel}>
                                     {options.gptModels.map((m) => {
@@ -330,30 +331,30 @@ export default function Page({ }: PageProps) {
                                 </select>
                             </label>
                             <label className={demoStyles.hlayout}>
-                                {i18n.l('openai.targetLanguage')}:
+                                {i18n.l('openaiTranslation.targetLanguage')}:
                                 &nbsp;
                                 <select disabled={!stopped} value={optTargetLanguage} onChange={onChangeOptTargetLanguage}>
                                     {options.targetLanguages.map((lang) => {
                                         return <option key={lang.en} value={lang.en}>{`${lang.native} ( ${lang.en} )`}</option>
                                     })}
-                                    <option value={CUSTOM_VALUE}>-- {i18n.l('openai.customInstruction')} --</option>
+                                    <option value={CUSTOM_VALUE}>-- {i18n.l('openaiTranslation.customInstruction')} --</option>
                                 </select>
                             </label>
                             <label className={demoStyles.hlayout}>
                                 <input disabled={!stopped} type="checkbox" checked={optConversation} onChange={onChangeOptConversation} />
                                 &nbsp;
-                                {i18n.l('openai.conversation')}
+                                {i18n.l('openaiTranslation.conversation')}
                             </label>
                             <label className={demoStyles.hlayout}>
                                 <input disabled={!stopped} type="checkbox" checked={optInstruction} onChange={onChangeOptInstruction} />
                                 &nbsp;
-                                {i18n.l('openai.customInstruction')}
+                                {i18n.l('openaiTranslation.customInstruction')}
                             </label>
                         </div>
                     </div>
                     {optInstruction && <div className={clsx(demoStyles.vlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start' }}>
                         <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)}>
-                            {i18n.l('openai.customInstruction')}:
+                            {i18n.l('openaiTranslation.customInstruction')}:
                             <div className={demoStyles.flex}/>
                             {instruction !== DEFAULT_INSTURCTION  && <button onClick={onClickDefaultInstruction} style={{padding: "1px 2px", fontSize: 'small'}}>{i18n.l('action.default')}</button>}
                         </div>
@@ -362,19 +363,19 @@ export default function Page({ }: PageProps) {
                     <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
                         <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
                             <div className={demoStyles.hlayout}>
-                                {i18n.l('openai.markdown')}:
-                                {(tokentNum) ? `(${i18n.l('openai.tokenNum')}:${tokentNum})` : ''}
+                                {i18n.l('openaiTranslation.markdown')}:
+                                {(tokentNum) ? `(${i18n.l('openaiTranslation.tokenNum')}:${tokentNum})` : ''}
                                 (<label className={demoStyles.hlayout}>
                                     <input type="checkbox" checked={optPreview} onChange={onChangeOptPreview} />
                                     &nbsp;
-                                    {i18n.l('openai.previewHtml')}
+                                    {i18n.l('openaiTranslation.previewHtml')}
                                 </label>)
                             </div>
                             <textarea id="markdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={markdown} onChange={onChangeMarkdown}></textarea>
                         </div>
                         {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
                             <div className={demoStyles.hlayout}>
-                                {i18n.l('openai.renderedHtml')}:
+                                {i18n.l('openaiTranslation.renderedHtml')}:
                             </div>
                             <div className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} ></div>
                         </div>}
@@ -382,14 +383,14 @@ export default function Page({ }: PageProps) {
                     <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
                         <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
                             <div className={demoStyles.hlayout}>
-                                {i18n.l('openai.translatedMarkdown')}:
-                                {(transTokentNum) ? `(${i18n.l('openai.translatedTokenNum')}:${transTokentNum})` : ''}
+                                {i18n.l('openaiTranslation.translatedMarkdown')}:
+                                {(transTokentNum) ? `(${i18n.l('openaiTranslation.translatedTokenNum')}:${transTokentNum})` : ''}
                             </div>
                             <textarea id="translatedMarkdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={translatedMarkdown} onChange={onChangeTransMarkdown}></textarea>
                         </div>
                         {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
                             <div className={demoStyles.hlayout}>
-                                {i18n.l('openai.renderedHtml')}:
+                                {i18n.l('openaiTranslation.renderedHtml')}:
                             </div>
                             <div className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: translateddHtml }} ></div>
                         </div>}
@@ -397,8 +398,8 @@ export default function Page({ }: PageProps) {
                 </div>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <button id="clear" disabled={!stopped} onClick={onClickClear}>{i18n.l('action.clear')}</button>
-                    <button id="calculate" disabled={!stopped} onClick={onClickCalculate}>{i18n.l('openai.calculateToken')}</button>
-                    <button id="translate" disabled={!stopped} onClick={onClickTranslate}>{i18n.l('openai.translate')}</button>
+                    {enableCalculatToekn && <button id="calculate" disabled={!stopped} onClick={onClickCalculate}>{i18n.l('openaiTranslation.calculateToken')}</button>}
+                    <button id="translate" disabled={!stopped} onClick={onClickTranslate}>{i18n.l('openaiTranslation.translate')}</button>
                     <button id="abort" disabled={!running} onClick={onClickAbort}>{i18n.l('action.abort')}</button>
                 </div>
                 <div className={demoStyles.vlayout} style={{ color: themepack.dark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.4)' }}>

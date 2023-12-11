@@ -40,12 +40,12 @@
         "hint": "這頁在會在一個短暫時間後才被載入, 如果你是首頁的連結點進此頁, 你應該會看到一個載入的進度條",
         "hint2": "如果你是直接瀏覽到這一頁的話(例如按重載F5), 你會看到一個空白的載入畫面, 然後才看到內容"
     },
-    "openai":{
-        "@": "OpenAI",
+    "openaiTranslation":{
+        "@": "OpenAI翻譯",
         "title": "OpenAI 的多語言 Markdown 翻譯",
         "apikey": "API Key",
         "markdown": "Markdown",
-        "gptModel": "Gpt模型",
+        "gptModel": "GPT模型",
         "targetLanguage": "目標語言",
         "previewHtml": "預覽HTML",
         "calculateToken": "計算Token",

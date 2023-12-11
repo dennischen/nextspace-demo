@@ -26,7 +26,7 @@ export default function DemoPage({ }: PageProps) {
         <Link key={key++} id="sequential-processing" href="/demo/sequential-processing">{i18n.l("sequentialProcessing")}</Link>,
         <Link key={key++} id="lazy-preloading" href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
         <Link key={key++} id="slow-route" href="/demo/slow-route">{i18n.l("slowRoute")}</Link>,
-        <Link key={key++} id="openai" href="/demo/openai">{i18n.l("openai")}</Link>,
+        <Link key={key++} id="openai-translation" href="/demo/openai-translation">{i18n.l("openaiTranslation")}</Link>,
     ]
 
     return <main className={demoStyles.main}>

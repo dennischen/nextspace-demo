@@ -22,9 +22,10 @@ export type DocareaProps = {
     className?: string
     styles?: React.CSSProperties
     defaultShow?: boolean
+    position?: 'start' | 'end'
 }
 
-export default function Docarea({ children, contentMarkdown, contentSrc, className, styles, defaultShow = false }: DocareaProps) {
+export default function Docarea({ children, contentMarkdown, contentSrc, className, styles, defaultShow = false, position = 'start' }: DocareaProps) {
 
 
     const i18n = useI18n()
@@ -48,19 +49,22 @@ export default function Docarea({ children, contentMarkdown, contentSrc, classNa
         }
     }, [markdown, show, contentSrc])
 
+    const markdownComp = show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}>
+        {(!markdown && contentSrc) ? <div className={compStyles.loading}>{i18n.l('loading')}...</div> :
+            <Markdown content={markdown} />
+        }
+    </div>
 
-    return <div className={clsx("_docarea", compStyles.root, className)} style={styles}>
+
+    return <div className={clsx("--docarea", compStyles.root, className)} style={styles}>
         <button
-            className={clsx(compStyles.toggle, show && compStyles['toggle-show'])}
+            className={clsx(compStyles.toggle, show && compStyles['toggle-show'], position === 'end' && compStyles['toggle-end'])}
             onClick={onToggle}
         ><InnerHTML innerHtml={show ? bookOpen : book}></InnerHTML></button>
-        <div className={clsx(show ? compStyles['grid-item'] : compStyles['grid-item-single'])}>
+        {position === 'start' && markdownComp}
+        <div className={clsx(show ? compStyles['grid-item'] : compStyles['grid-item-single'], compStyles.children)}>
             {children}
         </div>
-        {show && <div className={clsx(compStyles.markdown, compStyles['grid-item'])}>
-            {(!markdown && contentSrc) ? <div className={compStyles.loading}>{i18n.l('loading')}...</div> :
-                <Markdown content={markdown} />
-            }
-        </div>}
+        {position === 'end' && markdownComp}
     </div>
 }

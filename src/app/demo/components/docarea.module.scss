@@ -4,7 +4,8 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 8px
+    gap: 16px;
+    padding: 18px 10px 10px 8px;
 }
 
 .grid-item{
@@ -26,15 +27,18 @@
 .toggle {
     position: absolute;
     top: 0;
-    right: 8px;
+    left: 0;
+    margin: -6px 0px 0px 1px;
     border-radius: 50%;
     border-width: 0;
     padding: 8px;
     height: 40px;
     width: 40px;
+    opacity: 0.8;
 
     &:hover {
         color: var(--theme-primary-color);
+        opacity: unset;
     }
 
     svg {
@@ -43,18 +47,30 @@
     }
 }
 
+.toggle-end {
+    left: unset;
+    right: 0;
+}
+
 .toggle-show {
-    opacity: 0.1;
-    &:hover{
-        opacity: unset;
-    }
+    opacity: 1;
 }
 
 .markdown {   
     > * {
         margin: -4px 0px 0px 0px;
         padding: 16px;
-        box-shadow: var(--theme-shadow-color) 0px 3px 8px;
+        box-shadow: var(--theme-shadow-color) 0px 2px 4px;
+        border-radius: 5px;
+        min-height: 48px;
+    }
+}
+
+.children {   
+    > * {
+        margin: -4px 0px 0px 0px;
+        padding: 16px;
+        box-shadow: var(--theme-shadow-color) 0px 2px 4px;
         border-radius: 5px;
         min-height: 48px;
     }
