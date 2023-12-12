@@ -5,9 +5,11 @@
  */
 
 import { Metadata } from 'next'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import DemoLayout from "./DemoLayout"
 import { COOKIE_LANGUAGE, COOKIE_THEME, DEFAULT_LANGUAGE, DEFAULT_THEME } from './constants'
+
+import acceptLanguageParser from 'accept-language-parser'
 
 //prevent blank flash
 import "./themes/darkred.module.scss"
@@ -27,9 +29,15 @@ export type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
     const cookieStore = cookies()
-    const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || DEFAULT_LANGUAGE
-    const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || DEFAULT_THEME
+    const headerStore = headers()
 
+    const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || ''
+    const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || ''
+
+
+    const acceptLanguage = acceptLanguageParser.pick(['zh', 'en'], headerStore.get('Accept-Language') || '')
+    const userLanguage = cookieLanguage || acceptLanguage || DEFAULT_LANGUAGE
+    const userTheme = cookieTheme || DEFAULT_THEME
 
     //to make default theme load before html render, has to load it in server component first. (will render css to layout.css)
     //do this will prevent page flash effect (css loaded after html render), 
@@ -54,7 +62,7 @@ export default function Layout({ children }: LayoutProps) {
         }
     }
 
-    return <DemoLayout defaultLanguage={cookieLanguage} defaultTheme={cookieTheme} envVariables={envVariables}>
+    return <DemoLayout defaultLanguage={userLanguage} defaultTheme={userTheme} envVariables={envVariables}>
         {children}
     </DemoLayout >
 }
