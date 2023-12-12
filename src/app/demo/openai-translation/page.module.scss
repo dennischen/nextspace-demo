@@ -1,0 +1,24 @@
+.markdown-area {
+    gap: 4px;
+    align-items: start;
+    flex-flow: wrap;
+
+    :global(> .-item) {
+        align-items: start;
+        height: 300px;
+        min-width: 600px;
+    }
+
+    @media (max-width: 640px) {
+        :global(> .-item) {
+            min-width: 300px;
+        }
+    }
+}
+
+.select {
+    max-width: 400px;
+    @media (max-width: 640px) {
+        max-width: 200px;
+    }
+}

@@ -20,6 +20,8 @@ import translateMarkdown, { DEFAULT_INSTURCTION } from "./translateMarkdown"
 import readme_default from './README.md?as_uri'
 import readme_zh from './README_zh.md?as_uri'
 
+import pageStyles from './page.module.scss'
+
 const CUSTOM_VALUE = '--'
 
 type PageProps = {
@@ -325,7 +327,7 @@ export default function Page({ }: PageProps) {
                             <label className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.gptModel')}:
                                 &nbsp;
-                                <select disabled={!stopped} value={optGptModel} onChange={onChangeOptGptModel}>
+                                <select className={pageStyles.select} disabled={!stopped} value={optGptModel} onChange={onChangeOptGptModel}>
                                     {options.gptModels.map((m) => {
                                         return <option key={m} value={m}>{m}</option>
                                     })}
@@ -334,7 +336,7 @@ export default function Page({ }: PageProps) {
                             <label className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.targetLanguage')}:
                                 &nbsp;
-                                <select disabled={!stopped} value={optTargetLanguage} onChange={onChangeOptTargetLanguage}>
+                                <select className={pageStyles.select} disabled={!stopped} value={optTargetLanguage} onChange={onChangeOptTargetLanguage}>
                                     {options.targetLanguages.map((lang) => {
                                         return <option key={lang.en} value={lang.en}>{`${lang.native} ( ${lang.en} )`}</option>
                                     })}
@@ -361,8 +363,8 @@ export default function Page({ }: PageProps) {
                         </div>
                         <textarea id="instruction" className={demoStyles.fullwidth} disabled={!stopped} value={instruction} style={{ padding: 4, height: 150 }} onChange={onChangeInstruction}></textarea>
                     </div>}
-                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
-                        <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth, pageStyles['markdown-area'])} >
+                        <div className={clsx(demoStyles.flex, demoStyles.vlayout, '-item')}>
                             <div className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.markdown')}:
                                 {(tokentNum) ? `(${i18n.l('openaiTranslation.tokenNum')}:${tokentNum})` : ''}
@@ -374,22 +376,22 @@ export default function Page({ }: PageProps) {
                             </div>
                             <textarea id="markdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={markdown} onChange={onChangeMarkdown}></textarea>
                         </div>
-                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout, '-item')}>
                             <div className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.renderedHtml')}:
                             </div>
                             <div className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ border: `1px solid ${themepack.variables.primaryColor}`, padding: '0 4px', overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: renderedHtml }} ></div>
                         </div>}
                     </div>
-                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth)} style={{ gap: 4, alignItems: 'start', flexFlow: 'wrap' }}>
-                        <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                    <div className={clsx(demoStyles.hlayout, demoStyles.fullwidth, pageStyles['markdown-area'])} >
+                        <div className={clsx(demoStyles.flex, demoStyles.vlayout, '-item')}>
                             <div className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.translatedMarkdown')}:
                                 {(transTokentNum) ? `(${i18n.l('openaiTranslation.translatedTokenNum')}:${transTokentNum})` : ''}
                             </div>
                             <textarea id="translatedMarkdown" className={clsx(demoStyles.fullwidth, demoStyles.flex)} style={{ padding: 4 }} disabled={!stopped} value={translatedMarkdown} onChange={onChangeTransMarkdown}></textarea>
                         </div>
-                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout)} style={{ alignItems: 'start', height: 300, minWidth: 600 }}>
+                        {optPreview && <div className={clsx(demoStyles.flex, demoStyles.vlayout, '-item')}>
                             <div className={demoStyles.hlayout}>
                                 {i18n.l('openaiTranslation.renderedHtml')}:
                             </div>

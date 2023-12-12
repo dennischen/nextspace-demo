@@ -28,14 +28,14 @@ export type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
-    const cookieStore = cookies()
-    const headerStore = headers()
+    const theCookies = cookies()
+    const theHeaders = headers()
 
-    const cookieLanguage = cookieStore.get(COOKIE_LANGUAGE)?.value || ''
-    const cookieTheme = cookieStore.get(COOKIE_THEME)?.value || ''
+    const cookieLanguage = theCookies.get(COOKIE_LANGUAGE)?.value || ''
+    const cookieTheme = theCookies.get(COOKIE_THEME)?.value || ''
 
 
-    const acceptLanguage = acceptLanguageParser.pick(['zh', 'en'], headerStore.get('Accept-Language') || '')
+    const acceptLanguage = acceptLanguageParser.pick(['zh', 'en'], theHeaders.get('Accept-Language') || '')
     const userLanguage = cookieLanguage || acceptLanguage || DEFAULT_LANGUAGE
     const userTheme = cookieTheme || DEFAULT_THEME
 
