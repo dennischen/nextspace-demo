@@ -1,49 +1,19 @@
-'use client'
+
 /*
- * @file-created: 2023-11-14
+ * @file-created: 2023-12-14
  * @author: Dennis Chen
  */
-import { useI18n, useTheme } from "@nextspace"
-import Link from "@nextspace/components/Link"
-import clsx from "clsx"
-import { usePathname } from "next/navigation"
-import Cookies from "universal-cookie"
-import { COOKIE_LANGUAGE, COOKIE_THEME } from "./constants"
-import demoStyles from "./demo.module.scss"
-import { DemoThemepack } from "./types"
+import TheBanner from "./TheBanner"
+import { context } from '@nextspace/server/request'
+import { BannerState } from "./types"
 
 
-export default function Banner() {
+export default function banner() {
 
-    const pathname = usePathname()
-    const i18n = useI18n()
-    const theme = useTheme();
-    const { styles: themeStyles } = theme.themepack as DemoThemepack
+    const ctx = context()
 
-    const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        i18n.changeLanguage(evt.target.value)
+    //state for server side request this will be setted in page
+    const state = ctx.get('defaultBannerState') as BannerState
 
-        const cookies = new Cookies(null, { path: '/' })
-        cookies.set(COOKIE_LANGUAGE, evt.target.value)
-    }
-
-    const onChangeTheme = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        theme.changeTheme(evt.target.value)
-
-        const cookies = new Cookies(null, { path: '/' })
-        cookies.set(COOKIE_THEME, evt.target.value)
-    }
-
-    return <div className={clsx(demoStyles.banner, themeStyles.banner)} style={{ gap: 4 }}>
-        <Link id="home" href={"/demo"}>{i18n.l('home')}</Link>
-        {pathname === '/demo' && <>
-            <div className={demoStyles.flexpadding} />
-            <select name="theme" defaultValue={theme.code} onChange={onChangeTheme}>
-                {theme.codes.map(theme => <option key={theme} value={theme}>{i18n.l(`theme.${theme}`)}</option>)}
-            </select>
-            <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-                {i18n.languages.map(language => <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
-            </select>
-        </>}
-    </div>
+    return <TheBanner defaultBannerState={state} />
 }

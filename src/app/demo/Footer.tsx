@@ -1,18 +1,18 @@
-'use client'
+
 /*
- * @file-created: 2023-11-14
+ * @file-created: 2023-12-14
  * @author: Dennis Chen
  */
-import { useI18n, useTheme } from "@nextspace"
-import Link from "@nextspace/components/Link"
-import clsx from "clsx"
-import demoStyles from "./demo.module.scss"
-import { DemoThemepack } from "./types"
+import TheFooter from "./TheFooter"
+import { context } from '@nextspace/server/request'
+import { FooterState } from "./types"
 
-export default function Footer() {
-    const i18n = useI18n()
-    const { styles } = useTheme().themepack as DemoThemepack
-    return <div className={clsx(demoStyles.footer, styles.footer)} >
-        <Link href={"https://github.com/dennischen/nextspace"} target="_blank">Github {i18n.l('project')}</Link>
-    </div>
+
+export default function footer() {
+
+    const ctx = context()
+
+    const state = (ctx.get('footerState') as FooterState)
+
+    return <TheFooter hideProject={state?.hideProject}/>
 }

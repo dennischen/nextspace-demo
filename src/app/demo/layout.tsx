@@ -14,6 +14,8 @@ import acceptLanguageParser from 'accept-language-parser'
 //prevent blank flash
 import "./themes/darkred.module.scss"
 import "./themes/lightblue.module.scss"
+import Banner from './banner'
+import Footer from './footer'
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
@@ -62,7 +64,8 @@ export default function Layout({ children }: LayoutProps) {
         }
     }
 
-    return <DemoLayout defaultLanguage={userLanguage} defaultTheme={userTheme} envVariables={envVariables}>
+    return <DemoLayout defaultLanguage={userLanguage} defaultTheme={userTheme} envVariables={envVariables}
+        banner={<Banner />} footer={<Footer/>}>
         {children}
     </DemoLayout >
 }

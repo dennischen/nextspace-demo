@@ -13,8 +13,8 @@ import demoStyles from "./demo.module.scss"
 import translationLoader from '@nextspace/components/translationLoader'
 import NProgressIndicator from '@nextspace/utils/NProgressIndicator'
 import i18next from 'i18next'
-import Banner from "./Banner"
-import Footer from './Footer'
+import Banner from "./banner"
+import Footer from './footer'
 
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -41,11 +41,13 @@ const themepackLoaders = [LightblueThemepackLoader, DarkredThemepackLoader]
 export type DemoLayoutProps = {
     defaultLanguage?: string,
     defaultTheme?: string,
-    envVariables?: { [key: string]: string | undefined}
+    envVariables?: { [key: string]: string | undefined }
     children: React.ReactNode
+    banner: React.ReactNode
+    footer: React.ReactNode
 }
 
-export default function DemoLayout({ defaultLanguage, defaultTheme, envVariables, children }: DemoLayoutProps) {
+export default function DemoLayout({ defaultLanguage, defaultTheme, envVariables, banner, footer, children }: DemoLayoutProps) {
 
     defaultLanguage = translationLoaders.find((l) => l.language === defaultLanguage)?.language || translationLoaders[0].language
     defaultTheme = themepackLoaders.find((t) => t.code === defaultTheme)?.code || themepackLoaders[0].code
@@ -65,10 +67,10 @@ export default function DemoLayout({ defaultLanguage, defaultTheme, envVariables
         defaultTheme={defaultTheme} themepackLoaders={themepackLoaders}
         envVariables={envVariables} config={config} >
         <Layout>
-            <Banner />
+            {banner}
             {children}
             <div className={demoStyles.flexpadding} />
-            <Footer />
+            {footer}
         </Layout>
     </WorkspaceBoundary >
 
