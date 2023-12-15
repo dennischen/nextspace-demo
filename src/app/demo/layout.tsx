@@ -14,8 +14,8 @@ import acceptLanguageParser from 'accept-language-parser'
 //prevent blank flash
 import "./themes/darkred.module.scss"
 import "./themes/lightblue.module.scss"
-import Banner from './banner'
-import Footer from './footer'
+import Banner from './bbanner'
+import Footer from './ffooter'
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
