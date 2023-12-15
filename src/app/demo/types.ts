@@ -30,3 +30,13 @@ export type TiktokenCalculation = {
     readonly tokenNum: number,
     readonly token?: number[]
 }
+
+
+export type BannerState = {
+    showLanguage?: boolean
+    showTheme?: boolean
+}
+
+export type FooterState = {
+    hideProject?: boolean
+}

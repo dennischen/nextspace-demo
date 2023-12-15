@@ -1,52 +1,25 @@
-'use client'
 /*
  * @file-created: 2023-10-23
  * @author: Dennis Chen
  */
 
-import Docarea from "@/app/demo/components/Docarea"
-import { COOKIE_LANGUAGE } from "@/app/demo/constants"
-import demoStyles from "@/app/demo/demo.module.scss"
-import Cookies from 'universal-cookie'
+import { context } from '@nextspace/server/request'
 
-import { useI18n } from "@nextspace"
 
-import readme_default from './README.md?as_uri'
-import readme_zh from './README_zh.md?as_uri'
+import ThePage from "./ThePage"
+import { BannerState } from '@/app/demo/types'
 
-type PageProps = {
-}
 
-export default function Page({ }: PageProps) {
-    const i18n = useI18n()
 
-    const onChangeLanguage = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-        i18n.changeLanguage(evt.target.value)
+export default function page() {
 
-        const cookies = new Cookies(null, { path: '/' })
-        cookies.set(COOKIE_LANGUAGE, evt.target.value)
+
+    const pageBannerState: BannerState = {
+        showLanguage: false
     }
 
+    context().set('pageBannerState', pageBannerState)
 
-    let readmeUri = readme_default;
-    switch(i18n.language){
-        case 'zh': 
-            readmeUri = readme_zh
-    }
 
-    return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} contentSrc={readmeUri} defaultShow={true}>
-            <div className={demoStyles.vlayout} style={{ gap: 8 }}>
-                {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
-                <label>
-                    {`${i18n.l("language.selectLanguage")} : `}
-                    <select name="language" defaultValue={i18n.language} onChange={onChangeLanguage}>
-                        {i18n.languages.map(language =>
-                            <option key={language} value={language}>{i18n.l(`language.${language}`)}</option>)}
-                    </select>
-                </label>
-                {i18n.l("fallback")}
-            </div>
-        </Docarea>
-    </main>
+    return <ThePage pageBannerState={pageBannerState}/>
 }

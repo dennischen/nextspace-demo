@@ -35,7 +35,7 @@ export default function Page({ }: PageProps) {
     }
 
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} contentSrc={readmeUri} defaultShow={true}>
+        <Docarea className={demoStyles.docarea} contentSrc={readmeUri} >
             <div className={demoStyles.vlayout} style={{ gap: 8 }}>
                 {i18n.l('theme')}: {i18n.l(`theme.${theme.code}`)} ({theme.code})
                 <label>

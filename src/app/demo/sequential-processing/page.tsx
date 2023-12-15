@@ -181,15 +181,15 @@ export default function Page({ }: PageProps) {
             <div className={demoStyles.vlayout} style={{ gap: 8 }}>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <span>{i18n.l('sequentialProcessing.procNumber')}</span>
-                    <input id="procNumber" type="number" disabled={!stopped} value={procNumber} onChange={onChangeProcNumber}></input>
+                    <input id="procNumber" type="number" disabled={!stopped} value={procNumber} onChange={onChangeProcNumber} style={{width: 100}}></input>
                 </div>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <span>{i18n.l('sequentialProcessing.errNumber')}</span>
-                    <input id="errNumber" type="number" disabled={!stopped} value={errNumber} onChange={onChangeErrNumber}></input>
+                    <input id="errNumber" type="number" disabled={!stopped} value={errNumber} onChange={onChangeErrNumber} style={{width: 100}}></input>
                 </div>
                 <div className={demoStyles.hlayout} style={{ gap: 8 }}>
                     <span>{i18n.l('sequentialProcessing.maxTimeout')}</span>
-                    <input id="maxTimeout" type="number" disabled={!stopped} value={maxTimeout} onChange={onChangeMaxTimeout}></input>
+                    <input id="maxTimeout" type="number" disabled={!stopped} value={maxTimeout} onChange={onChangeMaxTimeout} style={{width: 100}}></input>
                 </div>
 
             </div>

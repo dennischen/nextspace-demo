@@ -4,7 +4,7 @@
  * @author: Dennis Chen
  */
 
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 
 import clsx from "clsx"
 import Markdown from "./Markdown"
@@ -25,8 +25,7 @@ export type DocareaProps = {
     position?: 'start' | 'end'
 }
 
-export default function Docarea({ children, contentMarkdown, contentSrc, className, styles, defaultShow = false, position = 'start' }: DocareaProps) {
-
+export default memo(function Docarea({ children, contentMarkdown, contentSrc, className, styles, defaultShow = false, position = 'start' }: DocareaProps) {
 
     const i18n = useI18n()
 
@@ -45,7 +44,6 @@ export default function Docarea({ children, contentMarkdown, contentSrc, classNa
                     setMarkdown(markdown)
                 })
             })
-
         }
     }, [markdown, show, contentSrc])
 
@@ -54,7 +52,6 @@ export default function Docarea({ children, contentMarkdown, contentSrc, classNa
             <Markdown content={markdown} />
         }
     </div>
-
 
     return <div className={clsx("--docarea", compStyles.root, className)} style={styles}>
         <button
@@ -67,4 +64,4 @@ export default function Docarea({ children, contentMarkdown, contentSrc, classNa
         </div>
         {position === 'end' && markdownComp}
     </div>
-}
+})

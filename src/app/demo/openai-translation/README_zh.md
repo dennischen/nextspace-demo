@@ -1,5 +1,7 @@
 # OpenAI 的多語言 Markdown 翻譯
 
+[Youtube上的影片](https://youtu.be/8sY2eof_tN0)
+
 ## 前文
 
 本程式展示使用Abrotable Sequential Process(Nextspace Utiltiy)來呼叫OpenAI的Chat.Completion API來翻譯文件(在這個展示網站中的多語文件也主要是靠OpenAI作第一次翻譯，再經由人員校稿)。
