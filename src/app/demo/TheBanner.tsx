@@ -4,6 +4,7 @@
  * @author: Dennis Chen
  */
 import { useI18n, useTheme, useWorkspace } from "@nextspace"
+import { EVENT_ON_ROUTE, WorkspaceEvents } from "@nextspace/constants"
 import Link from "@nextspace/components/Link"
 import clsx from "clsx"
 import Cookies from "universal-cookie"
@@ -11,12 +12,12 @@ import { COOKIE_LANGUAGE, COOKIE_THEME } from "./constants"
 import demoStyles from "./demo.module.scss"
 import { BannerState, DemoThemepack } from "./types"
 import BannerStore, { BANNER_STORE, initBannerStore } from "./stores/BannerStore"
-import { useSyncExternalStore } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 
-export default function TheBanner({ defaultBannerState }: { defaultBannerState?: BannerState }) {
+export default function TheBanner({ pageBannerState }: { pageBannerState?: BannerState }) {
 
-    const workspace = useWorkspace();
+    const workspace = useWorkspace()
     const i18n = useI18n()
     const theme = useTheme()
     const { styles: themeStyles } = theme.themepack as DemoThemepack
@@ -35,10 +36,23 @@ export default function TheBanner({ defaultBannerState }: { defaultBannerState?:
         cookies.set(COOKIE_THEME, evt.target.value)
     }
 
-    //init the banner store form defaultBannerState (which is from server request) if there is not
-    const bannerStore = workspace.getStore(BANNER_STORE, initBannerStore(defaultBannerState)) as BannerStore
-    const bannerState = useSyncExternalStore(bannerStore.subscribe, bannerStore.snapshot, bannerStore.snapshot)
-    
+
+    //init the banner store form pageBannerState (which is from server request) if there is not
+    const bannerStore = workspace.getStore(BANNER_STORE, initBannerStore(pageBannerState)) as BannerStore
+    const bannerState = useSyncExternalStore(bannerStore.subscribe, bannerStore.getSnapshot, bannerStore.getSnapshot)
+
+    useEffect(() => {
+        return workspace.subscribe((eventName, eventData: { pathname: string }) => {
+            switch (eventName) {
+                case EVENT_ON_ROUTE:
+                    //reset to default for each new route, use the page can ignore config with a default value
+                    bannerStore.setState({
+                        showLanguage: true
+                    })
+                    break
+            }
+        })
+    }, [workspace, bannerStore])
 
     return <div className={clsx(demoStyles.banner, themeStyles.banner)} style={{ gap: 4 }}>
         <Link id="home" href={"/demo"}>{i18n.l('home')}</Link>

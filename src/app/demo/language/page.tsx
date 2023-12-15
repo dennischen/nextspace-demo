@@ -14,11 +14,12 @@ import { BannerState } from '@/app/demo/types'
 export default function page() {
 
 
-    const defaultBannerState: BannerState = {
+    const pageBannerState: BannerState = {
+        showLanguage: false
     }
 
-    context().set('defaultBannerState', defaultBannerState)
+    context().set('pageBannerState', pageBannerState)
 
 
-    return <ThePage defaultBannerState={defaultBannerState}/>
+    return <ThePage pageBannerState={pageBannerState}/>
 }

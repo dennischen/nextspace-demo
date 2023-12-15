@@ -13,8 +13,6 @@ import demoStyles from "./demo.module.scss"
 import translationLoader from '@nextspace/components/translationLoader'
 import NProgressIndicator from '@nextspace/utils/NProgressIndicator'
 import i18next from 'i18next'
-import Banner from "./banner"
-import Footer from './footer'
 
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -81,7 +79,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     const { styles: themeStyles } = useTheme().themepack as DemoThemepack
     const i18n = useI18n()
     return <Suspense fallback={<Modal>{i18n.l("loading")}...</Modal>}>
-        <div className={clsx(demoStyles.layout, themeStyles.layout)} >{children}</div>
+        <div className={clsx(demoStyles.layout, themeStyles.layout)}>{children}</div>
     </Suspense >
 
 }

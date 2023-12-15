@@ -18,7 +18,7 @@ import readme_default from './README.md?as_uri'
 import readme_zh from './README_zh.md?as_uri'
 
 
-export default function ThePage({ defaultBannerState }: { defaultBannerState: BannerState }) {
+export default function ThePage({ pageBannerState }: { pageBannerState: BannerState }) {
     const workspace = useWorkspace()
     const i18n = useI18n()
 
@@ -37,11 +37,11 @@ export default function ThePage({ defaultBannerState }: { defaultBannerState: Ba
     }
 
     useEffect(() => {
-        (workspace.getStore(BANNER_STORE) as BannerStore)?.setState(defaultBannerState)
-    }, [workspace])
+        (workspace.getStore(BANNER_STORE) as BannerStore)?.setState(pageBannerState)
+    }, [workspace, pageBannerState])
 
     return <main className={demoStyles.main}>
-        <Docarea className={demoStyles.docarea} contentSrc={readmeUri} defaultShow={true}>
+        <Docarea className={demoStyles.docarea} contentSrc={readmeUri}>
             <div className={demoStyles.vlayout} style={{ gap: 8 }}>
                 {i18n.l('language')}: {i18n.l(`language.${i18n.language}`)} ({i18n.language})
                 <label>

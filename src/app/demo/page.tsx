@@ -16,13 +16,13 @@ export default function page() {
 
 
     //state for server side request this will be read in server banner
-    const defaultBannerState: BannerState = {
+    const pageBannerState: BannerState = {
         showLanguage: true,
         showTheme: true
     }
 
-    context().set('defaultBannerState', defaultBannerState)
+    context().set('pageBannerState', pageBannerState)
 
 
-    return <ThePage defaultBannerState={defaultBannerState}/>
+    return <ThePage pageBannerState={pageBannerState}/>
 }

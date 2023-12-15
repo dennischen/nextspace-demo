@@ -13,7 +13,9 @@ export default function banner() {
     const ctx = context()
 
     //state for server side request this will be setted in page
-    const state = ctx.get('defaultBannerState') as BannerState
+    const state = (ctx.get('pageBannerState') || {
+        showLanguage: true
+    }) as BannerState
 
-    return <TheBanner defaultBannerState={state} />
+    return <TheBanner pageBannerState={state} />
 }

@@ -16,7 +16,7 @@ import BannerStore, { BANNER_STORE, initBannerStore } from "./stores/BannerStore
 
 
 
-export default function ThePage({ defaultBannerState }: { defaultBannerState: BannerState }) {
+export default function ThePage({ pageBannerState }: { pageBannerState: BannerState }) {
     const workspace = useWorkspace()
     const i18n = useI18n()
     const { styles: themeStyles } = useTheme().themepack as DemoThemepack
@@ -33,8 +33,8 @@ export default function ThePage({ defaultBannerState }: { defaultBannerState: Ba
 
     //sets the banner state to workspace store which will be read in client banner
     useEffect(() => {
-        (workspace.getStore(BANNER_STORE) as BannerStore)?.setState(defaultBannerState)
-    }, [workspace])
+        (workspace.getStore(BANNER_STORE) as BannerStore)?.setState(pageBannerState)
+    }, [workspace, pageBannerState])
 
 
     return <main className={demoStyles.main}>
