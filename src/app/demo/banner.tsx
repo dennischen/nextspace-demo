@@ -8,7 +8,7 @@ import { context } from '@nextspace/server/request'
 import { BannerState } from "./types"
 
 
-export default function banner() {
+export default function Banner() {
 
     const ctx = context()
 

@@ -4,7 +4,7 @@
  * @author: Dennis Chen
  */
 import { useI18n, useTheme, useWorkspace } from "@nextspace"
-import { EVENT_ON_ROUTE, WorkspaceEvents } from "@nextspace/constants"
+import { EVENT_ON_ROUTE } from "@nextspace/constants"
 import Link from "@nextspace/components/Link"
 import clsx from "clsx"
 import Cookies from "universal-cookie"

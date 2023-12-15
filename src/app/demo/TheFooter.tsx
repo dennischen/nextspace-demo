@@ -9,7 +9,7 @@ import clsx from "clsx"
 import demoStyles from "./demo.module.scss"
 import { DemoThemepack } from "./types"
 
-export default function Footer({ hideProject }: { hideProject?: boolean }) {
+export default function TheFooter({ hideProject }: { hideProject?: boolean }) {
     const i18n = useI18n()
     const { styles } = useTheme().themepack as DemoThemepack
     return <div className={clsx(demoStyles.footer, styles.footer)} >

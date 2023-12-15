@@ -8,7 +8,7 @@ import { context } from '@nextspace/server/request'
 import { FooterState } from "./types"
 
 
-export default function footer() {
+export default function Footer() {
 
     const ctx = context()
 
