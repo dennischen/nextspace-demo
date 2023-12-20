@@ -1,0 +1,44 @@
+{
+    "geminiModels": [
+        "gemini-pro",
+        "gemini-pro-vision"
+    ],
+    "targetLanguages": [
+        {
+            "en": "English",
+            "native": "English"
+        },
+        {
+            "en":"Traditional Chinese",
+            "native":"繁體中文"
+        },
+        {
+            "en":"Japanese",
+            "native":"日本語"
+        },
+        {
+            "en":"Korean",
+            "native":"한국어"
+        },
+        {
+            "en":"Spanish",
+            "native":"Español"
+        },
+        {
+            "en":"Portuguese",
+            "native":"Português"
+        },
+        {
+            "en":"German",
+            "native":"Deutsch"
+        },
+        {
+            "en":"French",
+            "native":"Français"
+        }
+    ],
+    "default": {
+        "geminiModel": "gemini-pro",
+        "targetLanguage": "Traditional Chinese"
+    }
+}
