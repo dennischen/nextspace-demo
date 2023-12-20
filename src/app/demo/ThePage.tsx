@@ -29,6 +29,7 @@ export default function ThePage({ pageBannerState }: { pageBannerState: BannerSt
         <Link key={key++} id="lazy-preloading" href="/demo/lazy-preloading">{i18n.l("lazyPreloading")}</Link>,
         <Link key={key++} id="slow-route" href="/demo/slow-route">{i18n.l("slowRoute")}</Link>,
         <Link key={key++} id="openai-translation" href="/demo/openai-translation">{i18n.l("openaiTranslation")}</Link>,
+        <Link key={key++} id="gemini-translation" href="/demo/gemini-translation">{i18n.l("geminiTranslation")}</Link>,
     ]
 
     //sets the banner state to workspace store which will be read in client banner

@@ -66,6 +66,32 @@
             "translationAborted": "翻譯已經被取消"
         }
     },
+    "geminiTranslation":{
+        "@": "Gemini翻譯",
+        "title": "Gemini 的多語言 Markdown 翻譯",
+        "apikey": "API Key",
+        "markdown": "Markdown",
+        "gptModel": "GPT模型",
+        "targetLanguage": "目標語言",
+        "previewHtml": "預覽HTML",
+        "calculateToken": "計算Token",
+        "tokenNum": "Token數量",
+        "translate": "翻譯",
+        "viewkey": "檢視API key",
+        "translatedMarkdown": "翻譯完的Markdown",
+        "translatedTokenNum": "花費的Token數量",
+        "conversation": "會話",
+        "option": "選項",
+        "customInstruction": "自定指令",
+        "renderedHtml": "渲染的Html",
+        "msg": {
+            "tokenCalculation": "這個Markdown可能包含了{{tokenNum}}個Tokens",
+            "calculationAborted": "計算被取消",
+            "err": "錯誤 {{err}}",
+            "translationDown": "翻譯已經完成",
+            "translationAborted": "翻譯已經被取消"
+        }
+    },
     "state":{
         "running": "執行中",
         "aborting": "取消中",

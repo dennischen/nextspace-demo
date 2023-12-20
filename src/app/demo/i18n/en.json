@@ -66,6 +66,32 @@
             "translationAborted": "The translation has been aborted"
         }
     },
+    "geminiTranslation":{
+        "@": "Gemini Translation",
+        "title": "Multilingual Markdown Translation by Gemini",
+        "apikey": "API Key",
+        "markdown": "Markdown",
+        "model": "Model",
+        "targetLanguage": "Target language",
+        "previewHtml": "Preview HTML",
+        "calculateToken": "Calculate token",
+        "tokenNum": "Token number",
+        "translate": "Translate",
+        "viewkey": "View API key",
+        "translatedMarkdown": "Translated markdown",
+        "translatedTokenNum": "Token cost",
+        "conversation": "Conversation",
+        "option": "Option",
+        "customInstruction": "Custom instruction",
+        "renderedHtml": "Rendered Html",
+        "msg": {
+            "tokenCalculation": "It cloud contains {{tokenNum}} tokens in the markdown",
+            "calculationAborted": "The calculation has been aborted",
+            "err": "Error {{err}}",
+            "translationDown": "The translation has done",
+            "translationAborted": "The translation has been aborted"
+        }
+    },
     "state":{
         "running": "Running",
         "aborting": "Aborting",

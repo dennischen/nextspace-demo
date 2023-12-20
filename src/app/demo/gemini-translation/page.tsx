@@ -16,8 +16,8 @@ export async function generateMetadata(
     const i18n = await getI18n(preference.userLanguage)
 
     return {
-        title: i18n.l('openaiTranslation.title'),
-        keywords: ['ai', 'openai', 'markdown', 'translation']
+        title: i18n.l('geminiTranslation.title'),
+        keywords: ['ai', 'gemini','markdown', 'translation']
     }
 }
 
