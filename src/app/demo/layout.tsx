@@ -5,17 +5,14 @@
  */
 
 import { Metadata } from 'next'
-import { cookies, headers } from 'next/headers'
 import DemoLayout from "./DemoLayout"
-import { COOKIE_LANGUAGE, COOKIE_THEME, DEFAULT_LANGUAGE, DEFAULT_THEME } from './constants'
-
-import acceptLanguageParser from 'accept-language-parser'
 
 //prevent blank flash
-import "./themes/darkred.module.scss"
-import "./themes/lightblue.module.scss"
 import Banner from './banner'
 import Footer from './footer'
+import { getUserPreference } from './server-utils'
+import "./themes/darkred.module.scss"
+import "./themes/lightblue.module.scss"
 
 //force no-static page (use cookies() did the same thing in nextjs)
 export const dynamic = 'force-dynamic'
@@ -30,16 +27,8 @@ export type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
-    const theCookies = cookies()
-    const theHeaders = headers()
-
-    const cookieLanguage = theCookies.get(COOKIE_LANGUAGE)?.value || ''
-    const cookieTheme = theCookies.get(COOKIE_THEME)?.value || ''
-
-
-    const acceptLanguage = acceptLanguageParser.pick(['zh', 'en'], theHeaders.get('Accept-Language') || '')
-    const userLanguage = cookieLanguage || acceptLanguage || DEFAULT_LANGUAGE
-    const userTheme = cookieTheme || DEFAULT_THEME
+    
+    const preference = getUserPreference()
 
     //to make default theme load before html render, has to load it in server component first. (will render css to layout.css)
     //do this will prevent page flash effect (css loaded after html render), 
@@ -64,7 +53,7 @@ export default function Layout({ children }: LayoutProps) {
         }
     }
 
-    return <DemoLayout defaultLanguage={userLanguage} defaultTheme={userTheme} envVariables={envVariables}
+    return <DemoLayout defaultLanguage={preference.userLanguage} defaultTheme={preference.userTheme} envVariables={envVariables}
         banner={<Banner />} footer={<Footer/>}>
         {children}
     </DemoLayout >
