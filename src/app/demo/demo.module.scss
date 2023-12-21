@@ -29,8 +29,11 @@ $radius: 3px;
         font-size: calc($banner-font-size - 2px);
         border-radius: $radius;
         max-width: 200px;
-    }
 
+        @media (max-width: 640px) {
+            max-width: 150px;
+        }
+    }
 }
 
 .footer {
@@ -70,12 +73,15 @@ $radius: 3px;
     flex-direction: column;
     align-items: center;
 }
+
 .fullwidth {
     width: 100%;
 }
+
 .flex {
     flex: 1;
 }
+
 .flexgrow {
     flex-grow: 1;
 }
@@ -97,17 +103,13 @@ $radius: 3px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
 
-@media (max-width: 1280px) {
-    .homegriditem {
+    @media (max-width: 1280px) {
         flex-basis: calc(50% - $spacing);
         max-width: calc(50% - $spacing);
     }
-}
 
-@media (max-width: 640px) {
-    .homegriditem {
+    @media (max-width: 640px) {
         flex-basis: 100%;
         max-width: 100%;
     }
