@@ -7,10 +7,12 @@
 import { Metadata } from 'next'
 import DemoLayout from "./DemoLayout"
 
-//prevent blank flash
 import Banner from './banner'
 import Footer from './footer'
+import GaScripts from './gascripts'
 import { getUserPreference } from './server-utils'
+
+//prevent blank flash
 import "./themes/darkred.module.scss"
 import "./themes/lightblue.module.scss"
 
@@ -54,7 +56,8 @@ export default function Layout({ children }: LayoutProps) {
     }
 
     return <DemoLayout defaultLanguage={preference.userLanguage} defaultTheme={preference.userTheme} envVariables={envVariables}
-        banner={<Banner />} footer={<Footer/>}>
+        banner={<Banner />} footer={<Footer />}>
         {children}
+        <GaScripts measurementId={envVariables.DEMO_PUBLIC_GA_MEASUREMENT_ID}/>
     </DemoLayout >
 }
